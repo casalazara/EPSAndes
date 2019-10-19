@@ -850,7 +850,7 @@ public class PersistenciaEPSAndes
 		try
 		{
 			Servicio servicio2=sqlServicio.darServicioPorId(pm, servicio);
-			Orden orden=sqlOrden.darOrdenPorId(pm, id);
+			Orden orden=(Orden)sqlOrden.darOrdenPorId(pm, id);
 			if(orden!=null || (servicio2.getTipo().equals("Consulta con medico") || servicio2.getTipo().equals("Consulta de urgencias")) )
 			{
 				if(orden==null) orden=registrarOrden(servicio, paciente, "Generada por paciente");
@@ -986,7 +986,7 @@ public class PersistenciaEPSAndes
 			tx.commit();
 
 			log.trace ("Inserción orden: " +id + ": " + tuplasInsertadas + " tuplas insertadas");
-			return new Orden(id, id_Afiliado, id_Medico);
+			return new Orden( id_Afiliado, id_Medico,id,servicio);
 		}	
 		catch (Exception e)
 		{

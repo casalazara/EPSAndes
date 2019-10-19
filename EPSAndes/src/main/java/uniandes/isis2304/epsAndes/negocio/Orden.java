@@ -6,13 +6,23 @@ package uniandes.isis2304.epsAndes.negocio;
 public class Orden implements VOOrden{
 
 	/** El id. */
-	private Long id;
-	
+	private long id;
+
 	/** El afiliado. */
-	private String afiliado;
-	
+	private String id_Afiliado;
+
 	/** El medico. */
-	private String medico;
+	private String id_Medico;
+
+	private String nom_Servicio;
+
+	public Orden()
+	{
+		this.id = 0;
+		this.id_Afiliado = "";
+		this.id_Medico = "";
+		this.nom_Servicio = "";
+	}
 
 	/**
 	 * Instancia una nueva orden.
@@ -21,10 +31,11 @@ public class Orden implements VOOrden{
 	 * @param afiliado el afiliado
 	 * @param medico el medico
 	 */
-	public Orden(Long id, String afiliado, String medico) {
+	public Orden(String afiliado, String medico,long id, String nombreSer) {
 		this.id =id;
-		this.afiliado = afiliado;
-		this.medico = medico;
+		this.id_Afiliado = afiliado;
+		this.id_Medico = medico;
+		this.nom_Servicio=nombreSer;
 	}
 
 	/**
@@ -32,7 +43,7 @@ public class Orden implements VOOrden{
 	 *
 	 * @return el id
 	 */
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 
@@ -41,7 +52,7 @@ public class Orden implements VOOrden{
 	 *
 	 * @param id el nuevo id
 	 */
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -50,8 +61,8 @@ public class Orden implements VOOrden{
 	 *
 	 * @return el afiliado
 	 */
-	public String getAfiliado() {
-		return afiliado;
+	public String getId_Afiliado() {
+		return id_Afiliado;
 	}
 
 	/**
@@ -59,8 +70,8 @@ public class Orden implements VOOrden{
 	 *
 	 * @param afiliado el nuevo afiliado
 	 */
-	public void setAfiliado(String afiliado) {
-		this.afiliado = afiliado;
+	public void setId_Afiliado(String afiliado) {
+		this.id_Afiliado = afiliado;
 	}
 
 	/**
@@ -68,8 +79,8 @@ public class Orden implements VOOrden{
 	 *
 	 * @return el medico
 	 */
-	public String getMedico() {
-		return medico;
+	public String getId_Medico() {
+		return id_Medico;
 	}
 
 	/**
@@ -77,8 +88,8 @@ public class Orden implements VOOrden{
 	 *
 	 * @param medico el nuevo medico
 	 */
-	public void setMedico(String medico) {
-		this.medico = medico;
+	public void setId_Medico(String medico) {
+		this.id_Medico = medico;
 	}
 
 	/**
@@ -88,7 +99,15 @@ public class Orden implements VOOrden{
 	 */
 	@Override
 	public String toString() {
-		return "Orden [afiliado=" + afiliado + ", medico=" + medico +", id="+id+"]";
+		return "Orden [afiliado=" + id_Afiliado + ", medico=" + id_Medico +", id="+id+"]";
+	}
+
+	public String getNom_Servicio() {
+		return nom_Servicio;
+	}
+
+	public void setNom_Servicio(String nombreServicio) {
+		this.nom_Servicio = nombreServicio;
 	}
 
 }

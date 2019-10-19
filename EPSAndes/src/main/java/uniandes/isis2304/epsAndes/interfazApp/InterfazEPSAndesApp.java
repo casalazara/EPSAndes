@@ -554,8 +554,6 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 						resultado += "afiliado registrado exitosamente: " + afiliado;
 						resultado += "\n OperaciÃ³n terminada";
 						panelDatos.actualizarInterfaz(resultado);
-
-
 					}
 					// Agrego
 				}
@@ -653,7 +651,7 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 
 			int option = JOptionPane.showConfirmDialog (this, message, "Registrar medico", JOptionPane.OK_CANCEL_OPTION);
 			if(option == JOptionPane.OK_OPTION) {
-				if(!idOrden.getText().toString().equals("") &&!IdIPS.getText().toString().equals("") &&Hora.getText().toString().equals("") &&!Servicio.getText().toString().equals("") &&!Paciente.getText().toString().equals("") && !Fecha.getText().toString().equals("") )
+				if(!idOrden.getText().toString().equals("") &&!IdIPS.getText().toString().equals("") &&!Hora.getText().toString().equals("") &&!Servicio.getText().toString().equals("") &&!Paciente.getText().toString().equals("") && !Fecha.getText().toString().equals("") )
 				{
 					String fecha = Fecha.getText().toString();
 					String servicio=Servicio.getText().toString();
@@ -766,10 +764,17 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 			JTextField Dia = new JTextField();
 			JTextField IdServicio = new JTextField();
 			JTextField IdIPS = new JTextField();
-			JTextField Tipo = new JTextField();
+			JComboBox combo = new JComboBox<String>();
+			combo.addItem("Consulta con medico");
+			combo.addItem("Consulta de urgencias");
+			combo.addItem("Remision con un especialista");
+			combo.addItem("Consulta de control");
+			combo.addItem("Examen diagnostico");
+			combo.addItem("Terapia");
+			combo.addItem("Procedimiento medico especializado");
+			combo.addItem("Hospitalizacion");
+
 			JTextField Capacidad = new JTextField();
-
-
 
 			Object message[] = {
 					"Ingrese la hora de inicio: ", HoraInicio,
@@ -777,13 +782,13 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 					"Ingrese el dia siguiendo el formato DD-MM-YY HH24:MI:SS: ", Dia,
 					"Ingrese el servicio: ", IdServicio,
 					"Ingrese la IPS: ", IdIPS,
-					"Ingrese el tipo: ", Tipo,
+					"Ingrese el tipo: ", combo,
 					"Ingrese la capacidad: ", Capacidad,
 			};
 
 			int option = JOptionPane.showConfirmDialog (this, message, "Registrar medico", JOptionPane.OK_CANCEL_OPTION);
 			if(option == JOptionPane.OK_OPTION) {
-				if(!Capacidad.getText().toString().equals("") && !Tipo.getText().toString().equals("") && !IdIPS.getText().toString().equals("") && !IdServicio.getText().toString().equals("") && !Dia.getText().toString().equals("") && !HoraInicio.getText().toString().equals("") && !Duracion.getText().toString().equals("") )
+				if(!Capacidad.getText().toString().equals("") && !combo.getSelectedItem().toString().equals("") && !IdIPS.getText().toString().equals("") && !IdServicio.getText().toString().equals("") && !Dia.getText().toString().equals("") && !HoraInicio.getText().toString().equals("") && !Duracion.getText().toString().equals("") )
 				{
 
 					String duracion = Duracion.getText().toString();
@@ -792,8 +797,7 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 					String idServicio = IdServicio.getText().toString();
 					String idIps = IdIPS.getText().toString();
 					int capacidad = Integer.parseInt(Capacidad.getText().toString());
-					String tipo = Tipo.getText().toString();
-
+					String tipo = combo.getSelectedItem().toString();
 
 					VOPrestan prestan=epsAndes.registrarServicioDeSaludAPrestar(duracion, horaInicio, dia, idServicio, idIps, capacidad, tipo);
 					if(prestan != null) {
@@ -805,7 +809,7 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 					}
 
 					else {
-						System.out.println("el usario llega null");
+						System.out.println("el servicio llega null");
 					}
 				}
 				else

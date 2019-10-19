@@ -11,22 +11,22 @@ public interface VOOrden {
 	 *
 	 * @return el afiliado
 	 */
-	public String getAfiliado();
-	
+	public String getId_Afiliado();
+
 	/**
 	 * Da el medico.
 	 *
 	 * @return el medico
 	 */
-	public String getMedico();
-	
+	public String getId_Medico();
+
 	/**
 	 * Da el id.
 	 *
 	 * @return el id
 	 */
-	public Long getId();
-	
+	public long getId();
+
 	/**
 	 * To string.
 	 *
@@ -34,4 +34,5 @@ public interface VOOrden {
 	 */
 	public String toString();
 
+	public String getNom_Servicio();
 }

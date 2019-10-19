@@ -89,7 +89,6 @@ class SQLServicio
 	 */
 	public List<Servicio> mostrarServiciosPorCaracteristicas(PersistenceManager pm,String caracteristicas)
 	{
-
 		String sql="SELECT Count(s.NOMBRE), s.NOMBRE nombre, s.TIPO tipo"
 				+ "FROM ORDEN o, CITA c, PRESTAN p, SERVICIO s "
 				+ "WHERE o.ID = c.ID_ORDEN "
