@@ -1,0 +1,23 @@
+{
+	"title": "Nombres de las tablas de EPSAndes",
+	"unidadPersistencia": "EPSAndes",
+	"tablas":
+	[
+		"epsandes_sequence",
+		"ADMINDATOSEPS",
+		"AFILIADO",
+		"CITA",
+		"EPS",
+		"GERENTE_EPS",
+		"IPS",
+		"MEDICO",
+		"OFRECEN",
+		"ORDEN",
+		"PRESTAN",
+		"RECEPCIONISTA_IPS",
+		"SERVICIO",
+		"TRABAJAN",
+		"USUARIO",	
+		"ROL"	
+	]
+}

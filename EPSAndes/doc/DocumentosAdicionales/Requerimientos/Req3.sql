@@ -1,0 +1,1 @@
+INSERT INTO IPS (NOMBRE,LOCALIZACION,ID_EPS) values (?, ?, ?);
