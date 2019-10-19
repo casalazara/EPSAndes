@@ -296,9 +296,7 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 			combo.addItem("GerenteEPS");
 
 			Object message[] = {
-
 					"Ingrese el rol: ", combo,
-
 			};
 
 			int option = JOptionPane.showConfirmDialog (this, message, "Registrar ROl", JOptionPane.OK_CANCEL_OPTION);
@@ -327,7 +325,7 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 
 	}
 
-	
+
 	public void registrarPrestacionAfiliado()
 	{
 
@@ -376,10 +374,10 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 			JTextField NumeroDocumento = new JTextField();
 			JTextField Nombre = new JTextField();
 			JComboBox combo = new JComboBox<String>();
-			combo.addItem("CC");
-			combo.addItem("TI");
-			combo.addItem("RC");
-			combo.addItem("CE");
+			combo.addItem("C.C");
+			combo.addItem("T.I");
+			combo.addItem("R.C");
+			combo.addItem("C.E");
 			combo.addItem("Pasaporte");
 
 			JTextField textoEmail = new JTextField();
@@ -445,7 +443,6 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 		try {
 			JTextField nombre = new JTextField();
 			JTextField localizacion = new JTextField();
-			JTextField eps = new JTextField();
 
 			JTextField NumeroDocumento = new JTextField();
 			JTextField NombreRecepcionista = new JTextField();
@@ -462,7 +459,6 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 			Object message[] = {
 					"Ingrese el nombre de la ips: ", nombre,
 					"Ingrese la localizacion de la ips: ", localizacion,
-					"Ingrese la EPS con la que está asociada: ", eps,
 					"Ingrese el número de documento del recepcionista: ", NumeroDocumento,
 					"Ingrese el nombre del recepcionista: ", NombreRecepcionista,
 					"Escoja el tipo de documento: ", combo,
@@ -470,14 +466,14 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 			};
 			int option = JOptionPane.showConfirmDialog (this, message, "Registrar IPS", JOptionPane.OK_CANCEL_OPTION);
 			if(option == JOptionPane.OK_OPTION) {
-				if(!textoEmail.getText().toString().equals("") && !NombreRecepcionista.getText().toString().equals("") && !NumeroDocumento.getText().toString().equals("") && !eps.getText().toString().equals("") && !nombre.getText().toString().equals("") && !localizacion.getText().toString().equals(""))
+				if(!textoEmail.getText().toString().equals("") && !NombreRecepcionista.getText().toString().equals("") && !NumeroDocumento.getText().toString().equals("") && !nombre.getText().toString().equals("") && !localizacion.getText().toString().equals(""))
 				{
 
 					String Nombre = nombre.getText().toString();
 
 					String Localizacion = localizacion.getText().toString();
 
-					String NombreEPS = eps.getText().toString();
+					String NombreEPS = "EPSAndes";
 
 					String Numerodocumento=NumeroDocumento.getText().toString();
 
@@ -499,7 +495,6 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 				else
 				{
 					JOptionPane.showMessageDialog(this, "Se deben llenar todos los campos.", "Error registrando usuario", JOptionPane.ERROR_MESSAGE);
-
 				}
 
 
@@ -524,13 +519,12 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 			JTextField NumeroDocumento = new JTextField();
 			JTextField Nombre = new JTextField();
 			JComboBox combo = new JComboBox<String>();
-			combo.addItem("CC");
-			combo.addItem("TI");
-			combo.addItem("RC");
-			combo.addItem("CE");
+			combo.addItem("C.C");
+			combo.addItem("T.I");
+			combo.addItem("R.C");
+			combo.addItem("C.E");
 			combo.addItem("Pasaporte");
 			JTextField textoEmail = new JTextField();
-			JTextField textoEPS = new JTextField();
 
 
 			Object message[] = {
@@ -539,19 +533,18 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 					"Ingrese su nombre",Nombre,
 					"Seleccione su tipo de documento",combo,
 					"Ingrese su email",textoEmail,
-					"Ingrese su EPS",textoEPS,
 			};
 
 			int option = JOptionPane.showConfirmDialog (this, message, "Registrar medico", JOptionPane.OK_CANCEL_OPTION);
 			if(option == JOptionPane.OK_OPTION) {
-				if( !textoEPS.getText().toString().equals("") && !textoEmail.getText().toString().equals("") && !Nombre.getText().toString().equals("") && !NumeroDocumento.getText().toString().equals("") && !fecha.getText().toString().equals("") )
+				if( !textoEmail.getText().toString().equals("") && !Nombre.getText().toString().equals("") && !NumeroDocumento.getText().toString().equals("") && !fecha.getText().toString().equals("") )
 				{
 					String fechaNacimiento = fecha.getText().toString();
 					String numero_Documento=NumeroDocumento.getText().toString();
 					String nombre=Nombre.getText().toString();
 					String email=textoEmail.getText().toString();
 					String tipo_Documento=combo.getSelectedItem().toString();
-					String eps=textoEPS.getText().toString();
+					String eps="EPSAndes";
 
 					VOAfiliado afiliado = epsAndes.registrarAfiliado(numero_Documento, nombre, "Afiliado", email, tipo_Documento, fechaNacimiento, eps);
 
@@ -703,18 +696,16 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 			JTextField NumeroDocumento = new JTextField();
 			JTextField Nombre = new JTextField();
 			JComboBox combo = new JComboBox<String>();
-			combo.addItem("CC");
-			combo.addItem("TI");
-			combo.addItem("RC");
-			combo.addItem("CE");
+			combo.addItem("C.C");
+			combo.addItem("T.I");
+			combo.addItem("R.C");
+			combo.addItem("C.E");
 			combo.addItem("Pasaporte");
 
 			JTextField textoEmail = new JTextField();
 			JTextField Especialidad = new JTextField();
 			JTextField RegistroMedico = new JTextField();
 			JTextField Ips = new JTextField();
-
-
 
 			Object message[] = {
 					"Ingrese el numero de documento : ", NumeroDocumento,

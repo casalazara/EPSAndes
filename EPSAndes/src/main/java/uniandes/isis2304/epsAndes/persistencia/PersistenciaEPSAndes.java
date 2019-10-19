@@ -534,6 +534,7 @@ public class PersistenciaEPSAndes
 			if(sqlUsuario.darUsuarioPorId(pm, numero_Documento)==null)
 			{
 				registrarUsuario(numero_Documento, nombre, email, rol, tipo_Documento);
+				log.trace("Se está creando el usuario recepcionista");
 			}
 			tx.begin();            
 			long tuplasInsertadas = sqlRecepcionista.adicionarRecepcionista(pm,pIPS, numero_Documento);
@@ -562,23 +563,33 @@ public class PersistenciaEPSAndes
 	 * Adiciona entradas al log de la aplicación.
 	 *
 	 * @param localizacion the localizacion
-	 * @param nombre - El nombre de la bebida
+	 * @param nombreIPS - El nombre de la bebida
 	 * @param recepcionista the recepcionistas
 	 * @param nombreEPS the nombre EPS
 	 * @return El objeto Bebida adicionado. null si ocurre alguna Excepción
 	 */
-	public IPS registrarIPS(String localizacion, String nombre,RecepcionistaIPS recepcionista, String nombreEPS)
+	public IPS registrarIPS(String localizacion, String nombreIPS,RecepcionistaIPS recepcionista, String nombreEPS)
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx=pm.currentTransaction();
 		try
 		{
-			tx.begin();            
-			long tuplasInsertadas = sqlIPS.adicionarIPS(pm, nombreEPS, localizacion, nombre);
+			tx.begin();   
+			long tuplasInsertadas = sqlIPS.adicionarIPS(pm, nombreEPS, localizacion, nombreIPS);
 			tx.commit();
-			registrarRecepcionista( recepcionista.getNumero_Documento(), recepcionista.getNombre(), recepcionista.getEmail(), recepcionista.getRol(), recepcionista.getTipo_Documento(), nombre);
-			log.trace ("Inserción ips: " + nombre + ": " + tuplasInsertadas + " tuplas insertadas");
-			return new IPS (localizacion, nombre);
+
+			if(recepcionista!=null)
+			{
+				log.trace ("Inserción ips: registrando recepcionista");
+
+				registrarRecepcionista( recepcionista.getNumero_Documento(), recepcionista.getNombre(), recepcionista.getEmail(), recepcionista.getRol(), recepcionista.getTipo_Documento(), nombreIPS);
+			}
+			else
+			{
+				log.trace("El recepcionista es null");
+			}
+			log.trace ("Inserción ips: " + nombreIPS + ": " + tuplasInsertadas + " tuplas insertadas");
+			return new IPS (localizacion, nombreIPS);
 		}
 		catch (Exception e)
 		{

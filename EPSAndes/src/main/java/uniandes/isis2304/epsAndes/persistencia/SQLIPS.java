@@ -46,7 +46,7 @@ class SQLIPS
 	public long adicionarIPS(PersistenceManager pm, String nombreEPS,String localizacion, String id_IPS) 
 	{
 		Query q = pm.newQuery(SQL, "INSERT INTO " + pp.darTablaIps() + "(NOMBRE,LOCALIZACION,ID_EPS) values (?, ?, ?)");
-		q.setParameters(nombreEPS,localizacion,id_IPS);
+		q.setParameters(id_IPS,localizacion,nombreEPS);
 		return (long) q.executeUnique();
 	}
 
