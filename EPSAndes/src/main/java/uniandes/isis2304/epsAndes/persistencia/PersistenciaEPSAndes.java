@@ -1011,14 +1011,14 @@ public class PersistenciaEPSAndes
 	 * @param idCita el id cita
 	 * @param id_Recepcionista el id recepcionistan
 	 */
-	public void registrarPrestacion(long idCita,String id_Recepcionista)
+	public void registrarPrestacion(long idCita,String id_Recepcionista,String id_servicio,String id_paciente)
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
 		Transaction tx=pm.currentTransaction();
 		try
 		{
 			tx.begin();            
-			long tuplasInsertadas = sqlCita.registrarPrestacion(pm, idCita, id_Recepcionista);
+			long tuplasInsertadas = sqlCita.registrarPrestacion(pm, idCita, id_Recepcionista,id_servicio,id_paciente);
 			tx.commit();
 
 			log.trace ("Registro prestación: " +idCita + ": " + tuplasInsertadas + " tuplas insertadas");

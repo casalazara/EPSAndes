@@ -66,10 +66,10 @@ class SQLCita
 	 * @param id_Recepcionista el id recepcionista
 	 * @return the long
 	 */
-	public long registrarPrestacion(PersistenceManager pm, long idCita, String id_Recepcionista)
+	public long registrarPrestacion(PersistenceManager pm, long idCita, String id_Recepcionista,String id_servicio,String id_paciente)
 	{
-		Query q = pm.newQuery(SQL, "UPDATE " + pp.darTablaCita() + "SET CUMPLIDA=?, ID_RECEPCIONISTA=? WHERE ID=?");
-		q.setParameters(1,id_Recepcionista,idCita);
+		Query q = pm.newQuery(SQL, "UPDATE " + pp.darTablaCita() + " SET CUMPLIDA=?, ID_RECEPCIONISTA=? WHERE ID_ORDEN=? AND ID_SERVICIO=? AND ID_AFILIADO =? AND CUMPLIDA=0");
+		q.setParameters(1,id_Recepcionista,idCita,id_servicio,id_paciente);
 		return (long) q.executeUnique();   
 	}
 

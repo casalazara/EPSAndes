@@ -204,10 +204,10 @@ public class EPSAndes
 	 * @param idCita the id cita
 	 * @param id_Recepcionista the id recepcionista
 	 */
-	public void registrarPrestacion(long idCita, String id_Recepcionista)
+	public void registrarPrestacion(long idCita, String id_Recepcionista,String id_servicio, String id_paciente)
 	{
 		log.info ("Adicionando la prestación: " + idCita);
-		pp.registrarPrestacion(idCita, id_Recepcionista);
+		pp.registrarPrestacion(idCita, id_Recepcionista,id_servicio,id_paciente);
 		log.info ("adicionado la prestación al recepcionista: " + id_Recepcionista);
 	}
 

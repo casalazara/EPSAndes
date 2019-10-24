@@ -1,5 +1,6 @@
 package uniandes.isis2304.epsAndes.persistencia;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.jdo.PersistenceManager;
@@ -68,8 +69,8 @@ class SQLPrestan
 	 */
 	public long actualizarCapacidad(PersistenceManager pm,String fecha, String hora, String idServicio, String idIps)
 	{
-		int capacidad=darCapacidad(pm, fecha,  hora,  idServicio,  idIps);
-		Query q = pm.newQuery(SQL, "UPDATE " + pp.darTablaPrestan() + "SET CAPACIDAD=? WHERE DIA=?, ID_SERVICIO=?, ID_IPS=?, HORAINICIO=?");
+		int capacidad=darCapacidad(pm, fecha,  hora,  idServicio,  idIps).intValue();
+		Query q = pm.newQuery(SQL, "UPDATE " + pp.darTablaPrestan() + " SET CAPACIDAD=? WHERE DIA=? AND ID_SERVICIO=? AND ID_IPS=? AND HORAINICIO=?");
 		q.setParameters(--capacidad,fecha,idServicio,idIps,hora);
 		return (long) q.executeUnique();   
 	}
@@ -84,11 +85,11 @@ class SQLPrestan
 	 * @param idIps la id ips
 	 * @return la capacidad
 	 */
-	public int darCapacidad(PersistenceManager pm,String fecha, String hora, String idServicio, String idIps)
+	public BigDecimal darCapacidad(PersistenceManager pm,String fecha, String hora, String idServicio, String idIps)
 	{
-		Query q = pm.newQuery(SQL, "SELECT CAPACIDAD FROM " + pp.darTablaPrestan() + " WHERE DIA=?, ID_SERVICIO=?, ID_IPS=?, HORAINICIO=?");
+		Query q = pm.newQuery(SQL, "SELECT CAPACIDAD FROM " + pp.darTablaPrestan() + " WHERE DIA=? AND ID_SERVICIO=? AND ID_IPS=? AND HORAINICIO=?");
 		q.setParameters(fecha,idServicio,idIps,hora);
-		return (int) q.executeUnique();
+		return (BigDecimal) q.executeUnique();
 	}
 
 	/**

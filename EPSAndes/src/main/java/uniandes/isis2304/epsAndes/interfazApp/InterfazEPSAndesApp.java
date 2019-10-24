@@ -11,6 +11,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.List;
 
 import javax.jdo.JDODataStoreException;
 import javax.swing.ImageIcon;
@@ -242,8 +243,46 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 	 */
 	public void mostrarServiciosPrestadosEnRango() 
 	{
+		try {
+			JTextField fechaInicio = new JTextField();
+			JTextField fechaFin = new JTextField();
 
 
+
+			Object message[] = {
+					"Ingrese la fecha de inicio: ", fechaInicio,
+					"Ingrese la fecha fin: ", fechaInicio,
+			};
+
+			int option = JOptionPane.showConfirmDialog (this, message, "Mostrar servicios en rango", JOptionPane.OK_CANCEL_OPTION);
+			if(option == JOptionPane.OK_OPTION) {
+				if(!fechaInicio.getText().toString().equals("") && !fechaFin.getText().toString().equals("") )
+				{
+					
+					String fInicio=fechaInicio.getText().toString();
+					String fFin=fechaFin.getText().toString();
+
+					JOptionPane.showMessageDialog(this, "Se realizó la consulta con exito!", "Consulta", JOptionPane.INFORMATION_MESSAGE);
+					String resultado = "";
+					List<Object[]> lista=epsAndes.darIPSYCantidadServiciosOfrece(fInicio, fFin);
+					for (int i=0;i<lista.size();i++) {
+						resultado+="IPS: " +lista.get(i)[0]+" Cantidad servicios: "+lista.get(i)[1]+"\n";
+					}
+					resultado += "\n OperaciÃ³n terminada";
+					panelDatos.actualizarInterfaz(resultado);
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(this, "Se deben llenar todos los campos.", "Error consultando", JOptionPane.ERROR_MESSAGE);
+
+				}
+			}
+		}
+		catch(Exception e) {
+			JOptionPane.showMessageDialog(this, e.getMessage(), "Error consultando", JOptionPane.ERROR_MESSAGE);
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -332,21 +371,27 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 		try {
 			JTextField Id_Cita = new JTextField();
 			JTextField Id_Recepcionista = new JTextField();
+			JTextField Id_Servicio = new JTextField();
+			JTextField Id_Paciente = new JTextField();
 
 
 			Object message[] = {
 					"Ingrese el id de la cita: ", Id_Cita,
 					"Ingrese el id del recepcionista: ", Id_Recepcionista,
+					"Ingrese el id del servicio: ", Id_Servicio,
+					"Ingrese el id del paciente: ", Id_Paciente,
+
 			};
 
-			int option = JOptionPane.showConfirmDialog (this, message, "Registrar medico", JOptionPane.OK_CANCEL_OPTION);
+			int option = JOptionPane.showConfirmDialog (this, message, "Registrar prestación a afiliado", JOptionPane.OK_CANCEL_OPTION);
 			if(option == JOptionPane.OK_OPTION) {
-				if(!Id_Recepcionista.getText().toString().equals("") && !Id_Cita.getText().toString().equals("") )
+				if(!Id_Paciente.getText().toString().equals("")&&!Id_Servicio.getText().toString().equals("")&&!Id_Recepcionista.getText().toString().equals("") && !Id_Cita.getText().toString().equals("") )
 				{
-
 					long idCita=Long.parseLong(Id_Cita.getText().toString());
 					String id_Recepcionista=Id_Recepcionista.getText().toString();
-					epsAndes.registrarPrestacion(idCita, id_Recepcionista);
+					String id_servicio=Id_Servicio.getText().toString();
+					String id_paciente=Id_Paciente.getText().toString();
+					epsAndes.registrarPrestacion(idCita, id_Recepcionista,id_servicio,id_paciente);
 					JOptionPane.showMessageDialog(this, "Se registró la prestación del con exito!", "Registro de rol exitoso", JOptionPane.INFORMATION_MESSAGE);
 					String resultado = "";
 					resultado += "\n OperaciÃ³n terminada";
@@ -447,10 +492,10 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 			JTextField NumeroDocumento = new JTextField();
 			JTextField NombreRecepcionista = new JTextField();
 			JComboBox combo = new JComboBox<String>();
-			combo.addItem("CC");
-			combo.addItem("TI");
-			combo.addItem("RC");
-			combo.addItem("CE");
+			combo.addItem("C.C");
+			combo.addItem("T.I");
+			combo.addItem("R.C");
+			combo.addItem("C.E");
 			combo.addItem("Pasaporte");
 
 			JTextField textoEmail = new JTextField();
@@ -496,8 +541,6 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 				{
 					JOptionPane.showMessageDialog(this, "Se deben llenar todos los campos.", "Error registrando usuario", JOptionPane.ERROR_MESSAGE);
 				}
-
-
 			}
 		}
 		catch(Exception e) {
@@ -505,7 +548,6 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
-
 	}
 
 	/**
@@ -535,7 +577,7 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 					"Ingrese su email",textoEmail,
 			};
 
-			int option = JOptionPane.showConfirmDialog (this, message, "Registrar medico", JOptionPane.OK_CANCEL_OPTION);
+			int option = JOptionPane.showConfirmDialog (this, message, "Registrar afiliado", JOptionPane.OK_CANCEL_OPTION);
 			if(option == JOptionPane.OK_OPTION) {
 				if( !textoEmail.getText().toString().equals("") && !Nombre.getText().toString().equals("") && !NumeroDocumento.getText().toString().equals("") && !fecha.getText().toString().equals("") )
 				{
@@ -591,7 +633,7 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 					"Ingrese el id del médico: ", Id_Medico,
 			};
 
-			int option = JOptionPane.showConfirmDialog (this, message, "Registrar medico", JOptionPane.OK_CANCEL_OPTION);
+			int option = JOptionPane.showConfirmDialog (this, message, "Registrar orden", JOptionPane.OK_CANCEL_OPTION);
 			if(option == JOptionPane.OK_OPTION) {
 				if(!Id_Medico.getText().toString().equals("") &&!Servicio.getText().toString().equals("") && !Id_Afiliado.getText().toString().equals("") )
 				{
@@ -649,7 +691,7 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 					"Ingrese el id de la orden, si no tiene orden por favor escriba 0",idOrden
 			};
 
-			int option = JOptionPane.showConfirmDialog (this, message, "Registrar medico", JOptionPane.OK_CANCEL_OPTION);
+			int option = JOptionPane.showConfirmDialog (this, message, "Registrar cita", JOptionPane.OK_CANCEL_OPTION);
 			if(option == JOptionPane.OK_OPTION) {
 				if(!idOrden.getText().toString().equals("") &&!IdIPS.getText().toString().equals("") &&!Hora.getText().toString().equals("") &&!Servicio.getText().toString().equals("") &&!Paciente.getText().toString().equals("") && !Fecha.getText().toString().equals("") )
 				{
@@ -714,7 +756,7 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 					"Ingrese su registroMedico: ", RegistroMedico,
 					"Ingrese la IPS: ", Ips,
 			};
-			int option = JOptionPane.showConfirmDialog (this, message, "Registrar Usuario", JOptionPane.OK_CANCEL_OPTION);
+			int option = JOptionPane.showConfirmDialog (this, message, "Registrar médico", JOptionPane.OK_CANCEL_OPTION);
 			if(option == JOptionPane.OK_OPTION)
 			{
 				if(!Ips.getText().toString().equals("") &&!RegistroMedico.getText().toString().equals("") &&!Especialidad.getText().toString().equals("") && !Nombre.getText().toString().equals("") && !textoEmail.getText().toString().equals("") && !NumeroDocumento.getText().toString().equals(""))
@@ -786,7 +828,7 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 					"Ingrese la capacidad: ", Capacidad,
 			};
 
-			int option = JOptionPane.showConfirmDialog (this, message, "Registrar medico", JOptionPane.OK_CANCEL_OPTION);
+			int option = JOptionPane.showConfirmDialog (this, message, "Registrar prestación de servicio", JOptionPane.OK_CANCEL_OPTION);
 			if(option == JOptionPane.OK_OPTION) {
 				if(!Capacidad.getText().toString().equals("") && !combo.getSelectedItem().toString().equals("") && !IdIPS.getText().toString().equals("") && !IdServicio.getText().toString().equals("") && !Dia.getText().toString().equals("") && !HoraInicio.getText().toString().equals("") && !Duracion.getText().toString().equals("") )
 				{
