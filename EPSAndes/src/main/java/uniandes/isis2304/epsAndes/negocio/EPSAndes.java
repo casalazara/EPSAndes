@@ -280,7 +280,7 @@ public class EPSAndes
 	 * @param fechaFin the fecha fin
 	 * @return the list
 	 */
-	public List<Servicio> mostrarServiciosPorCaracteristicas(String idRecepcionista, String tipo, int veces,String fechaInic, String fechaFin)
+	public List<Object[]> mostrarServiciosPorCaracteristicas(String idRecepcionista, String tipo, int veces,String fechaInic, String fechaFin)
 	{
 		log.info ("Dando los servicios por características: " +veces+" - "+tipo+" - "+ idRecepcionista+" - "+fechaFin);
 

@@ -153,13 +153,13 @@ class SQLPrestan
 	 */
 	public List<Object []> darIPSYCantidadServiciosOfrecen (PersistenceManager pm, String fechaInicio, String fechaFin)
 	{
-		String sql = "SELECT ID_IPS, count (*) as numServicios";
+		String sql = "SELECT tp.ID_IPS, count (*) as numServicios";
 		sql += " FROM " + pp.darTablaPrestan()+" tp,";
 		sql += pp.darTablaRecepcionista_Ips()+" tr,";
 		sql += pp.darTablaCita()+" tc";
-		sql += "WHERE tc.ID_RECEPCIONISTA IS NOT NULL AND tc.ID_SERVICIO=tp.ID_SERVICIO AND tr.ID_IPS=tp.ID_IPS AND tc.ID_RECEPCIONISTA=tr.IDENTIFICACION";
-		sql += "AND TO_DATE(tp.DIA,'DD-MM-YY HH24:MI:SS') BETWEEN TO_DATE(?,'DD-MM-YY HH24:MI:SS') AND TO_DATE(?,'DD-MM-YY HH24:MI:SS')";
-		sql	+= " GROUP BY ID_IPS";
+		sql += " WHERE tc.ID_RECEPCIONISTA IS NOT NULL AND tc.ID_SERVICIO=tp.ID_SERVICIO AND tr.ID_IPS=tp.ID_IPS AND tc.ID_RECEPCIONISTA=tr.IDENTIFICACION";
+		sql += " AND TO_DATE(tp.DIA,'DD-MM-YY HH24:MI:SS') BETWEEN TO_DATE(?,'DD-MM-YY HH24:MI:SS') AND TO_DATE(?,'DD-MM-YY HH24:MI:SS')";
+		sql	+= " GROUP BY tp.ID_IPS";
 		Query q = pm.newQuery(SQL, sql);
 		q.setParameters(fechaInicio,fechaFin);
 		return q.executeList();

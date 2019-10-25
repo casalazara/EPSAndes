@@ -87,16 +87,33 @@ class SQLServicio
 	 * @param caracteristicas the caracteristicas
 	 * @return the list
 	 */
-	public List<Servicio> mostrarServiciosPorCaracteristicas(PersistenceManager pm,String caracteristicas)
+	public List<Object[]> mostrarServiciosPorCaracteristicas(PersistenceManager pm,String idRecepcionista,String tipo, int veces,String fechaInic, String fechaFin)
 	{
-		String sql="SELECT Count(s.NOMBRE), s.NOMBRE nombre, s.TIPO tipo"
-				+ "FROM ORDEN o, CITA c, PRESTAN p, SERVICIO s "
-				+ "WHERE o.ID = c.ID_ORDEN "
-				+ "AND o.NOM_SERVICIO = s.ID_SERVICIO "
-				+ "AND s.ID_SERVICIO = p.CAPACIDAD "
-				+ "AND " + caracteristicas
-				+ "GROUP BY NOMBRE;";
+		String caracteristicas = "";
+		if((!fechaInic.equalsIgnoreCase(null)&& !fechaInic.equalsIgnoreCase("") && fechaInic!=null) && (!fechaFin.equalsIgnoreCase(null) && !fechaFin.equalsIgnoreCase("") && fechaFin!=null) && veces!= -1) {
+			caracteristicas = "TO_DATE(c.FECHA, 'DD-MM-YY HH24:MI:SS') "
+					+ "BETWEEN '" + fechaInic + "' AND '" + fechaFin + "' "
+					+ "AND Count(s.NOMBRE) = " + veces;
+		}
+		if(!idRecepcionista.equalsIgnoreCase(null)&& !idRecepcionista.equalsIgnoreCase("") && idRecepcionista!=null) {
+			if(!caracteristicas.equalsIgnoreCase(""))
+				caracteristicas+=" AND ";
+			caracteristicas += "c.CUMPLIDA = 1 AND c.ID_RECEPCIONISTA = " + idRecepcionista;
+		}
+		if(!tipo.equalsIgnoreCase(null) && !tipo.equalsIgnoreCase("") && tipo!=null) {
+			if(!caracteristicas.equalsIgnoreCase(""))
+				caracteristicas+=" AND ";
+			caracteristicas += "TIPO = " + tipo;
+		}		
 
+		String sql="SELECT COUNT(s.NOMBRE), s.NOMBRE nombre, s.TIPO tipo"
+				+ " FROM ORDEN o, CITA c, PRESTAN p, SERVICIO s "
+				+ "WHERE o.ID = c.ID_ORDEN "
+				+ "AND o.NOM_SERVICIO = s.NOMBRE "
+				+ "AND s.NOMBRE = p.ID_SERVICIO ";
+		if(!caracteristicas.equals(""))
+			sql+="AND " + caracteristicas;
+		sql+= " GROUP BY s.NOMBRE,s.TIPO";
 		Query q = pm.newQuery(SQL, sql);
 		return q.executeList();
 	}

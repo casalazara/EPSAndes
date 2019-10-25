@@ -945,24 +945,9 @@ public class PersistenciaEPSAndes
 	 * @param fechaFin the fecha fin
 	 * @return the list
 	 */
-	public List<Servicio> mostrarServiciosPorCaracteristicas(String idRecepcionista, String tipo, int veces,String fechaInic, String fechaFin){
-		String caracteristicas = "";
-		if((!fechaInic.equalsIgnoreCase(null) && fechaInic!=null) && (!fechaFin.equalsIgnoreCase(null) && fechaFin!=null) && veces!= -1) {
-			caracteristicas = "TO_DATE(c.FECHA, 'DD-MM-YY HH24:MI:SS') "
-					+ "BETWEEN '" + fechaInic + "' AND '" + fechaFin + "' "
-					+ "AND Count(s.NOMBRE) = " + veces;
-		}
-		if(!idRecepcionista.equalsIgnoreCase(null) && idRecepcionista!=null) {
-			if(!caracteristicas.equalsIgnoreCase(""))
-				caracteristicas+=" AND ";
-			caracteristicas += "c.CUMPLIDA = 1 AND c.ID_RECEPCIONISTA = " + idRecepcionista;
-		}
-		if(!tipo.equalsIgnoreCase(null) && tipo!=null) {
-			if(!caracteristicas.equalsIgnoreCase(""))
-				caracteristicas+=" AND ";
-			caracteristicas += "TIPO = " + tipo;
-		}		
-		return sqlServicio.mostrarServiciosPorCaracteristicas(pmf.getPersistenceManager(), caracteristicas);
+	public List<Object[]> mostrarServiciosPorCaracteristicas(String idRecepcionista, String tipo, int veces,String fechaInic, String fechaFin){
+		
+		return sqlServicio.mostrarServiciosPorCaracteristicas(pmf.getPersistenceManager(), idRecepcionista,tipo,veces,fechaInic,fechaFin);
 	}
 
 	/**

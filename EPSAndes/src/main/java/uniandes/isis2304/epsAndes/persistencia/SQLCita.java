@@ -103,7 +103,7 @@ class SQLCita
 	{
 		String sql = "SELECT DISTINCT ID_SERVICIO, count (*) as numServicios";
 		sql += " FROM " + pp.darTablaCita();
-		sql += "WHERE TO_DATE(FECHA,'DD-MM-YY HH24:MI:SS') BETWEEN TO_DATE(?,'DD-MM-YY HH24:MI:SS') AND TO_DATE(?,'DD-MM-YY HH24:MI:SS')";
+		sql += " WHERE TO_DATE(FECHA,'DD-MM-YY HH24:MI:SS') BETWEEN TO_DATE(?,'DD-MM-YY HH24:MI:SS') AND TO_DATE(?,'DD-MM-YY HH24:MI:SS')";
 		sql	+= " GROUP BY ID_SERVICIO ORDER BY COUNT(*) DESC FETCH NEXT 20 ROWS ONLY";
 		Query q = pm.newQuery(SQL, sql);
 		q.setParameters(fechaInicio,fechaFin);
@@ -118,8 +118,8 @@ class SQLCita
 	 */
 	public List<Object[]> darindiceDeUso(PersistenceManager pm)
 	{
-		String sql="SELECT aux2.cuenta/CONVERT(DECIMAL(9,2),aux1.cuenta) indice, aux2.servicio"
-				+ "FROM "
+		String sql="SELECT (aux2.cuenta/aux1.cuenta) indice, aux2.servicio"
+				+ " FROM "
 				+ "( SELECT COUNT(*) cuenta "
 				+ "FROM CITA c "
 				+ "WHERE c.CUMPLIDA = 1"
@@ -127,8 +127,8 @@ class SQLCita
 				+ "( SELECT COUNT(*) cuenta, o.NOM_SERVICIO servicio "
 				+ "FROM ORDEN o INNER JOIN CITA c "
 				+ "ON o.ID = c.ID_ORDEN "
-				+ "AND c.realizada = 1 "
-				+ ") aux2;";
+				+ "AND c.CUMPLIDA = 1 GROUP BY o.NOM_SERVICIO"
+				+ ") aux2";
 		Query q = pm.newQuery(SQL, sql);
 		return q.executeList();
 	}
@@ -145,11 +145,12 @@ class SQLCita
 	public List<Object[]> utilizacionPorAfiliado (PersistenceManager pm,String idAfiliado, String fechaInic, String fechaFin){
 		String sql="SELECT COUNT(*) uso, o.NOM_SERVICIO servicio "
 				+ "FROM CITA c, Orden o"
-				+ "WHERE c.ID_ORDEN = o.ID AND o.ID_AFILIADO = "+idAfiliado+" "
+				+ " WHERE c.ID_ORDEN = o.ID AND o.ID_AFILIADO = ? "
 				+ "AND TO_DATE(c.FECHA, 'DD-MM-YY HH24:MI:SS') " 
-				+ "BETWEEN '" + fechaInic + "' AND '" + fechaFin + "' "
+				+ "BETWEEN TO_DATE(?, 'DD-MM-YY HH24:MI:SS') AND TO_DATE(?, 'DD-MM-YY HH24:MI:SS') "
 				+ "GROUP BY o.NOM_SERVICIO" ;
 		Query q = pm.newQuery(SQL,sql);
+		q.setParameters(idAfiliado,fechaInic,fechaFin);
 		return q.executeList();
 	}
 }

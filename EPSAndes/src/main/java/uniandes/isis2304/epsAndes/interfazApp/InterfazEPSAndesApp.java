@@ -11,6 +11,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.jdo.JDODataStoreException;
@@ -251,14 +252,14 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 
 			Object message[] = {
 					"Ingrese la fecha de inicio: ", fechaInicio,
-					"Ingrese la fecha fin: ", fechaInicio,
+					"Ingrese la fecha fin: ", fechaFin,
 			};
 
 			int option = JOptionPane.showConfirmDialog (this, message, "Mostrar servicios en rango", JOptionPane.OK_CANCEL_OPTION);
 			if(option == JOptionPane.OK_OPTION) {
 				if(!fechaInicio.getText().toString().equals("") && !fechaFin.getText().toString().equals("") )
 				{
-					
+
 					String fInicio=fechaInicio.getText().toString();
 					String fFin=fechaFin.getText().toString();
 
@@ -266,7 +267,7 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 					String resultado = "";
 					List<Object[]> lista=epsAndes.darIPSYCantidadServiciosOfrece(fInicio, fFin);
 					for (int i=0;i<lista.size();i++) {
-						resultado+="IPS: " +lista.get(i)[0]+" Cantidad servicios: "+lista.get(i)[1]+"\n";
+						resultado+="IPS: " +(String)lista.get(i)[0]+" Cantidad servicios: "+((BigDecimal)lista.get(i)[1]).intValue()+"\n";
 					}
 					resultado += "\n OperaciÃ³n terminada";
 					panelDatos.actualizarInterfaz(resultado);
@@ -290,8 +291,46 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 	 */
 	public void mostrarTop20() 
 	{
+		try {
+			JTextField fechaInicio = new JTextField();
+			JTextField fechaFin = new JTextField();
 
 
+
+			Object message[] = {
+					"Ingrese la fecha de inicio: ", fechaInicio,
+					"Ingrese la fecha fin: ", fechaFin,
+			};
+
+			int option = JOptionPane.showConfirmDialog (this, message, "Mostrar 20 servicios más solicitados", JOptionPane.OK_CANCEL_OPTION);
+			if(option == JOptionPane.OK_OPTION) {
+				if(!fechaInicio.getText().toString().equals("") && !fechaFin.getText().toString().equals("") )
+				{
+
+					String fInicio=fechaInicio.getText().toString();
+					String fFin=fechaFin.getText().toString();
+
+					JOptionPane.showMessageDialog(this, "Se realizó la consulta con exito!", "Consulta", JOptionPane.INFORMATION_MESSAGE);
+					String resultado = "";
+					List<Object[]> lista=epsAndes.dar20ServiciosMasSolicitados(fInicio, fFin);
+					for (int i=0;i<lista.size();i++) {
+						resultado+="Servicio: " +(String)lista.get(i)[0]+" Cantidad solicitudes: "+((BigDecimal)lista.get(i)[1]).intValue()+"\n";
+					}
+					resultado += "\n OperaciÃ³n terminada";
+					panelDatos.actualizarInterfaz(resultado);
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(this, "Se deben llenar todos los campos.", "Error consultando", JOptionPane.ERROR_MESSAGE);
+
+				}
+			}
+		}
+		catch(Exception e) {
+			JOptionPane.showMessageDialog(this, e.getMessage(), "Error consultando", JOptionPane.ERROR_MESSAGE);
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -299,8 +338,29 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 	 */
 	public void mostrarIndiceDeUso() 
 	{
+		try {
 
+			Object message[] = {
+					"Consultar indice de uso"
+			};
 
+			int option = JOptionPane.showConfirmDialog (this, message, "Mostrar 20 servicios más solicitados", JOptionPane.OK_CANCEL_OPTION);
+			if(option == JOptionPane.OK_OPTION) {
+				JOptionPane.showMessageDialog(this, "Se realizó la consulta con exito!", "Consulta", JOptionPane.INFORMATION_MESSAGE);
+				String resultado = "";
+				List<Object[]> lista=epsAndes.darIndiceDeUso();
+				for (int i=0;i<lista.size();i++) {
+					resultado+="Servicio: " +(String)lista.get(i)[1]+" Indice de uso: "+((BigDecimal)lista.get(i)[0]).intValue()+"\n";
+				}
+				resultado += "\n OperaciÃ³n terminada";
+				panelDatos.actualizarInterfaz(resultado);
+			}
+		}
+		catch(Exception e) {
+			JOptionPane.showMessageDialog(this, e.getMessage(), "Error consultando", JOptionPane.ERROR_MESSAGE);
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -308,8 +368,62 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 	 */
 	public void mostrarServiciosPorCaracteristica() 
 	{
+		try {
+			JTextField fechaInicio = new JTextField();
+			JTextField fechaFin = new JTextField();
+			JTextField vecesJ = new JTextField();
+			JTextField idR = new JTextField();
+			JComboBox combo = new JComboBox<String>();
+			combo.addItem("");
+			combo.addItem("Consulta con medico");
+			combo.addItem("Consulta de urgencias");
+			combo.addItem("Remision con un especialista");
+			combo.addItem("Consulta de control");
+			combo.addItem("Examen diagnostico");
+			combo.addItem("Terapia");
+			combo.addItem("Procedimiento medico especializado");
+			combo.addItem("Hospitalizacion");
 
 
+
+			Object message[] = {
+					"Ingrese la fecha de inicio: ", fechaInicio,
+					"Ingrese la fecha fin: ", fechaFin,
+					"Ingrese la cantidad de veces: ",vecesJ,
+					"Ingrese el id del recepcionista: ",vecesJ,
+					"Seleccione el tipo: ",combo,
+
+			};
+
+			int option = JOptionPane.showConfirmDialog (this, message, "Mostrar 20 servicios más solicitados", JOptionPane.OK_CANCEL_OPTION);
+			if(option == JOptionPane.OK_OPTION) {
+				String fInicio=fechaInicio.getText().toString();
+				String fFin=fechaFin.getText().toString();
+				int veces=vecesJ.getText().toString().isEmpty()?-1:Integer.parseInt(vecesJ.getText().toString());
+				String idRecepcionista=idR.getText().toString();
+				String tipo=combo.getSelectedItem().toString();
+				JOptionPane.showMessageDialog(this, "Se realizó la consulta con exito!", "Consulta", JOptionPane.INFORMATION_MESSAGE);
+				String resultado = "";
+				List<Object[]> lista=epsAndes.mostrarServiciosPorCaracteristicas(idRecepcionista, tipo, veces, fInicio, fFin);
+				for (int i=0;i<lista.size();i++) {
+					Object[] actual=lista.get(i);
+					resultado+="Nombre: "+ actual[1]+" Tipo: "+actual[2]+" Cuenta: "+actual[0]+ "\n";
+				}
+				resultado += "\n OperaciÃ³n terminada";
+				panelDatos.actualizarInterfaz(resultado);
+			}
+			else
+			{
+				JOptionPane.showMessageDialog(this, "Se deben llenar todos los campos.", "Error consultando", JOptionPane.ERROR_MESSAGE);
+
+			}
+
+		}
+		catch(Exception e) {
+			JOptionPane.showMessageDialog(this, e.getMessage(), "Error consultando", JOptionPane.ERROR_MESSAGE);
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -317,8 +431,48 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 	 */
 	public void mostrarUsoAfiliadoEnRango()
 	{
+		try {
+			JTextField fechaInicio = new JTextField();
+			JTextField fechaFin = new JTextField();
+			JTextField idA = new JTextField();
 
-	}
+
+
+			Object message[] = {
+					"Ingrese la fecha de inicio: ", fechaInicio,
+					"Ingrese la fecha fin: ", fechaFin,
+					"Ingrese la cédula del afiliado:",idA,
+			};
+
+			int option = JOptionPane.showConfirmDialog (this, message, "Mostrar servicios en rango", JOptionPane.OK_CANCEL_OPTION);
+			if(option == JOptionPane.OK_OPTION) {
+				if(!idA.getText().toString().equals("") && !fechaInicio.getText().toString().equals("") && !fechaFin.getText().toString().equals("") )
+				{
+
+					String fInicio=fechaInicio.getText().toString();
+					String fFin=fechaFin.getText().toString();
+					String idAfiliado=idA.getText().toString();
+					JOptionPane.showMessageDialog(this, "Se realizó la consulta con exito!", "Consulta", JOptionPane.INFORMATION_MESSAGE);
+					String resultado = "";
+					List<Object[]> lista=epsAndes.utilizacionPorAfiliado(idAfiliado, fInicio, fFin);
+					for (int i=0;i<lista.size();i++) {
+						resultado+="Id afiliado: "+ idAfiliado +" Nombre del servicio: " +(String)lista.get(i)[1]+" Utilización: "+((BigDecimal)lista.get(i)[0]).intValue()+"\n";
+					}
+					resultado += "\n OperaciÃ³n terminada";
+					panelDatos.actualizarInterfaz(resultado);
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(this, "Se deben llenar todos los campos.", "Error consultando", JOptionPane.ERROR_MESSAGE);
+
+				}
+			}
+		}
+		catch(Exception e) {
+			JOptionPane.showMessageDialog(this, e.getMessage(), "Error consultando", JOptionPane.ERROR_MESSAGE);
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}	}
 
 	/**
 	 * Registrar roles usuario.
