@@ -1,0 +1,131 @@
+{
+	"title": "Aplicación transaccional de menuEPSAndes",
+	"frameH": 600,
+	"frameW": 800,
+	"bannerPath": "./resources/config/logo.png",
+	"menuEPSAndes":
+	[
+		{ "menuTitle": "menuEPSAndes",
+		  "options":
+			[
+				{
+					"label": "Registrar roles",
+					"event": "registrarRolesUsuario"
+				},
+				{
+					"label": "Registrar usuario",
+					"event": "registrarUsuario"
+				},
+				{
+					"label": "Registrar IPS",
+					"event": "registrarIPS"
+				},
+				{
+					"label": "Registrar médico",
+					"event": "registrarMedico"
+				},
+				{
+					"label": "Registrar afiliado",
+					"event": "registrarAfiliado"
+				},
+				{
+					"label": "Registrar servicio de salud prestado por IPS",
+					"event": "registrarPrestacionDeServicio"
+				},
+				{
+					"label": "Registrar orden de servicio",
+					"event": "registrarOrden"
+				},
+				{
+					"label": "Registrar cita",
+					"event": "registrarCita"
+				},
+				{
+					"label": "Registrar prestación a afiliado",
+					"event": "registrarPrestacionAfiliado"
+				},
+				{
+					"label": "Mostrar servicios prestados en un rango",
+					"event": "mostrarServiciosPrestadosEnRango"
+				},
+				{
+					"label": "Mostrar 20 servicios más solicitados",
+					"event": "mostrarTop20"
+				},
+				{
+					"label": "Mostrar indice de uso por servicio",
+					"event": "mostrarIndiceDeUso"
+				},
+				{
+					"label": "Mostrar servicios que cumplen con cierta característica",
+					"event": "mostrarServiciosPorCaracteristica"
+				},
+				{
+					"label": "Mostrar uso de EPSAndes por afiliado en un rango",
+					"event": "mostrarUsoAfiliadoEnRango"
+				}
+			]
+		},
+		{ "menuTitle": "Mantenimiento",
+		  "options":
+			[
+				{
+					"label": "Mostrar log EPSAndes",
+					"event": "mostrarLogEPSAndes"
+				},
+				{
+					"label": "Mostrar log datanucleus",
+					"event": "mostrarLogDatanuecleus"
+				},
+				{
+					"label": "Limpiar log de EPSAndes",
+					"event": "limpiarLogEPSAndes"
+				},
+				{
+					"label": "Limpiar log de datanucleus",
+					"event": "limpiarLogDatanucleus"
+				},
+				{
+					"label": "Limpiar Base de Datos",
+					"event": "limpiarBD"
+				}
+			]
+		},		
+		{ "menuTitle": "Documentación",
+		  "options":
+			[
+				{
+					"label": "Modelo conceptual",
+					"event": "mostrarModeloConceptual"
+				},
+				{
+					"label": "Esquema de la BD",
+					"event": "mostrarEsquemaBD"
+				},
+				{
+					"label": "Script creación de la BD",
+					"event": "mostrarScriptBD"
+				},
+				{
+					"label": "Arquitectura de referencia",
+					"event": "mostrarArqRef"
+				},
+				{
+					"label": "Javadoc EPSAndes",
+					"event": "mostrarJavadoc"
+				}
+			]
+		},		
+		{ "menuTitle": "Acerca de ...",
+		  "options":
+			[
+				{
+					"label": "Acerca de ...",
+					"event": "acercaDe"
+				}
+			]
+		}		
+		
+	]
+}
+	
