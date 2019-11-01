@@ -487,7 +487,7 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 			combo.addItem("Medico");
 			combo.addItem("AdminDatosEPS");
 			combo.addItem("GerenteEPS");
-
+			combo.addItem("OrganizadorCampania");
 			Object message[] = {
 					"Ingrese el rol: ", combo,
 			};
