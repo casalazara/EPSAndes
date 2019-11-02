@@ -1039,7 +1039,7 @@ public class PersistenciaEPSAndes
 			}
 			else{
 				insertadas=capacidadM-capacidadP;
-				sqlPrestan.actualizarCapacidad(pmf.getPersistenceManager(),capacidadM+insertadas,(String)objects[2],servicio);
+				sqlPrestan.actualizarCapacidad(pmf.getPersistenceManager(),capacidadP+insertadas,(String)objects[2],servicio);
 			}
 			capacidad-=insertadas;
 		}

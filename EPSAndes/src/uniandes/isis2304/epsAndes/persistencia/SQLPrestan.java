@@ -57,6 +57,7 @@ class SQLPrestan
 		return (long)q.executeUnique();            
 	}
 
+
 	/**
 	 * Actualiza la capacidad.
 	 *
@@ -79,6 +80,13 @@ class SQLPrestan
 	{
 		Query q = pm.newQuery(SQL, "UPDATE " + pp.darTablaPrestan() + " SET CAPACIDAD=? WHERE DIA=? AND ID_SERVICIO=?");
 		q.setParameters(capacidad,fecha,idServicio);
+		return (long) q.executeUnique();   
+	}
+
+	public long actualizarHabilitacion(PersistenceManager pm,String fechaIni,String fechaFin,String ips,String idServicio,int habilitacion)
+	{
+		Query q = pm.newQuery(SQL, "UPDATE " + pp.darTablaPrestan() + " SET CANCELADA=? WHERE (TO_DATE(DIA,'DD-MM-YY HH24:MI:SS') BETWEEN TO_DATE(?,'DD-MM-YY HH24:MI:SS') AND TO_DATE(?,'DD-MM-YY HH24:MI:SS')) AND ID_SERVICIO=? AND ID_IPS=?");
+		q.setParameters(habilitacion,fechaIni,fechaFin,idServicio,ips);
 		return (long) q.executeUnique();   
 	}
 
