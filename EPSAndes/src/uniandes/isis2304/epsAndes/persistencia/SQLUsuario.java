@@ -71,6 +71,14 @@ class SQLUsuario
 		q.setParameters(numero_documento);
 		return (Usuario) q.executeUnique();
 	}
+	
+	public Usuario darUsuarioPorNombre (PersistenceManager pm, String nombre) 
+	{
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + pp.darTablaUsuario() + " WHERE NOMBRE = ?");
+		q.setResultClass(Usuario.class);
+		q.setParameters(nombre);
+		return (Usuario) q.executeUnique();
+	}
 
 	/**
 	 * Crea y ejecuta la sentencia SQL para encontrar la información de LOS USUARIOS de la 

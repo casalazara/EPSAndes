@@ -63,6 +63,14 @@
 				{
 					"label": "Mostrar uso de EPSAndes por afiliado en un rango",
 					"event": "mostrarUsoAfiliadoEnRango"
+				},
+				{
+					"label": "Registrar campania",
+					"event": "registrarCampania"
+				},
+				{
+					"label": "Registrar organizador",
+					"event": "registrarOrganizador"
 				}
 			]
 		},

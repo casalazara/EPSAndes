@@ -38,6 +38,7 @@ import com.google.gson.stream.JsonReader;
 import uniandes.isis2304.epsAndes.negocio.EPSAndes;
 import uniandes.isis2304.epsAndes.negocio.RecepcionistaIPS;
 import uniandes.isis2304.epsAndes.negocio.VOAfiliado;
+import uniandes.isis2304.epsAndes.negocio.VOCampania;
 import uniandes.isis2304.epsAndes.negocio.VOCita;
 import uniandes.isis2304.epsAndes.negocio.VOIPS;
 import uniandes.isis2304.epsAndes.negocio.VOOrden;
@@ -881,6 +882,105 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 		}
 	}
 
+
+	public void registrarCampania()
+	{
+		try {
+
+			JTextField Nombre = new JTextField();
+			JTextField cantidadServicios = new JTextField();
+			JTextField idOrganizador = new JTextField();
+			Object message[] = {
+					"Ingrese el nombre de la campa�a: ", Nombre,
+					"Ingrese la cantidad de servicios: ", cantidadServicios,
+					"Ingrese el documento del organizador: ", idOrganizador,
+			};
+
+			int option = JOptionPane.showConfirmDialog (this, message, "Registrar cita", JOptionPane.OK_CANCEL_OPTION);
+			if(option == JOptionPane.OK_OPTION) {
+				if(!idOrganizador.getText().toString().equals("") &&!Nombre.getText().toString().equals("") && !cantidadServicios.getText().toString().equals("") )
+				{
+					String servicios = cantidadServicios.getText().toString();
+					String organizador=idOrganizador.getText().toString();
+					String nombre=Nombre.getText().toString();
+					String fechaInicio="";
+					String fechaFin="";
+
+					for(int i=0;i<Integer.parseInt(servicios);i++)
+					{
+						JComboBox<String> nombreSer=new JComboBox<String>();
+						nombreSer.addItem("Consultas medicas con medico general");
+						nombreSer.addItem("Consultas medicas con especialistas");
+						nombreSer.addItem("Exa1menes de sangre");
+						nombreSer.addItem("Radiografias");
+						nombreSer.addItem("Consultas odontologicas");
+						nombreSer.addItem("Jornadas de vacunacion");
+						JTextField capacidad=new JTextField();
+						JTextField fechaInicServ=new JTextField();
+						JTextField fechaFinServ=new JTextField();
+
+						Object message2[] = {
+								"Seleccione el nombre del servicio: ", nombreSer,
+								"Ingrese la capacidad del servicio: ", capacidad,
+								"Ingrese la fecha de inicio: ", fechaInicServ,
+								"Ingrese la fecha de fin: ",fechaFinServ,
+						};
+						int option2 = JOptionPane.showConfirmDialog (this, message2, "Registrar cita", JOptionPane.OK_CANCEL_OPTION);
+						if(option2 == JOptionPane.OK_OPTION) {
+							if(!nombreSer.getSelectedItem().toString().equals("") && !capacidad.toString().equals("") && !fechaInicServ.getText().equals("") && !fechaFinServ.getText().contentEquals(""))
+							{
+
+								String serv=nombreSer.getSelectedItem().toString();
+								int capacidadS=Integer.parseInt(capacidad.getText().toString());
+								String fechaI=fechaInicServ.getText().toString();
+								String fechaF=fechaFinServ.getText().toString();
+								if (i==0)
+									fechaInicio=fechaI;
+								if(i==Integer.parseInt(servicios)-1)
+									fechaFin=fechaF;
+								if(capacidadS<epsAndes.darCantidadServicioEnRango(serv, fechaI, fechaF)){
+									epsAndes.registrarAfiliado("0", "Campa"+nombre, "", "Campa"+nombre+"@gmail.com", "C.C",fechaI , "EPSAndes");
+									List<Object[]>lista=epsAndes.darInfoServicioEnRango(serv, fechaI, fechaF);
+									for (int m=0;m<capacidadS;m++) {
+										Object[] object=lista.get(m);
+										int capacidadP=((BigDecimal)object[5]).intValue();
+										for(int j=0;j<capacidadP;j++)
+										{
+											epsAndes.registrarReserva(serv, "Campa"+nombre, fechaI, -10, (String)object[1], (String) object[3]);
+										}
+										capacidadS-=capacidadP;
+									}
+								}
+								else 
+									throw new Exception("No se puede crear la campa�a");
+							}
+						}
+					}
+
+					VOCampania campania=epsAndes.registrarCampania(nombre, fechaFin, fechaInicio, organizador);
+					if(campania != null) {
+						JOptionPane.showMessageDialog(this, "Se registro la campania con exito!", "Registro de usuario exitoso", JOptionPane.INFORMATION_MESSAGE);
+						String resultado = "En registro campania \n\n";
+						resultado += "campania registrada exitosamente: " + campania;
+						resultado += "\n OperaciÃ³n terminada";
+						panelDatos.actualizarInterfaz(resultado);
+					}
+				}
+
+				else
+				{
+					JOptionPane.showMessageDialog(this, "Se deben llenar todos los campos.", "Error registrando afiliado", JOptionPane.ERROR_MESSAGE);
+
+				}
+			}
+		}
+		catch(Exception e) {
+			JOptionPane.showMessageDialog(this, e.getMessage(), "Error registrando campania", JOptionPane.ERROR_MESSAGE);
+			System.out.println(e.getMessage());
+			//			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * Registrar medico.
 	 */
@@ -949,6 +1049,62 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 		}
 	}
 
+	public void registrarOrganizador()
+	{
+		try {
+			JTextField NumeroDocumento = new JTextField();
+			JTextField Nombre = new JTextField();
+			JComboBox<String> combo = new JComboBox<String>();
+			combo.addItem("C.C");
+			combo.addItem("T.I");
+			combo.addItem("R.C");
+			combo.addItem("C.E");
+			combo.addItem("Pasaporte");
+
+			JTextField textoEmail = new JTextField();
+
+			Object message[] = {
+					"Ingrese el numero de documento : ", NumeroDocumento,
+					"Ingrese el nombre " , Nombre,
+					"Ingrese su tipo docuemnto: ", combo,
+					"Ingrese un correo electronico: ", textoEmail,
+			};
+			int option = JOptionPane.showConfirmDialog (this, message, "Registrar organizador", JOptionPane.OK_CANCEL_OPTION);
+			if(option == JOptionPane.OK_OPTION)
+			{
+				if(!Nombre.getText().toString().equals("") && !textoEmail.getText().toString().equals("") && !NumeroDocumento.getText().toString().equals(""))
+				{
+					String identificacion =NumeroDocumento.getText().toString();
+					String nombre = Nombre.getText().toString();
+					String tipoCC = combo.getSelectedItem().toString();
+					String email = textoEmail.getText().toString();
+
+					VOUsuario usuario = epsAndes.registrarOrganizadorCampania(identificacion, nombre, "OrganizadorCampania", email, tipoCC);
+					if(usuario != null) {
+						JOptionPane.showMessageDialog(this, "Se registro el organizador con exito!", "Registro de organizador exitoso", JOptionPane.INFORMATION_MESSAGE);
+						String resultado = "En registro organizador \n\n";
+						resultado += "Organizador registrado exitosamente: " + usuario;
+						resultado += "\n OperaciÃ³n terminada";
+						panelDatos.actualizarInterfaz(resultado);
+					}
+
+					else {
+						System.out.println("el usario llega nu");
+					}
+				}
+				else {
+					JOptionPane.showMessageDialog(this, "Se deben llenar todos los campos.", "Error registrando usuario", JOptionPane.ERROR_MESSAGE);
+				}
+
+			}
+		}
+		catch(Exception e) {
+			JOptionPane.showMessageDialog(this, e.getMessage(), "Error registrando usuario", JOptionPane.ERROR_MESSAGE);
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * Registrar prestacion de servicio.
 	 */
@@ -960,7 +1116,7 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 			JTextField Dia = new JTextField();
 			JTextField IdServicio = new JTextField();
 			JTextField IdIPS = new JTextField();
-			JComboBox combo = new JComboBox<String>();
+			JComboBox<String> combo = new JComboBox<String>();
 			combo.addItem("Consulta con medico");
 			combo.addItem("Consulta de urgencias");
 			combo.addItem("Remision con un especialista");

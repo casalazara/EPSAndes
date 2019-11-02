@@ -164,4 +164,19 @@ class SQLPrestan
 		q.setParameters(fechaInicio,fechaFin);
 		return q.executeList();
 	}
+
+	public long darCapacidadServicioEnRango(PersistenceManager pm, String idSer, String fechaInic, String fechaFin)
+	{
+		String sql="SELECT SUM(CAPACIDAD) FROM "+pp.darTablaPrestan()+" tp  WHERE ID_SERVICIO=? AND TO_DATE(tp.DIA,'DD-MM-YY HH24:MI:SS') BETWEEN TO_DATE(?,'DD-MM-YY HH24:MI:SS') AND TO_DATE(?,'DD-MM-YY HH24:MI:SS')";
+		Query q=pm.newQuery(SQL,sql);
+		q.setParameters(idSer,fechaInic,fechaFin);
+		return ((BigDecimal) q.executeUnique()).longValue ();
+	}
+	public List<Object[]> darInfoServicioEnRango(PersistenceManager pm, String idSer, String fechaInic, String fechaFin)
+	{
+		String sql="SELECT * FROM "+pp.darTablaPrestan()+" tp  WHERE ID_SERVICIO=? AND TO_DATE(tp.DIA,'DD-MM-YY HH24:MI:SS') BETWEEN TO_DATE(?,'DD-MM-YY HH24:MI:SS') AND TO_DATE(?,'DD-MM-YY HH24:MI:SS')";
+		Query q=pm.newQuery(SQL,sql);
+		q.setParameters(idSer,fechaInic,fechaFin);
+		return q.executeList();
+	}
 }

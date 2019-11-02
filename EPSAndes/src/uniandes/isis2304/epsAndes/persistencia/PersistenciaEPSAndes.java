@@ -1,4 +1,5 @@
 package uniandes.isis2304.epsAndes.persistencia;
+import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,10 +16,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import uniandes.isis2304.epsAndes.negocio.Afiliado;
+import uniandes.isis2304.epsAndes.negocio.Campania;
 import uniandes.isis2304.epsAndes.negocio.Cita;
 import uniandes.isis2304.epsAndes.negocio.IPS;
 import uniandes.isis2304.epsAndes.negocio.Medico;
 import uniandes.isis2304.epsAndes.negocio.Orden;
+import uniandes.isis2304.epsAndes.negocio.OrganizadorCampania;
 import uniandes.isis2304.epsAndes.negocio.Prestan;
 import uniandes.isis2304.epsAndes.negocio.RecepcionistaIPS;
 import uniandes.isis2304.epsAndes.negocio.Rol;
@@ -101,6 +104,10 @@ public class PersistenciaEPSAndes
 	/** Atributo para el acceso a la tabla VISITAN de la base de datos. */
 	private SQLRol sqlRol;
 
+	private SQLCampania sqlCampania;
+
+	private SQLOrganizadorCampania sqlOrganizadorCampania;
+
 	/* ****************************************************************
 	 * 			M茅todos del MANEJADOR DE PERSISTENCIA
 	 *****************************************************************/
@@ -131,6 +138,9 @@ public class PersistenciaEPSAndes
 		tablas.add ("TRABAJAN");
 		tablas.add ("USUARIO");
 		tablas.add("ROL");
+		tablas.add("ORGANIZADORCAMPANIA");
+		tablas.add("CAMPANIA");
+		tablas.add("RESERVACAMPANIA");
 	}
 
 	/**
@@ -226,6 +236,8 @@ public class PersistenciaEPSAndes
 		sqlUsuario = new SQLUsuario(this);
 		sqlUtil = new SQLUtil(this);
 		sqlRol=new SQLRol(this);
+		sqlCampania=new SQLCampania(this);
+		sqlOrganizadorCampania=new SQLOrganizadorCampania(this);
 	}
 
 	/**
@@ -393,6 +405,20 @@ public class PersistenciaEPSAndes
 		return tablas.get (15);
 	}
 
+	public String darTablaOrganizadorCampania()
+	{
+		return tablas.get(16);
+	}
+
+	public String darTablaCampania()
+	{
+		return tablas.get(17);
+	}
+
+	public String darTablaServicioCampania()
+	{
+		return tablas.get(18);
+	}
 
 	/**
 	 * Transacci贸n para el generador de secuencia de EPSAndes
@@ -702,6 +728,42 @@ public class PersistenciaEPSAndes
 		}
 	}
 
+
+	public OrganizadorCampania registrarOrganizadorCampania(String numero_Documento, String nombre, String email,String rol, String tipo_Documento)
+	{
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx=pm.currentTransaction();
+		try
+		{
+			if(sqlUsuario.darUsuarioPorId(pm, numero_Documento)==null)
+			{
+				registrarUsuario(numero_Documento, nombre, email, rol, tipo_Documento);
+				System.out.println("Usuario registrado");
+			}
+			tx.begin();  
+			long tuplasInsertadas = sqlOrganizadorCampania.adicionarOrganizador(pm, numero_Documento);
+			tx.commit();
+			log.trace ("Insercion organizador: " + nombre + ": " + tuplasInsertadas + " tuplas insertadas");
+
+			return new OrganizadorCampania(numero_Documento, nombre, email, rol, tipo_Documento);
+
+		}
+		catch (Exception e)
+		{
+			//        	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			return null;
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}
+	}
+
 	/**
 	 * M茅todo que inserta, de manera transaccional, una tupla en la tabla Afiliado
 	 * Adiciona entradas al log de la aplicaci贸n.
@@ -721,15 +783,22 @@ public class PersistenciaEPSAndes
 		Transaction tx=pm.currentTransaction();
 		try
 		{
-			if(sqlUsuario.darUsuarioPorId(pm, numero_Documento)==null)
+			if(nombre.startsWith("Camp") && sqlUsuario.darUsuarioPorNombre(pm, nombre)==null) 
 			{
-				registrarUsuario(numero_Documento, nombre, email, rol, tipo_Documento);
+				if(numero_Documento.equals("0"))
+					numero_Documento=nextval()+"";
+				if(sqlUsuario.darUsuarioPorId(pm, numero_Documento)==null)
+				{
+					registrarUsuario(numero_Documento, nombre, email, rol, tipo_Documento);
+				}
+				tx.begin();            
+				long tuplasInsertadas = sqlAfiliado.adicionarAfiliado(pm, eps, numero_Documento, fechaNacimiento);
+				tx.commit();
+				log.trace ("Inserci贸n afiliado: " + nombre + ": " + tuplasInsertadas + " tuplas insertadas");
+				return new Afiliado ( eps, numero_Documento, nombre, email, rol, tipo_Documento, fechaNacimiento);
 			}
-			tx.begin();            
-			long tuplasInsertadas = sqlAfiliado.adicionarAfiliado(pm, eps, numero_Documento, fechaNacimiento);
-			tx.commit();
-			log.trace ("Inserci贸n afiliado: " + nombre + ": " + tuplasInsertadas + " tuplas insertadas");
-			return new Afiliado ( eps, numero_Documento, nombre, email, rol, tipo_Documento, fechaNacimiento);
+			else
+				return null;
 		}
 		catch (Exception e)
 		{
@@ -851,7 +920,7 @@ public class PersistenciaEPSAndes
 		{
 			Servicio servicio2=sqlServicio.darServicioPorId(pm, servicio);
 			Orden orden=(Orden)sqlOrden.darOrdenPorId(pm, id);
-			if(orden!=null || (servicio2.getTipo().equals("Consulta con medico") || servicio2.getTipo().equals("Consulta de urgencias")) )
+			if(orden!=null || paciente.startsWith("Campa") || (servicio2.getTipo().equals("Consulta con medico") || servicio2.getTipo().equals("Consulta de urgencias")) )
 			{
 				if(orden==null) orden=registrarOrden(servicio, paciente, "Generada por paciente");
 				tx.begin();        
@@ -946,7 +1015,7 @@ public class PersistenciaEPSAndes
 	 * @return the list
 	 */
 	public List<Object[]> mostrarServiciosPorCaracteristicas(String idRecepcionista, String tipo, int veces,String fechaInic, String fechaFin){
-		
+
 		return sqlServicio.mostrarServiciosPorCaracteristicas(pmf.getPersistenceManager(), idRecepcionista,tipo,veces,fechaInic,fechaFin);
 	}
 
@@ -972,6 +1041,70 @@ public class PersistenciaEPSAndes
 
 			log.trace ("Inserci贸n orden: " +id + ": " + tuplasInsertadas + " tuplas insertadas");
 			return new Orden( id_Afiliado, id_Medico,id,servicio);
+		}	
+		catch (Exception e)
+		{
+			//        	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			return null;
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}
+	}
+
+	public long darCantidadServicioEnRango(String servicio, String fechaInic, String fechaFin)
+	{
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx=pm.currentTransaction();
+		try
+		{
+			tx.begin(); 
+			long tuplasInsertadas = sqlPrestan.darCapacidadServicioEnRango(pm, servicio, fechaInic, fechaFin);
+			tx.commit();
+
+			return tuplasInsertadas;
+		}	
+		catch (Exception e)
+		{
+			//        	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			return 0;
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}
+	}
+
+	public List<Object[]> darInfoServicioEnRango(String servicio, String fechaInic, String fechaFin)
+	{
+		return sqlPrestan.darInfoServicioEnRango(pmf.getPersistenceManager(), servicio, fechaInic, fechaFin);
+	}
+
+
+	public Campania registrarCampania( String nombre, String fechaFin, String fechaInicio,String idOrganizador)
+	{
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx=pm.currentTransaction();
+		try
+		{
+			tx.begin(); 
+			long id=nextval();
+			long tuplasInsertadas = sqlCampania.registrarCampania(pm, nombre, fechaFin, fechaInicio, idOrganizador);
+			tx.commit();
+
+			log.trace ("Inserci贸n campa馻: " +id + ": " + tuplasInsertadas + " tuplas insertadas");
+			return new Campania(fechaInicio, fechaFin, nombre);
 		}	
 		catch (Exception e)
 		{
@@ -1032,6 +1165,7 @@ public class PersistenciaEPSAndes
 	{
 		return sqlUtil.limpiarEPSAndes(pmf.getPersistenceManager());
 	}
+
 
 
 

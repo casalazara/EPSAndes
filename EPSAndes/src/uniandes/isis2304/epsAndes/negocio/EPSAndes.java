@@ -87,6 +87,14 @@ public class EPSAndes
 		return afiliado;
 	}
 
+	
+	public OrganizadorCampania registrarOrganizadorCampania(String numero_Documento,String nombre, String rol, String email, String tipo_Documento)
+	{
+		log.info ("Adicionando afiliado " + nombre);
+		OrganizadorCampania organizadorCampania = pp.registrarOrganizadorCampania(numero_Documento, nombre, email, rol, tipo_Documento);
+		log.info ("adicionado el organizador de campania: " + organizadorCampania);
+		return organizadorCampania;
+	}
 	/**
 	 * Registrar IPS.
 	 *
@@ -285,6 +293,22 @@ public class EPSAndes
 		log.info ("Dando los servicios por características: " +veces+" - "+tipo+" - "+ idRecepcionista+" - "+fechaFin);
 
 		return pp.mostrarServiciosPorCaracteristicas(idRecepcionista, tipo, veces, fechaInic, fechaFin);
+	}
+
+	public List<Object[]> darInfoServicioEnRango(String servicio, String fechaInicio,String fechaFin)
+	{
+		return pp.darInfoServicioEnRango(servicio, fechaInicio, fechaFin);
+	}
+
+	public Long darCantidadServicioEnRango(String servicio, String fechaInicio,String fechaFin)
+	{
+		System.out.println(pp.darCantidadServicioEnRango(servicio, fechaInicio, fechaFin)+">>>>>>>>>>>>>>>>>>>>>>>>");
+		return pp.darCantidadServicioEnRango(servicio, fechaInicio, fechaFin);
+	}
+
+	public Campania registrarCampania(String nombre, String fechaFin, String fechaInicio,String idOrganizador)
+	{
+		return pp.registrarCampania(nombre, fechaFin, fechaInicio, idOrganizador);
 	}
 
 	/**

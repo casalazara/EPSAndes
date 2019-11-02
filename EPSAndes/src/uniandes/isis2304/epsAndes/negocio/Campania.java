@@ -1,5 +1,6 @@
 package uniandes.isis2304.epsAndes.negocio;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class Campania implements VOCampania{
@@ -11,10 +12,9 @@ public class Campania implements VOCampania{
 
 
 
-	public Campania(List<Object[]> servicios, String fechaInicio,
-			String fechaFin, String nombre) {
+	public Campania( String fechaInicio,String fechaFin, String nombre) {
 		super();
-		this.servicios = servicios;
+		this.servicios = new LinkedList<Object[]>();
 		this.fechaInicio = fechaInicio;
 		this.fechaFin = fechaFin;
 		this.nombre = nombre;
