@@ -881,7 +881,7 @@ public class PersistenciaEPSAndes
 			tx.commit();
 
 			log.trace ("Inserción servicio: " + idServicio + ": " + tuplasInsertadas + " tuplas insertadas");
-			return new Prestan (idIps, idServicio,duracion,horaInicio,dia,capacidad);
+			return new Prestan (idIps, idServicio,duracion,horaInicio,dia,capacidad,capacidad,0);
 		}	
 		catch (Exception e)
 		{

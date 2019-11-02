@@ -48,6 +48,11 @@ public interface VOPrestan {
 	 */
 	public int getCapacidad();
 
+	public int getCapacidadMax();
+
+	public int getCancelada();
+
+
 	/**
 	 * Da el id del servicio.
 	 *

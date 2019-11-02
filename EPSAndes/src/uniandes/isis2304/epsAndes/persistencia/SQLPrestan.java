@@ -52,8 +52,8 @@ class SQLPrestan
 	 */
 	public long adicionarPrestan (PersistenceManager pm, String duracion,String horaInicio,String dia,String idServicio, String idIps, int capacidad) 
 	{
-		Query q = pm.newQuery(SQL, "INSERT INTO " + pp.darTablaPrestan() + "(DURACION, HORAINICIO, DIA, ID_SERVICIO, ID_IPS, CAPACIDAD) values (?,?,?,?,?,?)");
-		q.setParameters(duracion,horaInicio, dia, idServicio,  idIps, capacidad);
+		Query q = pm.newQuery(SQL, "INSERT INTO " + pp.darTablaPrestan() + "(DURACION, HORAINICIO, DIA, ID_SERVICIO, ID_IPS, CAPACIDAD,CAPACIDADMAX,CANCELADA) values (?,?,?,?,?,?,?,'0')");
+		q.setParameters(duracion,horaInicio, dia, idServicio,  idIps, capacidad,capacidad);
 		return (long)q.executeUnique();            
 	}
 

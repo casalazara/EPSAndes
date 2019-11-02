@@ -184,18 +184,18 @@ insert into SERVICIO (NOMBRE, TIPO) values ('Terapia post traumática', 'Terapia'
 insert into SERVICIO (NOMBRE, TIPO) values ('Hospitalización por infarto', 'Hospitalizacion');
 
 --PRESTAN
-insert into PRESTAN (DURACION, HORAINICIO, DIA, ID_SERVICIO, ID_IPS, CAPACIDAD) values ('06', '10:00:30', '06-12-18 10:00:30', 'Consulta dolor cardiaco', 'OPTICAS HORUS', '16');
-insert into PRESTAN (DURACION, HORAINICIO, DIA, ID_SERVICIO, ID_IPS, CAPACIDAD) values ('00', '16:30:20', '28-11-19 16:30:20', 'Consulta malestar general', 'OPTICAS HORUS', '09');
-insert into PRESTAN (DURACION, HORAINICIO, DIA, ID_SERVICIO, ID_IPS, CAPACIDAD) values ('40', '23:48:10', '22-10-19 23:48:10', 'Remisión cardiólogo', 'OPTICAS HORUS', '61');
-insert into PRESTAN (DURACION, HORAINICIO, DIA, ID_SERVICIO, ID_IPS, CAPACIDAD) values ('36', '4:08:23', '08-12-18 4:08:23', 'Cirugía de corazón', 'OPTICAS HORUS', '97');
-insert into PRESTAN (DURACION, HORAINICIO, DIA, ID_SERVICIO, ID_IPS, CAPACIDAD) values ('93', '5:45:25', '20-05-19 5:45:25', 'Consulta progreso de diabetes', 'PMA MARLY', '66');
-insert into PRESTAN (DURACION, HORAINICIO, DIA, ID_SERVICIO, ID_IPS, CAPACIDAD) values ('56', '14:32:00', '30-08-19 14:32:00', 'Terapia post traumática', 'PMA MARLY', '70');
-insert into PRESTAN (DURACION, HORAINICIO, DIA, ID_SERVICIO, ID_IPS, CAPACIDAD) values ('94', '6:42:04', '21-06-19 6:42:04', 'Examen de sangre', 'PMA MARLY', '42');
-insert into PRESTAN (DURACION, HORAINICIO, DIA, ID_SERVICIO, ID_IPS, CAPACIDAD) values ('06', '11:02:24', '10-08-19 11:02:24', 'Hospitalización por infarto', 'PMA MARLY', '65');
+insert into PRESTAN (DURACION, HORAINICIO, DIA, ID_SERVICIO, ID_IPS, CAPACIDAD,CAPACIDADMAX,CANCELADA) values ('06', '10:00:30', '06-12-18 10:00:30', 'Consulta dolor cardiaco', 'OPTICAS HORUS', '16','16','0');
+insert into PRESTAN (DURACION, HORAINICIO, DIA, ID_SERVICIO, ID_IPS, CAPACIDAD,CAPACIDADMAX,CANCELADA) values ('00', '16:30:20', '28-11-19 16:30:20', 'Consulta malestar general', 'OPTICAS HORUS', '09','09','0');
+insert into PRESTAN (DURACION, HORAINICIO, DIA, ID_SERVICIO, ID_IPS, CAPACIDAD,CAPACIDADMAX,CANCELADA) values ('40', '23:48:10', '22-10-19 23:48:10', 'Remisión cardiólogo', 'OPTICAS HORUS', '61','61','0');
+insert into PRESTAN (DURACION, HORAINICIO, DIA, ID_SERVICIO, ID_IPS, CAPACIDAD,CAPACIDADMAX,CANCELADA) values ('36', '4:08:23', '08-12-18 4:08:23', 'Cirugía de corazón', 'OPTICAS HORUS', '97','97','0');
+insert into PRESTAN (DURACION, HORAINICIO, DIA, ID_SERVICIO, ID_IPS, CAPACIDAD,CAPACIDADMAX,CANCELADA) values ('93', '5:45:25', '20-05-19 5:45:25', 'Consulta progreso de diabetes', 'PMA MARLY', '66','66','0');
+insert into PRESTAN (DURACION, HORAINICIO, DIA, ID_SERVICIO, ID_IPS, CAPACIDAD,CAPACIDADMAX,CANCELADA) values ('56', '14:32:00', '30-08-19 14:32:00', 'Terapia post traumática', 'PMA MARLY', '70','70','0');
+insert into PRESTAN (DURACION, HORAINICIO, DIA, ID_SERVICIO, ID_IPS, CAPACIDAD,CAPACIDADMAX,CANCELADA) values ('94', '6:42:04', '21-06-19 6:42:04', 'Examen de sangre', 'PMA MARLY', '42','42','0');
+insert into PRESTAN (DURACION, HORAINICIO, DIA, ID_SERVICIO, ID_IPS, CAPACIDAD,CAPACIDADMAX,CANCELADA) values ('06', '11:02:24', '10-08-19 11:02:24', 'Hospitalización por infarto', 'PMA MARLY', '65','65','0');
 
-insert into PRESTAN (DURACION, HORAINICIO, DIA, ID_SERVICIO, ID_IPS, CAPACIDAD) values ('80', '8:04:30', '08-08-18 8:04:30', 'Cirugía de corazón', 'PMA MARLY', '5');
-insert into PRESTAN (DURACION, HORAINICIO, DIA, ID_SERVICIO, ID_IPS, CAPACIDAD) values ('50', '4:55:21', '20-12-19 4:55:21', 'Consulta progreso de diabetes', 'OPTICAS HORUS', '4');
-insert into PRESTAN (DURACION, HORAINICIO, DIA, ID_SERVICIO, ID_IPS, CAPACIDAD) values ('20', '10:30:15', '30-12-19 10:30:15', 'Terapia post traumática', 'OPTICAS HORUS', '10');
+insert into PRESTAN (DURACION, HORAINICIO, DIA, ID_SERVICIO, ID_IPS, CAPACIDAD,CAPACIDADMAX,CANCELADA) values ('80', '8:04:30', '08-08-18 8:04:30', 'Cirugía de corazón', 'PMA MARLY', '5','5','0');
+insert into PRESTAN (DURACION, HORAINICIO, DIA, ID_SERVICIO, ID_IPS, CAPACIDAD,CAPACIDADMAX,CANCELADA) values ('50', '4:55:21', '20-12-19 4:55:21', 'Consulta progreso de diabetes', 'OPTICAS HORUS', '4','4','0');
+insert into PRESTAN (DURACION, HORAINICIO, DIA, ID_SERVICIO, ID_IPS, CAPACIDAD,CAPACIDADMAX,CANCELADA) values ('20', '10:30:15', '30-12-19 10:30:15', 'Terapia post traumática', 'OPTICAS HORUS', '10','10','0');
 
 --OFRECEN
 insert into OFRECEN(ID_MEDICO,ID_SERVICIO) values ('5771648304','Hospitalización por infarto');

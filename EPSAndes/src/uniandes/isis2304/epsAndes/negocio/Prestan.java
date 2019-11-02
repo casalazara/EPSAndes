@@ -23,6 +23,9 @@ public class Prestan implements VOPrestan{
 	/** La capacidad. */
 	private int capacidad;
 
+	private int capacidadMax;
+	private int cancelada;
+
 	/**
 	 * Instancia una nueva relación prestan.
 	 *
@@ -33,13 +36,15 @@ public class Prestan implements VOPrestan{
 	 * @param dia el dia
 	 * @param capacidad la capacidad
 	 */
-	public Prestan(String idIPS, String idServicio,String duracion,String horaInicio, String dia, int capacidad) {
+	public Prestan(String idIPS, String idServicio,String duracion,String horaInicio, String dia, int capacidad, int capacidadMax, int cancelada) {
 		this.dia = dia;
 		this.capacidad=capacidad;
 		this.duracion = duracion;
 		this.horaInicio=horaInicio;
 		this.idIPS=idIPS;
 		this.idServicio=idServicio;
+		this.capacidadMax=capacidadMax;
+		this.cancelada=cancelada;
 	}
 
 	/**
@@ -165,6 +170,22 @@ public class Prestan implements VOPrestan{
 	 */
 	public void setCapacidad(int capacidad) {
 		this.capacidad = capacidad;
+	}
+
+	public int getCapacidadMax() {
+		return capacidadMax;
+	}
+
+	public void setCapacidadMax(int capacidadMax) {
+		this.capacidadMax = capacidadMax;
+	}
+
+	public int getCancelada() {
+		return cancelada;
+	}
+
+	public void setCancelada(int cancelada) {
+		this.cancelada = cancelada;
 	}
 
 
