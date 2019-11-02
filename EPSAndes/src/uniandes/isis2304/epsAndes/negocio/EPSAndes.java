@@ -87,7 +87,7 @@ public class EPSAndes
 		return afiliado;
 	}
 
-	
+
 	public OrganizadorCampania registrarOrganizadorCampania(String numero_Documento,String nombre, String rol, String email, String tipo_Documento)
 	{
 		log.info ("Adicionando afiliado " + nombre);
@@ -206,6 +206,13 @@ public class EPSAndes
 		return cita;
 	}
 
+	public void registrarServCamp(String idServ, String idCamp, int capacidadF,String fechaIni, String fechaFin)
+	{
+		log.info ("Adicionando el servicio de campaña: " + idServ);
+		pp.registrarServCamp(capacidadF, idServ, idCamp,fechaIni,fechaFin);
+		log.info ("adicionado el servicio de campaña: " + idServ);
+	}
+
 	/**
 	 * Registrar prestacion.
 	 *
@@ -302,8 +309,12 @@ public class EPSAndes
 
 	public Long darCantidadServicioEnRango(String servicio, String fechaInicio,String fechaFin)
 	{
-		System.out.println(pp.darCantidadServicioEnRango(servicio, fechaInicio, fechaFin)+">>>>>>>>>>>>>>>>>>>>>>>>");
 		return pp.darCantidadServicioEnRango(servicio, fechaInicio, fechaFin);
+	}
+
+	public void cancelarServicioCampania(String campania,String servicio)
+	{
+		pp.cancelarServicioCampania(campania, servicio);
 	}
 
 	public Campania registrarCampania(String nombre, String fechaFin, String fechaInicio,String idOrganizador)

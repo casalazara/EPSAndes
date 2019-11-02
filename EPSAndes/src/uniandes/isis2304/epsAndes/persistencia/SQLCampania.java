@@ -1,11 +1,14 @@
 package uniandes.isis2304.epsAndes.persistencia;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
+import uniandes.isis2304.epsAndes.negocio.Campania;
 import uniandes.isis2304.epsAndes.negocio.Cita;
+import uniandes.isis2304.epsAndes.negocio.ReservaCampania;
 
 
 /**
@@ -71,5 +74,33 @@ class SQLCampania
 		Query q = pm.newQuery(SQL, "INSERT INTO " + pp.darTablaCampania()+ " (NOMBRE,FECHAFIN,FECHAINICIO,ID_ORGANIZADOR) VALUES (?,?,?,?)");
 		q.setParameters(nombre,fechaFin,fechaInicio,idOrganizador);
 		return (long) q.executeUnique();   
+	}
+
+	public long registrarServCamp(PersistenceManager pm, int capacidadF, String idServ, String idCamp,String fechaIni,String fechaFin)
+	{
+		Query q = pm.newQuery(SQL, "INSERT INTO " + pp.darTablaServicioCampania()+ " (CAPACIDADF,ID_SERVICIO,ID_CAMPANIA,CAPACIDADINI,FECHAINI,FECHAFIN) VALUES (?,?,?,?,?,?)");
+		q.setParameters(capacidadF,idServ,idCamp,capacidadF,fechaIni,fechaFin );
+		return (long) q.executeUnique();   
+	}
+
+	public long eliminarServicioCampania(PersistenceManager pm,String idServ, String idCamp)
+	{
+		Query q = pm.newQuery(SQL, "DELETE FROM " + pp.darTablaServicioCampania()+ " WHERE ID_SERVICIO=? AND ID_CAMPANIA=?");
+		q.setParameters(idServ,idCamp);
+		return (long) q.executeUnique();   
+	}
+
+	public BigDecimal darCapacidad(PersistenceManager pm,String idServ, String idCamp)
+	{
+		Query q = pm.newQuery(SQL, "SELECT CAPACIDADINI FROM " + pp.darTablaServicioCampania() + " WHERE ID_SERVICIO=? AND ID_CAMPANIA=?");
+		q.setParameters(idServ,idCamp);
+		return (BigDecimal) q.executeUnique();
+	}
+
+	public List<Object[]> darCampania(PersistenceManager pm,String idServ, String idCamp)
+	{
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + pp.darTablaServicioCampania() + " WHERE ID_SERVICIO=? AND ID_CAMPANIA=?");
+		q.setParameters(idServ,idCamp);
+		return q.executeList();
 	}
 }

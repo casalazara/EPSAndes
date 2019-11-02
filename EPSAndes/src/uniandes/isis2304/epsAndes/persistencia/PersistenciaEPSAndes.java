@@ -24,6 +24,7 @@ import uniandes.isis2304.epsAndes.negocio.Orden;
 import uniandes.isis2304.epsAndes.negocio.OrganizadorCampania;
 import uniandes.isis2304.epsAndes.negocio.Prestan;
 import uniandes.isis2304.epsAndes.negocio.RecepcionistaIPS;
+import uniandes.isis2304.epsAndes.negocio.ReservaCampania;
 import uniandes.isis2304.epsAndes.negocio.Rol;
 import uniandes.isis2304.epsAndes.negocio.Servicio;
 import uniandes.isis2304.epsAndes.negocio.Trabajan;
@@ -495,7 +496,33 @@ public class PersistenciaEPSAndes
 	 * 			Métodos para manejar las BEBIDAS
 	 *****************************************************************/
 
-	/**
+
+	public void registrarServCamp(int capacidadF, String idServ, String idCamp,String fechaIni,String fechaFin)
+	{
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx=pm.currentTransaction();
+		try
+		{
+			tx.begin();            
+			long tuplasInsertadas = sqlCampania.registrarServCamp(pm, capacidadF, idServ, idCamp,fechaIni,fechaFin);
+			tx.commit();
+
+			log.trace ("Inserción reservaCampania: " + idServ + ": " + tuplasInsertadas + " tuplas insertadas");
+		}
+		catch (Exception e)
+		{
+			//        	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}
+	}	/**
 	 * Método que inserta, de manera transaccional, una tupla en la tabla Bebida
 	 * Adiciona entradas al log de la aplicación.
 	 *
@@ -517,7 +544,7 @@ public class PersistenciaEPSAndes
 			tx.commit();
 
 			log.trace ("Inserción usuario: " + nombre + ": " + tuplasInsertadas + " tuplas insertadas");
-			return new Usuario (numero_Documento,nombre, email, rol,tipo_Documento);
+			return new Usuario(email, nombre, numero_Documento, rol, tipo_Documento);
 		}
 		catch (Exception e)
 		{
@@ -922,7 +949,7 @@ public class PersistenciaEPSAndes
 			Orden orden=(Orden)sqlOrden.darOrdenPorId(pm, id);
 			if(orden!=null || paciente.startsWith("Campa") || (servicio2.getTipo().equals("Consulta con medico") || servicio2.getTipo().equals("Consulta de urgencias")) )
 			{
-				if(orden==null) orden=registrarOrden(servicio, paciente, "Generada por paciente");
+				if(orden==null) orden=registrarOrden(servicio, paciente, "0000000000");
 				tx.begin();        
 				long tuplasInsertadas = sqlCita.adicionarCita(pm, 0, orden.getId(), fecha, servicio, paciente, "",hora);
 				long capacidadActualizada=sqlPrestan.actualizarCapacidad(pm, fecha, hora, servicio,idIPS);
@@ -992,6 +1019,33 @@ public class PersistenciaEPSAndes
 		return sqlCita.utilizacionPorAfiliado(pmf.getPersistenceManager(), idAfiliado, fechaInic, fechaFin);
 	}
 
+
+	public void cancelarServicioCampania(String campania, String servicio){
+		Usuario x=sqlUsuario.darUsuarioPorNombre(pmf.getPersistenceManager(), "Campa"+campania);
+		List<Object[]> y=sqlCampania.darCampania(pmf.getPersistenceManager(), servicio, campania);
+		List<Object[]> lista=sqlPrestan.darInfoServicioEnRango(pmf.getPersistenceManager(), servicio, (String)y.get(0)[3], (String)y.get(0)[4]);
+		int capacidad=((BigDecimal)y.get(0)[5]).intValue();
+		for (int i=0;i<capacidad;i++) {
+			Object[] objects=lista.get(i);
+			int insertadas=0;
+			int capacidadP=((BigDecimal)objects[5]).intValue();
+			int capacidadM=((BigDecimal)objects[7]).intValue();
+			System.out.println(capacidadP);
+			System.out.println(capacidadM);
+
+			if(capacidad+capacidadP<=capacidadM){
+				insertadas=capacidad+capacidadP;
+				sqlPrestan.actualizarCapacidad(pmf.getPersistenceManager(), capacidad+capacidadP,(String)objects[2],servicio);
+			}
+			else{
+				insertadas=capacidadM-capacidadP;
+				sqlPrestan.actualizarCapacidad(pmf.getPersistenceManager(),capacidadM+insertadas,(String)objects[2],servicio);
+			}
+			capacidad-=insertadas;
+		}
+		sqlCita.eliminarCita(pmf.getPersistenceManager(), servicio, x.getNumero_Documento());
+		sqlCampania.eliminarServicioCampania(pmf.getPersistenceManager(), servicio, campania);
+	}
 
 	/**
 	 * Da los objetos prestan disponibles por servicio.
@@ -1155,6 +1209,21 @@ public class PersistenciaEPSAndes
 			}
 			pm.close();
 		}
+	}
+
+	public List<Object[]> analizarOpSemanaActividadAsc( String servicio,String unidad)
+	{
+		return sqlPrestan.analizarOpSemanaActividad(pmf.getPersistenceManager(), servicio, unidad, "ASC");
+	}
+
+	public List<Object[]> analizarOpSemanaActividadDesc( String servicio,String unidad)
+	{
+		return sqlPrestan.analizarOpSemanaActividad(pmf.getPersistenceManager(), servicio, unidad, "DESC");
+	}
+
+	public List<Object[]> analizarOpSemanaDemanaDesc( String servicio,String unidad)
+	{
+		return sqlPrestan.analizarOpSemanaDemanda(pmf.getPersistenceManager(), servicio, unidad, "DESC");
 	}
 
 	/**

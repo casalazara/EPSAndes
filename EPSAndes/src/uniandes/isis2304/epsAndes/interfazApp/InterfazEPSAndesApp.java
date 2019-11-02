@@ -12,6 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.jdo.JDODataStoreException;
@@ -35,6 +36,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 
+import uniandes.isis2304.epsAndes.negocio.Afiliado;
 import uniandes.isis2304.epsAndes.negocio.EPSAndes;
 import uniandes.isis2304.epsAndes.negocio.RecepcionistaIPS;
 import uniandes.isis2304.epsAndes.negocio.VOAfiliado;
@@ -770,6 +772,46 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 		}
 	}
 
+
+	public void cancelarServiciosCampania() 
+	{
+		try {
+
+			JTextField Servicio = new JTextField();
+			JTextField campanias = new JTextField();
+
+
+			Object message[] = {
+					"Ingrese el nombre del servicio: ", Servicio,
+					"Ingrese el nombre de la campania: ", campanias,
+			};
+
+			int option = JOptionPane.showConfirmDialog (this, message, "Cancelar Campania", JOptionPane.OK_CANCEL_OPTION);
+			if(option == JOptionPane.OK_OPTION) {
+				if(!Servicio.getText().toString().equals("") && !campanias.getText().toString().equals("") )
+				{
+
+					String servicio=Servicio.getText().toString();
+					String campania=campanias.getText().toString();
+					epsAndes.cancelarServicioCampania(campania, servicio);
+
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(this, "Se deben llenar todos los campos.", "Error cancelando Campania", JOptionPane.ERROR_MESSAGE);
+
+				}
+
+
+			}
+		}
+		catch(Exception e) {
+			JOptionPane.showMessageDialog(this, e.getMessage(), "Error cancelando Campania", JOptionPane.ERROR_MESSAGE);
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * Registrar orden.
 	 */
@@ -905,7 +947,7 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 					String nombre=Nombre.getText().toString();
 					String fechaInicio="";
 					String fechaFin="";
-
+					List<String[]> anadirFin= new LinkedList<String[]>();
 					for(int i=0;i<Integer.parseInt(servicios);i++)
 					{
 						JComboBox<String> nombreSer=new JComboBox<String>();
@@ -934,21 +976,41 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 								int capacidadS=Integer.parseInt(capacidad.getText().toString());
 								String fechaI=fechaInicServ.getText().toString();
 								String fechaF=fechaFinServ.getText().toString();
+								String[] tupla=new String[4];
+								tupla[0]=serv;
+								tupla[1]=capacidadS+"";
+								tupla[2]=fechaI;
+								tupla[3]=fechaF;
+								anadirFin.add(tupla);
+
 								if (i==0)
 									fechaInicio=fechaI;
 								if(i==Integer.parseInt(servicios)-1)
 									fechaFin=fechaF;
 								if(capacidadS<epsAndes.darCantidadServicioEnRango(serv, fechaI, fechaF)){
-									epsAndes.registrarAfiliado("0", "Campa"+nombre, "", "Campa"+nombre+"@gmail.com", "C.C",fechaI , "EPSAndes");
+									Afiliado x=epsAndes.registrarAfiliado("0", "Campa"+nombre, "Afiliado", "Campa"+nombre+"@gmail.com", "C.C",fechaI , "EPSAndes");			
+									String id=x.getNumero_Documento();
 									List<Object[]>lista=epsAndes.darInfoServicioEnRango(serv, fechaI, fechaF);
 									for (int m=0;m<capacidadS;m++) {
 										Object[] object=lista.get(m);
 										int capacidadP=((BigDecimal)object[5]).intValue();
-										for(int j=0;j<capacidadP;j++)
+
+
+										if(capacidadS>capacidadP){
+											for(int j=0;j<capacidadP;j++) 
+											{
+												epsAndes.registrarReserva(serv, id, fechaI, -10, (String)object[1], (String) object[4]);
+											}
+										}
+										else
 										{
-											epsAndes.registrarReserva(serv, "Campa"+nombre, fechaI, -10, (String)object[1], (String) object[3]);
+											for(int j=0;j<capacidadS;j++)
+											{
+												epsAndes.registrarReserva(serv, id, fechaI, -10, (String)object[1], (String) object[4]);
+											}
 										}
 										capacidadS-=capacidadP;
+
 									}
 								}
 								else 
@@ -958,6 +1020,10 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 					}
 
 					VOCampania campania=epsAndes.registrarCampania(nombre, fechaFin, fechaInicio, organizador);
+					for (String[] strings : anadirFin) {
+						int cap=Integer.parseInt(strings[1]);
+						epsAndes.registrarServCamp(strings[0], nombre, cap,strings[2],strings[3]);
+					}
 					if(campania != null) {
 						JOptionPane.showMessageDialog(this, "Se registro la campania con exito!", "Registro de usuario exitoso", JOptionPane.INFORMATION_MESSAGE);
 						String resultado = "En registro campania \n\n";

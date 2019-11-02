@@ -71,6 +71,10 @@
 				{
 					"label": "Registrar organizador",
 					"event": "registrarOrganizador"
+				},
+				{
+					"label": "Cancelar servicios campania",
+					"event": "cancelarServiciosCampania"
 				}
 			]
 		},

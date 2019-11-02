@@ -73,6 +73,13 @@ class SQLCita
 		return (long) q.executeUnique();   
 	}
 
+	public void eliminarCita(PersistenceManager pm,String id_Servicio,String id_Afiliado )
+	{
+		Query q = pm.newQuery(SQL, "DELETE FROM " + pp.darTablaCita() + " WHERE ID_SERVICIO=? AND ID_AFILIADO =? ");
+		q.setParameters(id_Servicio,id_Afiliado);
+		q.executeUnique();  
+	}
+
 	/**
 	 * Crea y ejecuta la sentencia SQL para encontrar la información de UNA CITA de la 
 	 * base de datos de EPSAndes, por su identificador.

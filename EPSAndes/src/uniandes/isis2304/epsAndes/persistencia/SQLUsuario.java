@@ -51,7 +51,7 @@ class SQLUsuario
 	 */
 	public long adicionarUsuario (PersistenceManager pm, String email, String nombre, String numero_documento,String rol, String tipo_Documento) 
 	{
-		Query q = pm.newQuery(SQL, "INSERT INTO " + pp.darTablaUsuario() + "(EMAIL, NOMBRE, NUMERO_DOCUMENTO, ROL, TIPO_DOCUMENTO) values (?, ?, ?, ?, ?)");
+		Query q = pm.newQuery(SQL, "INSERT INTO " + pp.darTablaUsuario() + " (EMAIL, NOMBRE, NUMERO_DOCUMENTO, ROL, TIPO_DOCUMENTO) values (?, ?, ?, ?, ?)");
 		q.setParameters(email, nombre, numero_documento, rol, tipo_Documento);
 		return (long) q.executeUnique();
 	}

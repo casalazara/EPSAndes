@@ -4,19 +4,19 @@ package uniandes.isis2304.epsAndes.negocio;
  * La clase Usuario.
  */
 public class Usuario implements VOUsuario{
-	
+
 	/** El numero de documento. */
 	protected String numero_Documento;
-	
+
 	/** El nombre. */
 	protected String nombre;
-	
+
 	/** El email. */
 	protected String email;
-	
+
 	/** El rol. */
 	protected String rol;
-	
+
 	/** El tipo de documento. */
 	protected String tipo_Documento;
 
@@ -30,7 +30,7 @@ public class Usuario implements VOUsuario{
 		this.rol = "";
 		this.tipo_Documento = "";
 	}
-	
+
 	/**
 	 * Instancia un nuevo usuario.
 	 *
@@ -40,14 +40,14 @@ public class Usuario implements VOUsuario{
 	 * @param rol el rol
 	 * @param tipo_Documento el tipo de documento
 	 */
-	public Usuario(String numero_Documento, String nombre, String email, String rol, String tipo_Documento) {
-		this.numero_Documento = numero_Documento;
-		this.nombre = nombre;
+	public Usuario(String email,String nombre,String numero_Documento, String rol, String tipo_Documento) {
 		this.email = email;
+		this.nombre = nombre;
+		this.numero_Documento = numero_Documento;
 		this.rol = rol;
 		this.tipo_Documento = tipo_Documento;
 	}
-	
+
 	/**
 	 * Da el email.
 	 *
@@ -56,7 +56,7 @@ public class Usuario implements VOUsuario{
 	public String getEmail() {
 		return email;
 	}
-	
+
 	/**
 	 * Establece el email.
 	 *
@@ -65,7 +65,7 @@ public class Usuario implements VOUsuario{
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
 	/**
 	 * Da el rol rol.
 	 *
@@ -74,7 +74,7 @@ public class Usuario implements VOUsuario{
 	public String getRol() {
 		return rol;
 	}
-	
+
 	/**
 	 * Establece rol.
 	 *
@@ -83,7 +83,7 @@ public class Usuario implements VOUsuario{
 	public void setRol(String rol) {
 		this.rol = rol;
 	}
-	
+
 	/**
 	 * Da el tipo de documento.
 	 *
@@ -92,7 +92,7 @@ public class Usuario implements VOUsuario{
 	public String getTipo_Documento() {
 		return tipo_Documento;
 	}
-	
+
 	/**
 	 * Establece el tipo de documento.
 	 *
@@ -101,7 +101,7 @@ public class Usuario implements VOUsuario{
 	public void setTipo_Documento(String tipo_Documento) {
 		this.tipo_Documento = tipo_Documento;
 	}
-	
+
 	/**
 	 * Da el numero de documento.
 	 *
@@ -110,7 +110,7 @@ public class Usuario implements VOUsuario{
 	public String getNumero_Documento() {
 		return numero_Documento;
 	}
-	
+
 	/**
 	 * Establece el numero de documento.
 	 *
@@ -119,7 +119,7 @@ public class Usuario implements VOUsuario{
 	public void setNumero_Documento(String numero_Documento) {
 		this.numero_Documento = numero_Documento;
 	}
-	
+
 	/**
 	 * Da el nombre.
 	 *
@@ -128,7 +128,7 @@ public class Usuario implements VOUsuario{
 	public String getNombre() {
 		return nombre;
 	}
-	
+
 	/**
 	 * Establece el nombre.
 	 *
@@ -137,7 +137,7 @@ public class Usuario implements VOUsuario{
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	
+
 	/**
 	 * To string.
 	 *

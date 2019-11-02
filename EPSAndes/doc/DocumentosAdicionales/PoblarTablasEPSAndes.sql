@@ -1,15 +1,17 @@
 --EPS
-insert into EPS(NOMBRE) values('EPS Andes');
+insert into EPS(NOMBRE) values('EPSAndes');
 
 --IPS
-insert into IPS (NOMBRE, LOCALIZACION, ID_EPS) values ('OPTICAS HORUS', -22.2169379, 'EPS Andes');
-insert into IPS (NOMBRE, LOCALIZACION, ID_EPS) values ('PMA MARLY', -18.7679039, 'EPS Andes');
+insert into IPS (NOMBRE, LOCALIZACION, ID_EPS) values ('OPTICAS HORUS', -22.2169379, 'EPSAndes');
+insert into IPS (NOMBRE, LOCALIZACION, ID_EPS) values ('PMA MARLY', -18.7679039, 'EPSAndes');
 --ROL
 insert into ROL(NOMBRE) values ('Afiliado');
 insert into ROL(NOMBRE) values ('Medico');
 insert into ROL(NOMBRE) values ('RecepcionistaIPS');
 insert into ROL(NOMBRE) values ('GerenteEPS');
 insert into ROL(NOMBRE) values ('AdminDatosEPS');
+insert into ROL(NOMBRE) values ('OrganizadorCampania');
+
 
 --AÑADIENDO USUARIOS :(
 --RECEPCIONISTA
@@ -21,57 +23,57 @@ insert into  RECEPCIONISTA_IPS (ID_IPS, IDENTIFICACION) values ('OPTICAS HORUS',
 
 --AFILIADO
 insert into USUARIO (EMAIL, NOMBRE, NUMERO_DOCUMENTO, ROL, TIPO_DOCUMENTO) values ('thaverty0@state.gov', 'Tobie Haverty', '4766993140', 'Afiliado', 'T.I');
-insert into  AFILIADO (EPS, IDENTIFICACION, FECHA_NACIMIENTO) values ('EPS Andes', '4766993140', '9/21/2016');
+insert into  AFILIADO (EPS, IDENTIFICACION, FECHA_NACIMIENTO) values ('EPSAndes', '4766993140', '9/21/2016');
 
 insert into USUARIO (EMAIL, NOMBRE, NUMERO_DOCUMENTO, ROL, TIPO_DOCUMENTO) values ('lsavoury1@discovery.com', 'Lib Savoury', '4392220242', 'Afiliado', 'T.I');
-insert into  AFILIADO (EPS, IDENTIFICACION, FECHA_NACIMIENTO) values ('EPS Andes', '4392220242', '3/13/2014');
+insert into  AFILIADO (EPS, IDENTIFICACION, FECHA_NACIMIENTO) values ('EPSAndes', '4392220242', '3/13/2014');
 
 insert into USUARIO (EMAIL, NOMBRE, NUMERO_DOCUMENTO, ROL, TIPO_DOCUMENTO) values ('dharrower2@plala.or.jp', 'Dahlia Harrower', '1401298548', 'Afiliado', 'T.I');
-insert into  AFILIADO (EPS, IDENTIFICACION, FECHA_NACIMIENTO) values ('EPS Andes', '1401298548', '7/12/2005');
+insert into  AFILIADO (EPS, IDENTIFICACION, FECHA_NACIMIENTO) values ('EPSAndes', '1401298548', '7/12/2005');
 
 insert into USUARIO (EMAIL, NOMBRE, NUMERO_DOCUMENTO, ROL, TIPO_DOCUMENTO) values ('twetherhead3@cpanel.net', 'Tawnya Wetherhead', '9099875607', 'Afiliado', 'T.I');
-insert into  AFILIADO (EPS, IDENTIFICACION, FECHA_NACIMIENTO) values ('EPS Andes', '9099875607', '5/8/2014');
+insert into  AFILIADO (EPS, IDENTIFICACION, FECHA_NACIMIENTO) values ('EPSAndes', '9099875607', '5/8/2014');
 
 insert into USUARIO (EMAIL, NOMBRE, NUMERO_DOCUMENTO, ROL, TIPO_DOCUMENTO) values ('kcotillard4@people.com.cn', 'Kirsten Cotillard', '1786935622', 'Afiliado', 'T.I');
-insert into  AFILIADO (EPS, IDENTIFICACION, FECHA_NACIMIENTO) values ('EPS Andes', '1786935622', '7/30/2009');
+insert into  AFILIADO (EPS, IDENTIFICACION, FECHA_NACIMIENTO) values ('EPSAndes', '1786935622', '7/30/2009');
 
 insert into USUARIO (EMAIL, NOMBRE, NUMERO_DOCUMENTO, ROL, TIPO_DOCUMENTO) values ('jkillingback5@nationalgeographic.com', 'Juanita Killingback', '7927052034', 'Afiliado', 'T.I');
-insert into  AFILIADO (EPS, IDENTIFICACION, FECHA_NACIMIENTO) values ('EPS Andes', '7927052034', '9/18/2002');
+insert into  AFILIADO (EPS, IDENTIFICACION, FECHA_NACIMIENTO) values ('EPSAndes', '7927052034', '9/18/2002');
 
 insert into USUARIO (EMAIL, NOMBRE, NUMERO_DOCUMENTO, ROL, TIPO_DOCUMENTO) values ('mmckerlie6@nhs.uk', 'Micky McKerlie', '8915105602', 'Afiliado', 'T.I');
-insert into  AFILIADO (EPS, IDENTIFICACION, FECHA_NACIMIENTO) values ('EPS Andes', '8915105602', '5/9/2010');
+insert into  AFILIADO (EPS, IDENTIFICACION, FECHA_NACIMIENTO) values ('EPSAndes', '8915105602', '5/9/2010');
 
 insert into USUARIO (EMAIL, NOMBRE, NUMERO_DOCUMENTO, ROL, TIPO_DOCUMENTO) values ('gblenkinship7@typepad.com', 'Gery Blenkinship', '4463190417', 'Afiliado', 'T.I');
-insert into  AFILIADO (EPS, IDENTIFICACION, FECHA_NACIMIENTO) values ('EPS Andes', '4463190417', '8/19/2001');
+insert into  AFILIADO (EPS, IDENTIFICACION, FECHA_NACIMIENTO) values ('EPSAndes', '4463190417', '8/19/2001');
 
 insert into USUARIO (EMAIL, NOMBRE, NUMERO_DOCUMENTO, ROL, TIPO_DOCUMENTO) values ('lioannou8@icq.com', 'Lyn Ioannou', '1305905295', 'Afiliado', 'T.I');
-insert into  AFILIADO (EPS, IDENTIFICACION, FECHA_NACIMIENTO) values ('EPS Andes', '1305905295', '8/12/2001');
+insert into  AFILIADO (EPS, IDENTIFICACION, FECHA_NACIMIENTO) values ('EPSAndes', '1305905295', '8/12/2001');
 
 insert into USUARIO (EMAIL, NOMBRE, NUMERO_DOCUMENTO, ROL, TIPO_DOCUMENTO) values ('bjochen9@usgs.gov', 'Bethany Jochen', '2281301816', 'Afiliado', 'T.I');
-insert into  AFILIADO (EPS, IDENTIFICACION, FECHA_NACIMIENTO) values ('EPS Andes', '2281301816', '4/21/2006');
+insert into  AFILIADO (EPS, IDENTIFICACION, FECHA_NACIMIENTO) values ('EPSAndes', '2281301816', '4/21/2006');
 
 insert into USUARIO (EMAIL, NOMBRE, NUMERO_DOCUMENTO, ROL, TIPO_DOCUMENTO) values ('jrennoxa@smh.com.au', 'Jermaine Rennox', '3186337494', 'Afiliado', 'T.I');
-insert into  AFILIADO (EPS, IDENTIFICACION, FECHA_NACIMIENTO) values ('EPS Andes', '3186337494', '9/14/2011');
+insert into  AFILIADO (EPS, IDENTIFICACION, FECHA_NACIMIENTO) values ('EPSAndes', '3186337494', '9/14/2011');
 
 insert into USUARIO (EMAIL, NOMBRE, NUMERO_DOCUMENTO, ROL, TIPO_DOCUMENTO) values ('lbunhillb@nhs.uk', 'Lorry Bunhill', '6169298267', 'Afiliado', 'T.I');
-insert into  AFILIADO (EPS, IDENTIFICACION, FECHA_NACIMIENTO) values ('EPS Andes', '6169298267', '9/12/2007');
+insert into  AFILIADO (EPS, IDENTIFICACION, FECHA_NACIMIENTO) values ('EPSAndes', '6169298267', '9/12/2007');
 
 insert into USUARIO (EMAIL, NOMBRE, NUMERO_DOCUMENTO, ROL, TIPO_DOCUMENTO) values ('gdurmanc@nps.gov', 'Gabbie Durman', '3910202861', 'Afiliado', 'T.I');
-insert into  AFILIADO (EPS, IDENTIFICACION, FECHA_NACIMIENTO) values ('EPS Andes', '3910202861', '3/23/2003');
+insert into  AFILIADO (EPS, IDENTIFICACION, FECHA_NACIMIENTO) values ('EPSAndes', '3910202861', '3/23/2003');
 
 insert into USUARIO (EMAIL, NOMBRE, NUMERO_DOCUMENTO, ROL, TIPO_DOCUMENTO) values ('btopd@pinterest.com', 'Beniamino Top', '9569578546', 'Afiliado', 'T.I');
-insert into  AFILIADO (EPS, IDENTIFICACION, FECHA_NACIMIENTO) values ('EPS Andes', '9569578546', '4/18/2013');
+insert into  AFILIADO (EPS, IDENTIFICACION, FECHA_NACIMIENTO) values ('EPSAndes', '9569578546', '4/18/2013');
 
 insert into USUARIO (EMAIL, NOMBRE, NUMERO_DOCUMENTO, ROL, TIPO_DOCUMENTO) values ('bfruchtere@flickr.com', 'Barrett Fruchter', '3617912686', 'Afiliado', 'T.I');
-insert into  AFILIADO (EPS, IDENTIFICACION, FECHA_NACIMIENTO) values ('EPS Andes', '3617912686', '2/15/2004');
+insert into  AFILIADO (EPS, IDENTIFICACION, FECHA_NACIMIENTO) values ('EPSAndes', '3617912686', '2/15/2004');
 
 --ADMINDATOSEPS
 insert into USUARIO (EMAIL, NOMBRE, NUMERO_DOCUMENTO, ROL, TIPO_DOCUMENTO) values ('ftuttle0@abc.net.au', 'Filmore Tuttle', '9850442623', 'AdminDatosEPS', 'C.E');
-insert into ADMINDATOSEPS (ID_EPS, IDENTIFICACION) values ('EPS Andes', '9850442623');
+insert into ADMINDATOSEPS (ID_EPS, IDENTIFICACION) values ('EPSAndes', '9850442623');
 
 --GERENTEEPS
 insert into USUARIO (EMAIL, NOMBRE, NUMERO_DOCUMENTO, ROL, TIPO_DOCUMENTO) values ('hde0@kickstarter.com', 'Hedwiga de Bullion', '3176112004', 'GerenteEPS', 'C.C');
-insert into GERENTE_EPS (ID_EPS, IDENTIFICACION) values ('EPS Andes', '3176112004');
+insert into GERENTE_EPS (ID_EPS, IDENTIFICACION) values ('EPSAndes', '3176112004');
 
 --MEDICOS
 insert into USUARIO (EMAIL, NOMBRE, NUMERO_DOCUMENTO, ROL, TIPO_DOCUMENTO) values ('cmactrustam0@cocolog-nifty.com', 'Clayton MacTrustam', '5771648304', 'Medico', 'C.C');
@@ -181,9 +183,11 @@ insert into SERVICIO (NOMBRE, TIPO) values ('Cirugía de corazón', 'Procedimiento
 insert into SERVICIO (NOMBRE, TIPO) values ('Consulta progreso de diabetes','Consulta de control');
 insert into SERVICIO (NOMBRE, TIPO) values ('Examen de sangre', 'Examen diagnostico');
 insert into SERVICIO (NOMBRE, TIPO) values ('Terapia post traumática', 'Terapia');
+insert into SERVICIO (NOMBRE, TIPO) values ('Consultas medicas con medico general', 'Consulta con medico');
 insert into SERVICIO (NOMBRE, TIPO) values ('Hospitalización por infarto', 'Hospitalizacion');
 
 --PRESTAN
+insert into PRESTAN (DURACION, HORAINICIO, DIA, ID_SERVICIO, ID_IPS, CAPACIDAD,CAPACIDADMAX,CANCELADA) values ('06', '10:00:30', '06-12-18 10:00:30', 'Consultas medicas con medico general', 'OPTICAS HORUS', '16','16','0');
 insert into PRESTAN (DURACION, HORAINICIO, DIA, ID_SERVICIO, ID_IPS, CAPACIDAD,CAPACIDADMAX,CANCELADA) values ('06', '10:00:30', '06-12-18 10:00:30', 'Consulta dolor cardiaco', 'OPTICAS HORUS', '16','16','0');
 insert into PRESTAN (DURACION, HORAINICIO, DIA, ID_SERVICIO, ID_IPS, CAPACIDAD,CAPACIDADMAX,CANCELADA) values ('00', '16:30:20', '28-11-19 16:30:20', 'Consulta malestar general', 'OPTICAS HORUS', '09','09','0');
 insert into PRESTAN (DURACION, HORAINICIO, DIA, ID_SERVICIO, ID_IPS, CAPACIDAD,CAPACIDADMAX,CANCELADA) values ('40', '23:48:10', '22-10-19 23:48:10', 'Remisión cardiólogo', 'OPTICAS HORUS', '61','61','0');

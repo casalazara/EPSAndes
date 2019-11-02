@@ -33,7 +33,7 @@ public class Afiliado extends Usuario implements VOAfiliado{
 	 * @param fechaNacimiento la fecha de nacimiento
 	 */
 	public Afiliado(String eps,String numero_Documento, String nombre, String email, String rol, String tipo_Documento, String fechaNacimiento) {
-		super(numero_Documento, nombre, email, rol, tipo_Documento);
+		super(email, nombre, numero_Documento,  rol,  tipo_Documento);
 		this.fechaNacimiento = fechaNacimiento;
 		this.ordenes=new LinkedList<Object[]>();
 		this.citas = new LinkedList<Object[]>();

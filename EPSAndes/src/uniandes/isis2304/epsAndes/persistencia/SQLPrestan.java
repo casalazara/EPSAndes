@@ -75,6 +75,13 @@ class SQLPrestan
 		return (long) q.executeUnique();   
 	}
 
+	public long actualizarCapacidad(PersistenceManager pm,int capacidad,String fecha,String idServicio)
+	{
+		Query q = pm.newQuery(SQL, "UPDATE " + pp.darTablaPrestan() + " SET CAPACIDAD=? WHERE DIA=? AND ID_SERVICIO=?");
+		q.setParameters(capacidad,fecha,idServicio);
+		return (long) q.executeUnique();   
+	}
+
 	/**
 	 * Dar capacidad.
 	 *
@@ -135,7 +142,7 @@ class SQLPrestan
 	 */
 	public List<Prestan> darPrestanDisponibles (PersistenceManager pm, String idServicio)
 	{
-		Query q = pm.newQuery(SQL, "SELECT * FROM " + pp.darTablaPrestan()+"WHERE TO_DATE(DIA,'DD-MM-YY HH24:MI:SS')>CURRENT_DATE AND ID_SERVICIO=? AND CAPACIDAD>0");
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + pp.darTablaPrestan()+"WHERE TO_DATE(DIA,'DD-MM-YY HH24:MI:SS')>CURRENT_DATE AND ID_SERVICIO=? AND CAPACIDAD>0 AND CANCELADA=0");
 		q.setParameters(idServicio);
 		q.setResultClass(Prestan.class);
 		return (List<Prestan>) q.execute();
@@ -167,16 +174,43 @@ class SQLPrestan
 
 	public long darCapacidadServicioEnRango(PersistenceManager pm, String idSer, String fechaInic, String fechaFin)
 	{
-		String sql="SELECT SUM(CAPACIDAD) FROM "+pp.darTablaPrestan()+" tp  WHERE ID_SERVICIO=? AND TO_DATE(tp.DIA,'DD-MM-YY HH24:MI:SS') BETWEEN TO_DATE(?,'DD-MM-YY HH24:MI:SS') AND TO_DATE(?,'DD-MM-YY HH24:MI:SS')";
+		String sql="SELECT SUM(CAPACIDAD) FROM "+pp.darTablaPrestan()+" tp  WHERE ID_SERVICIO=? AND TO_DATE(tp.DIA,'DD-MM-YY HH24:MI:SS') BETWEEN TO_DATE(?,'DD-MM-YY HH24:MI:SS') AND TO_DATE(?,'DD-MM-YY HH24:MI:SS') AND CANCELADA=0";
 		Query q=pm.newQuery(SQL,sql);
 		q.setParameters(idSer,fechaInic,fechaFin);
 		return ((BigDecimal) q.executeUnique()).longValue ();
 	}
 	public List<Object[]> darInfoServicioEnRango(PersistenceManager pm, String idSer, String fechaInic, String fechaFin)
 	{
-		String sql="SELECT * FROM "+pp.darTablaPrestan()+" tp  WHERE ID_SERVICIO=? AND TO_DATE(tp.DIA,'DD-MM-YY HH24:MI:SS') BETWEEN TO_DATE(?,'DD-MM-YY HH24:MI:SS') AND TO_DATE(?,'DD-MM-YY HH24:MI:SS')";
+		String sql="SELECT * FROM "+pp.darTablaPrestan()+" tp  WHERE ID_SERVICIO=? AND TO_DATE(tp.DIA,'DD-MM-YY HH24:MI:SS') BETWEEN TO_DATE(?,'DD-MM-YY HH24:MI:SS') AND TO_DATE(?,'DD-MM-YY HH24:MI:SS') AND CANCELADA=0";
 		Query q=pm.newQuery(SQL,sql);
 		q.setParameters(idSer,fechaInic,fechaFin);
 		return q.executeList();
 	}
+
+	public List<Object[]> analizarOpSemanaDemanda(PersistenceManager pm, String servicio,String unidad,String orden)
+	{
+		String sql="SELECT SUM(CAPACIDADMAX-CAPACIDAD) AS DIFERENCIA, to_number(to_char(TO_DATE(tp.DIA,'DD-MM-YY HH24:MI:SS'), ?)) SEMANA FROM "+ pp.darTablaPrestan();
+		sql+=" tp WHERE ID_SERVICIO=?";
+		sql+="GROUP BY to_number(to_char(TO_DATE(tp.DIA,'DD-MM-YY HH24:MI:SS'), ?)) ";
+		sql+="ORDER BY SUM(CAPACIDADMAX-CAPACIDAD) ? FETCH NEXT 5 ROWS ONLY";
+		Query q=pm.newQuery(SQL,sql);
+		q.setParameters(unidad,servicio,unidad,orden);
+		return q.executeList();	
+	}
+
+	public List<Object[]> analizarOpSemanaActividad(PersistenceManager pm, String servicio,String unidad,String orden)
+	{
+		String sql="SELECT SUM(tp.CAPACIDAD-(taux.CUMPLIDAS/2)) AS DIFERENCIA, to_number(to_char(TO_DATE(tp.DIA,'DD-MM-YY HH24:MI:SS'), ?)) SEMANA ";
+		sql+="FROM "+pp.darTablaPrestan() +" tp, (SELECT COUNT (*) CUMPLIDAS, tc.ID_SERVICIO,to_number(to_char(TO_DATE(tc.FECHA,'DD-MM-YY HH24:MI:SS'), ?))FECHA FROM "+pp.darTablaCita() +" tc WHERE tc.CUMPLIDA=1 GROUP BY ID_SERVICIO, to_number(to_char(TO_DATE(tc.FECHA,'DD-MM-YY HH24:MI:SS'), ?)))taux";
+		sql+=" WHERE tp.ID_SERVICIO=taux.ID_SERVICIO AND tp.ID_SERVICIO=?  AND taux.FECHA=to_number(to_char(TO_DATE(tp.DIA,'DD-MM-YY HH24:MI:SS'), ?))";
+		sql+=" GROUP BY to_number(to_char(TO_DATE(tp.DIA,'DD-MM-YY HH24:MI:SS'), ?))";
+		sql+=" ORDER BY DIFERENCIA ?";
+		sql+=" FETCH NEXT 5 ROWS ONLY";
+		Query q=pm.newQuery(SQL,sql);
+		q.setParameters(unidad,unidad,unidad,servicio,unidad,unidad,orden);
+		return q.executeList();	
+	}
+
+
 }
+
