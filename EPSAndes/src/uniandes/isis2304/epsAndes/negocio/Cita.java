@@ -6,22 +6,22 @@ package uniandes.isis2304.epsAndes.negocio;
 public class Cita implements VOCita{
 
 	/** El id. */
-	private Long id;
+	private Long id_Orden;
 	
 	/** Estado cumplida. */
 	private int cumplida;
 	
 	/** El servicio. */
-	private String servicio;
+	private String id_Servicio;
 	
 	/** El paciente. */
-	private String paciente;
+	private String id_Afiliado;
 	
 	/** La fecha. */
 	private String fecha;
 	
 	/** El recepcionista. */
-	private String recepcionista;
+	private String id_Recepcionista;
 	
 	/** L hora. */
 	private String hora;
@@ -39,13 +39,13 @@ public class Cita implements VOCita{
 	 */
 	public Cita(Long id, int cumplida, String servicio, String paciente,String fecha,String recepcionista, String hora) {
 		super();
-		this.id = id;
+		this.id_Orden = id;
 		this.cumplida = cumplida;
-		this.servicio = servicio;
-		this.paciente = paciente;
+		this.id_Servicio = servicio;
+		this.id_Afiliado = paciente;
 		this.fecha = fecha;
 		this.hora=hora;
-		this.recepcionista = recepcionista;
+		this.id_Recepcionista = recepcionista;
 	}
 	
 	/**
@@ -74,7 +74,7 @@ public class Cita implements VOCita{
 	 * @return el id
 	 */
 	public Long getId() {
-		return id;
+		return id_Orden;
 	}
 
 	/**
@@ -83,7 +83,7 @@ public class Cita implements VOCita{
 	 * @param id el nuevo id
 	 */
 	public void setId(Long id) {
-		this.id = id;
+		this.id_Orden = id;
 	}
 
 	/**
@@ -110,7 +110,7 @@ public class Cita implements VOCita{
 	 * @return el servicio
 	 */
 	public String getServicio() {
-		return servicio;
+		return id_Servicio;
 	}
 
 	/**
@@ -119,7 +119,7 @@ public class Cita implements VOCita{
 	 * @param servicio el nuevo servicio
 	 */
 	public void setServicio(String servicio) {
-		this.servicio = servicio;
+		this.id_Servicio = servicio;
 	}
 
 	/**
@@ -128,7 +128,7 @@ public class Cita implements VOCita{
 	 * @return el paciente
 	 */
 	public String getPaciente() {
-		return paciente;
+		return id_Afiliado;
 	}
 
 	/**
@@ -137,7 +137,7 @@ public class Cita implements VOCita{
 	 * @param paciente el nuevo paciente
 	 */
 	public void setPaciente(String paciente) {
-		this.paciente = paciente;
+		this.id_Afiliado = paciente;
 	}
 
 	/**
@@ -165,7 +165,7 @@ public class Cita implements VOCita{
 	 * @return el recepcionista
 	 */
 	public String getRecepcionista() {
-		return recepcionista;
+		return id_Recepcionista;
 	}
 
 	/**
@@ -174,7 +174,7 @@ public class Cita implements VOCita{
 	 * @param recepcionista el nuevo recepcionista
 	 */
 	public void setRecepcionista(String recepcionista) {
-		this.recepcionista = recepcionista;
+		this.id_Recepcionista = recepcionista;
 	}
 
 	/**
@@ -184,8 +184,8 @@ public class Cita implements VOCita{
 	 */
 	@Override
 	public String toString() {
-		return "Cita [id=" + id + ", cumplida=" + cumplida + ", servicio=" + servicio + ", afiliado="
-				+ paciente + ", fecha=" + fecha + ", recepcionista=" + recepcionista + ", hora="+hora+"]";
+		return "Cita [id=" + id_Orden + ", cumplida=" + cumplida + ", servicio=" + id_Servicio + ", afiliado="
+				+ id_Afiliado + ", fecha=" + fecha + ", recepcionista=" + id_Recepcionista + ", hora="+hora+"]";
 	}
 
 }

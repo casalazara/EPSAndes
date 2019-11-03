@@ -112,6 +112,15 @@ public class EPSAndes
 		return ips;
 	}
 
+	public String darExigentes()
+	{
+		return pp.darExigentes();
+	}
+	
+	public String darNoMuyDemandados()
+	{
+		return pp.darNoMuyDemandados();
+	}
 	/**
 	 * Registrar medico.
 	 *
@@ -149,6 +158,22 @@ public class EPSAndes
 		Usuario usuario = pp.registrarUsuario(numero_Documento, nombre, email, rol, tipo_Documento);
 		log.info ("adicionado el usuario: " + usuario);
 		return usuario;
+	}
+
+	public String reqC6(String servicio, String unidad)
+	{
+		return pp.reqC6(servicio, unidad);
+	}
+
+
+	public String desHabilitar(String fechaIni,String fechaFin,String ips,String idServicio)
+	{
+		return pp.deshabilitarServicios(fechaIni, fechaFin, ips, idServicio);
+	}
+
+	public void habilitar(String fechaIni,String fechaFin,String ips,String idServicio)
+	{
+		pp.habilitarServicios(fechaIni, fechaFin, ips, idServicio);
 	}
 
 	/**

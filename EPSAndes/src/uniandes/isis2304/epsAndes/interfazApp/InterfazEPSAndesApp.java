@@ -997,19 +997,26 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 
 
 										if(capacidadS>capacidadP){
-											for(int j=0;j<capacidadP;j++) 
+											for(int j=0;j<capacidadP-3;j++) 
 											{
 												epsAndes.registrarReserva(serv, id, fechaI, -10, (String)object[1], (String) object[4]);
 											}
 										}
-										else
+										else if(capacidadS==capacidadP)
+										{
+											for(int j=0;j<capacidadS-3;j++)
+											{
+												epsAndes.registrarReserva(serv, id, fechaI, -10, (String)object[1], (String) object[4]);
+											}
+										}
+										else 
 										{
 											for(int j=0;j<capacidadS;j++)
 											{
 												epsAndes.registrarReserva(serv, id, fechaI, -10, (String)object[1], (String) object[4]);
 											}
 										}
-										capacidadS-=capacidadP;
+										capacidadS-=capacidadP-3;
 
 									}
 								}
@@ -1246,6 +1253,152 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 		}
 	}
 
+	public void habilitar()
+	{
+		try {
+
+			JTextField fechaInis = new JTextField();
+			JTextField fechaFins = new JTextField();
+			JTextField Servicio = new JTextField();
+			JTextField IdIPS = new JTextField();
+
+			Object message[] = {
+					"Ingrese la fecha de inicio: ", fechaInis,
+					"Ingrese la fecha de finalizaci[on: ", fechaFins,
+					"Ingrese el nombre del servicio: ", Servicio,
+					"Ingrese el nombre de la IPS: ", IdIPS,
+			};
+
+			int option = JOptionPane.showConfirmDialog (this, message, "Habilitar servicio", JOptionPane.OK_CANCEL_OPTION);
+			if(option == JOptionPane.OK_OPTION) {
+				if(!IdIPS.getText().toString().equals("") &&!Servicio.getText().toString().equals("") &&!fechaInis.getText().toString().equals("") && !fechaFins.getText().toString().equals("") )
+				{
+					String fechaFin = fechaFins.getText().toString();
+					String servicio=Servicio.getText().toString();
+					String fechaIni=fechaInis.getText().toString();
+					String idIPS=IdIPS.getText().toString();
+					epsAndes.habilitar(fechaIni, fechaFin, idIPS, servicio);
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(this, "Se deben llenar todos los campos.", "Error habilitando", JOptionPane.ERROR_MESSAGE);
+
+				}
+			}
+		}
+		catch(Exception e) {
+			JOptionPane.showMessageDialog(this, e.getMessage(), "Error habilitando", JOptionPane.ERROR_MESSAGE);
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+	}
+
+
+	public void desHabilitar()
+	{
+		try {
+
+			JTextField fechaInis = new JTextField();
+			JTextField fechaFins = new JTextField();
+			JTextField Servicio = new JTextField();
+			JTextField IdIPS = new JTextField();
+
+			Object message[] = {
+					"Ingrese la fecha de inicio: ", fechaInis,
+					"Ingrese la fecha de finalizaci[on: ", fechaFins,
+					"Ingrese el nombre del servicio: ", Servicio,
+					"Ingrese el nombre de la IPS: ", IdIPS,
+			};
+
+			int option = JOptionPane.showConfirmDialog (this, message, "Deshabilitar servicio", JOptionPane.OK_CANCEL_OPTION);
+			if(option == JOptionPane.OK_OPTION) {
+				if(!IdIPS.getText().toString().equals("") &&!Servicio.getText().toString().equals("") &&!fechaInis.getText().toString().equals("") && !fechaFins.getText().toString().equals("") )
+				{
+					String fechaFin = fechaFins.getText().toString();
+					String servicio=Servicio.getText().toString();
+					String fechaIni=fechaInis.getText().toString();
+					String idIPS=IdIPS.getText().toString();
+					JOptionPane.showMessageDialog(this, "Se deshabilito el servicio con exito!", "Deshabilitacion de servicio exitoso", JOptionPane.INFORMATION_MESSAGE);
+					String resultado = "En registro servicio \n\n";
+					resultado+=epsAndes.desHabilitar(fechaIni, fechaFin, idIPS, servicio)+"\n";
+					resultado += "servicio deshabilitado exitosamente: ";
+					resultado += "\n OperaciÃƒÂ³n terminada";
+					panelDatos.actualizarInterfaz(resultado);
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(this, "Se deben llenar todos los campos.", "Error deshabilitando", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		}
+		catch(Exception e) {
+			JOptionPane.showMessageDialog(this, e.getMessage(), "Error deshabilitando", JOptionPane.ERROR_MESSAGE);
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+	}
+
+
+	public void darExigentes()
+	{
+		String resultado = "Se consultaron los exigentes \n\n";
+		resultado+=epsAndes.darExigentes()+"\n";
+		resultado += "Consulta realizada exitosamente: ";
+		resultado += "\n operacion terminada";
+		panelDatos.actualizarInterfaz(resultado);
+	}
+
+	public void darNoMuyDemandados()
+	{
+		String resultado = "Se consultaron los no muy demandados \n\n";
+		resultado+=epsAndes.darNoMuyDemandados()+"\n";
+		resultado += "Consulta realizada exitosamente: ";
+		resultado += "\n operacion terminada";
+		panelDatos.actualizarInterfaz(resultado);
+	}
+
+	public void reqC6()
+	{
+		try {
+
+
+			JTextField Servicio = new JTextField();
+			JComboBox<String>combo=new JComboBox<String>();
+			combo.addItem("WW: Semana");
+			combo.addItem("MM: Mes");
+			combo.addItem("YY: Año");
+			;
+
+			Object message[] = {
+					"Ingrese el nombre del servicio: ", Servicio,
+					"Seleccione la unidad de tiempo: ",combo,
+			};
+
+			int option = JOptionPane.showConfirmDialog (this, message, "Deshabilitar servicio", JOptionPane.OK_CANCEL_OPTION);
+			if(option == JOptionPane.OK_OPTION) {
+				if(!combo.getSelectedItem().toString().equals("") &&!Servicio.getText().toString().equals(""))
+				{
+					String unidad = combo.getSelectedItem().toString().split(":")[0];
+					String servicio=Servicio.getText().toString();
+					JOptionPane.showMessageDialog(this, "Se consultó la operación con exito!", "Consulta de operacion exitosa", JOptionPane.INFORMATION_MESSAGE);
+					String resultado = "Se consultó la operación \n\n";
+					resultado+=epsAndes.reqC6(servicio, unidad)+"\n";
+					resultado += "Consulta realizada exitosamente: ";
+					resultado += "\n OperaciÃƒÂ³n terminada";
+					panelDatos.actualizarInterfaz(resultado);
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(this, "Se deben llenar todos los campos.", "Error deshabilitando", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		}
+		catch(Exception e) {
+			JOptionPane.showMessageDialog(this, e.getMessage(), "Error deshabilitando", JOptionPane.ERROR_MESSAGE);
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+	}
 	/* **********************
 	 * 			MÃƒÂ©todos administrativos
 	 ***********************/

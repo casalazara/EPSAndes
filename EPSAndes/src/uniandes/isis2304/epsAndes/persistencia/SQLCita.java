@@ -80,6 +80,13 @@ class SQLCita
 		q.executeUnique();  
 	}
 
+	public void eliminarCitaIPS(PersistenceManager pm,String id_Servicio,String id_Afiliado,String ips )
+	{
+		Query q = pm.newQuery(SQL, "DELETE FROM " + pp.darTablaCita() + " WHERE ID_SERVICIO=? AND ID_AFILIADO =? AND ID_RECEPCIONISTA=? ");
+		q.setParameters(id_Servicio,id_Afiliado,ips);
+		q.executeUnique();  
+	}
+
 	/**
 	 * Crea y ejecuta la sentencia SQL para encontrar la información de UNA CITA de la 
 	 * base de datos de EPSAndes, por su identificador.
@@ -140,6 +147,15 @@ class SQLCita
 		return q.executeList();
 	}
 
+	public List<Object[]> sacarCitasPorIPSServicio(PersistenceManager pm,String ips,String servicio,String fechaI,String fechaF)
+	{
+		String sql="SELECT tc.ID_ORDEN, tc.FECHA, tc.HORA, tc.ID_AFILIADO";
+		sql+= " FROM "+pp.darTablaCita() +" tc, "+ pp.darTablaPrestan()+" tp, "+ pp.darTablaRecepcionista_Ips() +" tr WHERE tp.ID_SERVICIO=tc.ID_SERVICIO AND tp.ID_SERVICIO=? AND tp.ID_IPS=? AND tp.ID_IPS=tc.ID_RECEPCIONISTA AND TO_DATE(tc.FECHA,'DD-MM-YY HH24:MI:SS') BETWEEN TO_DATE(?,'DD-MM-YY HH24:MI:SS') AND TO_DATE(?,'DD-MM-YY HH24:MI:SS')";
+		Query q = pm.newQuery(SQL, sql);
+		q.setParameters(servicio,ips,fechaI,fechaF);
+		return q.executeList();
+	}
+
 	/**
 	 * Utilizacion por afiliado.
 	 *
@@ -160,4 +176,16 @@ class SQLCita
 		q.setParameters(idAfiliado,fechaInic,fechaFin);
 		return q.executeList();
 	}
+
+	public List<Object[]> darExigentes (PersistenceManager pm){
+		String sql="SELECT aux.AFILIADO,aux.TIPOS,aux.SERVICIOS" + 
+				"	FROM(SELECT tc.ID_AFILIADO AFILIADO, COUNT (DISTINCT ts.TIPO) TIPOS, COUNT (tc.ID_SERVICIO) SERVICIOS" + 
+				"	FROM "+pp.darTablaCita()+" tc, "+pp.darTablaServicio()+" ts " + 
+				"	WHERE ts.NOMBRE=tc.ID_SERVICIO AND to_number(to_char(TO_DATE(tc.FECHA,'DD-MM-YY HH24:MI:SS'), 'YY'))=to_number(to_char(CURRENT_DATE, 'YY'))-1" + 
+				"	GROUP BY tc.ID_AFILIADO,ts.TIPO, tc.ID_SERVICIO)aux" + 
+				"	WHERE aux.TIPOS>2 AND aux.SERVICIOS>12";
+		Query q = pm.newQuery(SQL,sql);
+		return q.executeList();
+	}
+
 }

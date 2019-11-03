@@ -185,8 +185,10 @@ class SQLPrestan
 		String sql="SELECT SUM(CAPACIDAD) FROM "+pp.darTablaPrestan()+" tp  WHERE ID_SERVICIO=? AND TO_DATE(tp.DIA,'DD-MM-YY HH24:MI:SS') BETWEEN TO_DATE(?,'DD-MM-YY HH24:MI:SS') AND TO_DATE(?,'DD-MM-YY HH24:MI:SS') AND CANCELADA=0";
 		Query q=pm.newQuery(SQL,sql);
 		q.setParameters(idSer,fechaInic,fechaFin);
-		return ((BigDecimal) q.executeUnique()).longValue ();
+		BigDecimal rta=(BigDecimal) q.executeUnique();
+		return rta==null?0:rta.longValue();
 	}
+
 	public List<Object[]> darInfoServicioEnRango(PersistenceManager pm, String idSer, String fechaInic, String fechaFin)
 	{
 		String sql="SELECT * FROM "+pp.darTablaPrestan()+" tp  WHERE ID_SERVICIO=? AND TO_DATE(tp.DIA,'DD-MM-YY HH24:MI:SS') BETWEEN TO_DATE(?,'DD-MM-YY HH24:MI:SS') AND TO_DATE(?,'DD-MM-YY HH24:MI:SS') AND CANCELADA=0";
@@ -197,25 +199,37 @@ class SQLPrestan
 
 	public List<Object[]> analizarOpSemanaDemanda(PersistenceManager pm, String servicio,String unidad,String orden)
 	{
-		String sql="SELECT SUM(CAPACIDADMAX-CAPACIDAD) AS DIFERENCIA, to_number(to_char(TO_DATE(tp.DIA,'DD-MM-YY HH24:MI:SS'), ?)) SEMANA FROM "+ pp.darTablaPrestan();
+		String sql="SELECT SUM(CAPACIDADMAX-CAPACIDAD) AS DIFERENCIA, to_number(to_char(TO_DATE(tp.DIA,'DD-MM-YY HH24:MI:SS'), '"+unidad+"')) SEMANA FROM "+ pp.darTablaPrestan();
 		sql+=" tp WHERE ID_SERVICIO=?";
-		sql+="GROUP BY to_number(to_char(TO_DATE(tp.DIA,'DD-MM-YY HH24:MI:SS'), ?)) ";
-		sql+="ORDER BY SUM(CAPACIDADMAX-CAPACIDAD) ? FETCH NEXT 5 ROWS ONLY";
+		sql+=" GROUP BY to_number(to_char(TO_DATE(tp.DIA,'DD-MM-YY HH24:MI:SS'), '"+unidad+"')) ";
+		sql+="ORDER BY SUM(CAPACIDADMAX-CAPACIDAD) "+orden+" FETCH NEXT 5 ROWS ONLY";
 		Query q=pm.newQuery(SQL,sql);
-		q.setParameters(unidad,servicio,unidad,orden);
+		q.setParameters(servicio);
 		return q.executeList();	
+	}
+
+	public List<String> darNoMuyDemandados(PersistenceManager pm)
+	{
+		String sql="SELECT DISTINCT ID_SERVICIO FROM "+
+				"(SELECT ID_SERVICIO,SUM(CAPACIDADMAX-CAPACIDAD) DIFERENCIA "+
+				"FROM "+pp.darTablaPrestan()+" tp "+
+				"WHERE to_number(to_char(TO_DATE(tp.DIA,'DD-MM-YY HH24:MI:SS'), 'YY'))=to_number(to_char(CURRENT_DATE, 'YY'))-1 "+
+				"GROUP BY ID_SERVICIO,to_number(to_char(TO_DATE(tp.DIA,'DD-MM-YY HH24:MI:SS'), 'WW'))) "+
+				"WHERE DIFERENCIA<3";
+		Query q=pm.newQuery(SQL,sql);
+		return(List<String>) q.executeList();	
 	}
 
 	public List<Object[]> analizarOpSemanaActividad(PersistenceManager pm, String servicio,String unidad,String orden)
 	{
-		String sql="SELECT SUM(tp.CAPACIDAD-(taux.CUMPLIDAS/2)) AS DIFERENCIA, to_number(to_char(TO_DATE(tp.DIA,'DD-MM-YY HH24:MI:SS'), ?)) SEMANA ";
-		sql+="FROM "+pp.darTablaPrestan() +" tp, (SELECT COUNT (*) CUMPLIDAS, tc.ID_SERVICIO,to_number(to_char(TO_DATE(tc.FECHA,'DD-MM-YY HH24:MI:SS'), ?))FECHA FROM "+pp.darTablaCita() +" tc WHERE tc.CUMPLIDA=1 GROUP BY ID_SERVICIO, to_number(to_char(TO_DATE(tc.FECHA,'DD-MM-YY HH24:MI:SS'), ?)))taux";
-		sql+=" WHERE tp.ID_SERVICIO=taux.ID_SERVICIO AND tp.ID_SERVICIO=?  AND taux.FECHA=to_number(to_char(TO_DATE(tp.DIA,'DD-MM-YY HH24:MI:SS'), ?))";
-		sql+=" GROUP BY to_number(to_char(TO_DATE(tp.DIA,'DD-MM-YY HH24:MI:SS'), ?))";
-		sql+=" ORDER BY DIFERENCIA ?";
-		sql+=" FETCH NEXT 5 ROWS ONLY";
+		String sql="SELECT COUNT (*) CUMPLIDAS,to_number(to_char(TO_DATE(tc.FECHA,'DD-MM-YY HH24:MI:SS'), '"+unidad+"')) FECHA "+
+				"FROM "+pp.darTablaCita()+ " tc "+
+				"WHERE tc.CUMPLIDA=1 AND tc.ID_SERVICIO=? "+
+				"GROUP BY to_number(to_char(TO_DATE(tc.FECHA,'DD-MM-YY HH24:MI:SS'), '"+unidad+"'))" + 
+				" ORDER BY COUNT(*) DESC" + 
+				" FETCH NEXT 5 ROWS ONLY";
 		Query q=pm.newQuery(SQL,sql);
-		q.setParameters(unidad,unidad,unidad,servicio,unidad,unidad,orden);
+		q.setParameters(servicio);
 		return q.executeList();	
 	}
 

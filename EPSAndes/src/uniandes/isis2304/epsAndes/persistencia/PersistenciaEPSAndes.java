@@ -522,7 +522,79 @@ public class PersistenciaEPSAndes
 			}
 			pm.close();
 		}
-	}	/**
+	}
+
+	public String reqC6(String servicio, String unidad)
+	{
+		String u="";
+		if(unidad.equals("WW"))
+			u="Semana";
+		else if(unidad.equals("YY"))
+			u="AÒo";
+		else
+			u="Mes";
+
+		List<Object[]>listaDesc=sqlPrestan.analizarOpSemanaDemanda(pmf.getPersistenceManager(), servicio, unidad, "DESC");
+		List<Object[]>listaAsc=sqlPrestan.analizarOpSemanaDemanda(pmf.getPersistenceManager(), servicio, unidad, "ASC");
+		List<Object[]>listaDescAct=sqlPrestan.analizarOpSemanaActividad(pmf.getPersistenceManager(), servicio, unidad, "DESC");
+		String mensaje="--- Temporadas m·s demandadas ---\n";
+		for (Object[] objects : listaDesc) {
+			mensaje+="Demanda: "+((BigDecimal)objects[0]).intValue()+" "+u+": "+((BigDecimal)objects[1]).intValue()+"\n";
+		}
+		mensaje+="--- Temporadas menos demandadas ---\n";
+		for (Object[] objects : listaAsc) {
+			mensaje+="Demanda: "+((BigDecimal)objects[0]).intValue()+" "+u+": "+((BigDecimal)objects[1]).intValue()+"\n";
+		}
+		mensaje+="--- Temporadas m·s activas ---\n";
+		for (Object[] objects : listaDescAct) {
+			mensaje+="Actividad: "+((BigDecimal)objects[0]).intValue()+" "+u+": "+((BigDecimal)objects[1]).intValue()+"\n";
+		}
+		return mensaje;
+	}
+	public String deshabilitarServicios(String fechaIni,String fechaFin,String ips,String idServicio)
+	{
+		String mensaje="";
+		sqlPrestan.actualizarHabilitacion(pmf.getPersistenceManager(), fechaIni, fechaFin, ips, idServicio, 1);
+		List<Object[]> lista1=sqlCita.sacarCitasPorIPSServicio(pmf.getPersistenceManager(), ips, idServicio, fechaIni, fechaFin);
+		List<Object[]>lista2=sqlPrestan.darInfoServicioEnRango(pmf.getPersistenceManager(), idServicio, fechaIni, fechaFin);
+		long capacidadServicios=sqlPrestan.darCapacidadServicioEnRango(pmf.getPersistenceManager(), idServicio, fechaIni, fechaFin);
+
+		int citasR=lista1.size()-1;
+		for (int j=0;j<lista2.size() && citasR>=0;j++) {
+			Object[] objects2=lista2.get(j);
+			int capacidadR=((BigDecimal)objects2[5]).intValue();
+			for(int i=0;i<capacidadR;i++)
+			{
+				Object[] objects=lista1.get(citasR);
+				//RegistrarCita
+				registrarCita(idServicio,(String) objects[3], (String) objects2[2], ((BigDecimal)objects[0]).longValue(), (String) objects2[1], (String) objects2[4]);
+				//BorrarCita
+				sqlCita.eliminarCitaIPS(pmf.getPersistenceManager(), idServicio, (String)objects[3], ips);
+				--citasR;
+			}
+		}
+
+		if(lista1.size()>capacidadServicios )
+		{
+			mensaje="No se pudieron reubicar las siguientes citas \n";
+			for(int i=citasR;i>=0;i--)
+			{
+				Object[] objects=lista1.get(citasR);
+				mensaje+="Orden: "+((BigDecimal)objects[0]).intValue()+" Fecha: "+(String)objects[1]+" Afiliado: "+(String)objects[3]+"\n";
+			}
+		}
+		else
+			mensaje="Se pudieron reubicar todas las citas";
+
+		return mensaje;
+	}
+
+	public void habilitarServicios(String fechaIni,String fechaFin,String ips,String idServicio)
+	{
+		sqlPrestan.actualizarHabilitacion(pmf.getPersistenceManager(), fechaIni, fechaFin, ips, idServicio, 0);
+	}
+
+	/**
 	 * M√©todo que inserta, de manera transaccional, una tupla en la tabla Bebida
 	 * Adiciona entradas al log de la aplicaci√≥n.
 	 *
@@ -630,6 +702,7 @@ public class PersistenciaEPSAndes
 			tx.begin();   
 			long tuplasInsertadas = sqlIPS.adicionarIPS(pm, nombreEPS, localizacion, nombreIPS);
 			tx.commit();
+			registrarRecepcionista(nombreIPS, nombreIPS, nombreIPS+"@gmail.com", "RecepcionistaIPS", "C.C", nombreIPS);
 
 			if(recepcionista!=null)
 			{
@@ -951,7 +1024,7 @@ public class PersistenciaEPSAndes
 			{
 				if(orden==null) orden=registrarOrden(servicio, paciente, "0000000000");
 				tx.begin();        
-				long tuplasInsertadas = sqlCita.adicionarCita(pm, 0, orden.getId(), fecha, servicio, paciente, "",hora);
+				long tuplasInsertadas = sqlCita.adicionarCita(pm, 0, orden.getId(), fecha, servicio, paciente, idIPS,hora);
 				long capacidadActualizada=sqlPrestan.actualizarCapacidad(pm, fecha, hora, servicio,idIPS);
 				log.trace ("Actualizando capacidad del servicio: " + servicio + ": " + capacidadActualizada + " tuplas insertadas");
 				tx.commit();
@@ -1233,6 +1306,38 @@ public class PersistenciaEPSAndes
 	public long[] limpiarEPSAndes()
 	{
 		return sqlUtil.limpiarEPSAndes(pmf.getPersistenceManager());
+	}
+
+	public String darExigentes()
+	{
+		List<Object[]> exigentes=sqlCita.darExigentes(pmf.getPersistenceManager());
+		String mensaje="";
+		if(exigentes.size()<=0)
+			return "No se encontraron exigentes";
+		else {
+			mensaje="Se encontraron exigentes:\n";
+			for (Object[] objects : exigentes) {
+				mensaje+="CÈdula: "+(String)objects[0]+" tipos diferentes: "+((BigDecimal)objects[1]).intValue()+" servicios: "+((BigDecimal)objects[2]).intValue()+"\n";
+			}
+		}
+		return mensaje;
+	}
+
+	public String darNoMuyDemandados()
+	{
+		String mensaje="";
+		List<String> noMuy=sqlPrestan.darNoMuyDemandados(pmf.getPersistenceManager());
+		if(noMuy.size()<=0)
+		{
+			return "No se encontraron no muy demandados";
+		}
+		else {
+			mensaje="Se encontraron servicios no muy demandados: \n";
+			for (String objects : noMuy) {
+				mensaje+="Nombre: "+ objects+"\n";
+			}
+		}
+		return mensaje;
 	}
 
 

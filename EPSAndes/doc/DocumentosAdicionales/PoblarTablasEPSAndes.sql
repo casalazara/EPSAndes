@@ -3,7 +3,13 @@ insert into EPS(NOMBRE) values('EPSAndes');
 
 --IPS
 insert into IPS (NOMBRE, LOCALIZACION, ID_EPS) values ('OPTICAS HORUS', -22.2169379, 'EPSAndes');
+INSERT INTO USUARIO VALUES('Opticas Horus','Opticas Horus','Opticas Horus','RecepcionistaIPS','C.C');
+INSERT INTO RECEPCIONISTA_IPS VALUES('OPTICAS HORUS','OPTICAS HORUS');
+
 insert into IPS (NOMBRE, LOCALIZACION, ID_EPS) values ('PMA MARLY', -18.7679039, 'EPSAndes');
+INSERT INTO USUARIO VALUES('PMA MARLY','PMA MARLY','PMA MARLY','RecepcionistaIPS','C.C');
+INSERT INTO RECEPCIONISTA_IPS VALUES('PMA MARLY','PMA MARLY');
+
 --ROL
 insert into ROL(NOMBRE) values ('Afiliado');
 insert into ROL(NOMBRE) values ('Medico');

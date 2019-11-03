@@ -75,7 +75,27 @@
 				{
 					"label": "Cancelar servicios campania",
 					"event": "cancelarServiciosCampania"
-				}
+				},
+				{
+					"label": "Habilitar servicio",
+					"event": "habilitar"
+				},
+				{
+					"label": "Deshabilitar servicio",
+					"event": "desHabilitar"
+				},
+				{
+					"label": "Analizar operacion",
+					"event": "reqC6"
+				},
+				{
+					"label": "Consultar usuarios exigentes",
+					"event": "darExigentes"
+				},
+				{
+					"label": "Consultar servicios no muy demandados",
+					"event": "darNoMuyDemandados"
+				}				
 			]
 		},
 		{ "menuTitle": "Mantenimiento",
