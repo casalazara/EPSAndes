@@ -32,6 +32,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 
+import uniandes.isis2304.epsAndes.negocio.Afiliado;
 import uniandes.isis2304.epsAndes.negocio.EPSAndes;
 import uniandes.isis2304.epsAndes.negocio.RecepcionistaIPS;
 import uniandes.isis2304.epsAndes.negocio.VOCampania;
@@ -275,57 +276,86 @@ public class InterfazEPSAndesAppDemo extends JFrame implements ActionListener
 		}
 	}
 
-	
+
 	public void demoCampana( )
 	{
 		try 
 		{
-			
+			String nombre="Campania uniAlpes";
+			String fechaFin="08-12-18 11:00:00";
+			String fechaIni="06-11-18 06:30:00";
+			String idOrganizador="93345171";
+
 			String nombreIPS= "IPSAndes";
 			String localizacion = "-18,7679039";
 			String id_eps = "EPSAndes";
 			RecepcionistaIPS recepcionistas=new RecepcionistaIPS(nombreIPS, "1005755560", "Carlos Salazar", "ca.salazara@uniandes.edu.co", "RecepcionistaIPS", "C.C");
 			VOIPS ips = epsAndes.registrarIPS(localizacion, nombreIPS, recepcionistas, id_eps);
-			
-			epsAndes.registrarServicioDeSaludAPrestar(duracion, horaInicio, dia, idServicio, nombreIPS, 12, tipo);
-			epsAndes.registrarServicioDeSaludAPrestar(duracion, horaInicio, dia, idServicio, nombreIPS, 15, tipo);
-			epsAndes.registrarServicioDeSaludAPrestar(duracion, horaInicio, dia, idServicio, nombreIPS, 18, tipo);
-			epsAndes.registrarServicioDeSaludAPrestar(duracion, horaInicio, dia, idServicio, nombreIPS, 16, tipo);
-			epsAndes.registrarServicioDeSaludAPrestar(duracion, horaInicio, dia, idServicio, nombreIPS, 13, tipo);
-			epsAndes.registrarServicioDeSaludAPrestar(duracion, horaInicio, dia, idServicio, nombreIPS, 14, tipo);
-			epsAndes.registrarServicioDeSaludAPrestar(duracion, horaInicio, dia, idServicio, nombreIPS, 25, tipo);
-			epsAndes.registrarServicioDeSaludAPrestar(duracion, horaInicio, dia, idServicio, nombreIPS, 70, tipo);
 
-			
-			
-			String nombre="Campania uniAlpes";
-			String fechaFin="";
-			String fechaInicio="";
-			String idOrganizador="93345171";
-			
-			VOCampania campania=epsAndes.registrarCampania(nombre, fechaFin, fechaInicio, idOrganizador);
-			
-			if( ips == null)
+			epsAndes.registrarServicioDeSaludAPrestar("30", "08:00:00", "06-12-18 08:00:00", "Consultas medicas con medico general", nombreIPS, 12, "Consulta con medico");
+			epsAndes.registrarServicioDeSaludAPrestar("30", "07:00:00", "07-12-18 07:00:00", "Consultas medicas con especialistas", nombreIPS, 15, "Remision con un especialista");
+			epsAndes.registrarServicioDeSaludAPrestar("45", "11:00:00", "08-12-18 11:00:00", "Examenes de sangre", nombreIPS, 18, "Examen diagnostico");
+			epsAndes.registrarServicioDeSaludAPrestar("20", "10:00:30", "08-11-18 10:00:30", "Radiografias", nombreIPS, 16, "Procedimiento medico especializado");
+			epsAndes.registrarServicioDeSaludAPrestar("60", "06:30:00", "06-11-18 06:30:00", "Consultas odontologicas", nombreIPS, 13, "Consulta de control");
+			epsAndes.registrarServicioDeSaludAPrestar("15", "06:00:00", "09-11-18 06:00:00","Jornadas de vacunacion", nombreIPS, 14, "Procedimiento medico especializado");
+
+			Afiliado x=epsAndes.registrarAfiliado("0", "Campa"+nombre, "Afiliado", "Campa"+nombre+"@gmail.com", "C.C",fechaIni , "EPSAndes");			
+			String id=x.getNumero_Documento();
+
+			for(int i=0;i<7;i++)
 			{
-				ips = epsAndes.darIPSPorNombre(nombre);
-				errorTipoIPS = true; 
+				epsAndes.registrarReserva("Consultas medicas con medico general", id, "06-12-18 08:00:00", -10, "08:00:00", nombreIPS);
+			}
+			for(int i=0;i<6;i++)
+			{
+				epsAndes.registrarReserva("Consultas medicas con especialistas", id, "07-12-18 07:00:00", -10, "07:00:00", nombreIPS);
+			}
+			for(int i=0;i<3;i++)
+			{
+				epsAndes.registrarReserva("Examenes de sangre", id,"08-12-18 11:00:00", -10, "11:00:00", nombreIPS);
+			}
+			for(int i=0;i<12;i++)
+			{
+				epsAndes.registrarReserva("Radiografias", id, "08-11-18 10:00:30", -10, "10:00:30", nombreIPS);
+			}
+			for(int i=0;i<9;i++)
+			{
+				epsAndes.registrarReserva("Consultas odontologicas", id, "06-11-18 06:30:00", -10, "06:30:00", nombreIPS);
+			}
+			for(int i=0;i<10;i++)
+			{
+				epsAndes.registrarReserva("Jornadas de vacunacion", id,  "09-11-18 06:00:00", -10, "06:00:00", nombreIPS);
+			}
+			VOCampania campania=epsAndes.registrarCampania(nombre, fechaFin, fechaIni, idOrganizador);
+			epsAndes.registrarServCamp("Consultas medicas con medico general", nombre, 7, fechaIni, fechaFin);
+			epsAndes.registrarServCamp("Consultas medicas con especialistas", nombre, 6, fechaIni, fechaFin);
+			epsAndes.registrarServCamp("Examenes de sangre", nombre, 3, fechaIni, fechaFin);
+			epsAndes.registrarServCamp("Consultas odontologicas", nombre, 9, fechaIni, fechaFin);
+			epsAndes.registrarServCamp("Radiografias", nombre, 12, fechaIni, fechaFin);
+			epsAndes.registrarServCamp("Jornadas de vacunacion", nombre, 10, fechaIni, fechaFin);
+
+			boolean errorcampania=false;
+			if( campania == null)
+			{
+				campania = epsAndes.darIPSPorNombre(nombre);
+				errorcampania = true; 
 			}
 
-			List<VOIPS> lista = epsAndes.darIPS();
-			long eliminados = epsAndes.eliminarIPSNombre(ips.getNombre());
-			String resultado = "Demo de creación y listado de IPS\n\n";
+			List<VOCampania> lista = epsAndes.darCampanias();
+			long eliminados = epsAndes.eliminarCampaniaPorNombre(campania.getNombre());
+			String resultado = "Demo de creación y listado de Campanias\n\n";
 			resultado += "\n\n************ Generando datos de prueba ************ \n";
-			if (errorTipoIPS)
+			if (errorcampania)
 			{
-				resultado += "*** Exception creando IPS !!\n";
-				resultado += "*** Es probable que la IPS ya existiera y hay restricción de UNICIDAD sobre el nombre de IPS\n";
+				resultado += "*** Exception creando campania !!\n";
+				resultado += "*** Es probable que la campania ya existiera y hay restricción de UNICIDAD sobre el nombre de campania\n";
 				resultado += "*** Revise el log de EPSAndes para más detalles\n";
 			}
-			resultado += "Adicionado la IPS con nombre: " + nombre + "\n";
+			resultado += "Adicionado la Campania con nombre: " + nombre + "\n";
 			resultado += "\n\n************ Ejecutando la demo ************ \n";
-			resultado +=  "\n" + listarIPS (lista);
+			resultado +=  "\n" + listarCampania (lista);
 			resultado += "\n\n************ Limpiando la base de datos ************ \n";
-			resultado += eliminados + " IPS eliminados\n";
+			resultado += eliminados + " Campanias eliminadas\n";
 			resultado += "\n Demo terminada";
 
 			panelDatos.actualizarInterfaz(resultado);
@@ -338,7 +368,7 @@ public class InterfazEPSAndesAppDemo extends JFrame implements ActionListener
 		}
 	}
 
-	
+
 	private String listarIPS (List<VOIPS> lista) 
 	{
 		String resp = "Las IPS existentes son:\n";

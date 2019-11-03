@@ -2,19 +2,15 @@ package uniandes.isis2304.epsAndes.persistencia;
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
-
 import javax.jdo.JDODataStoreException;
 import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
 import javax.jdo.Transaction;
-
 import org.apache.log4j.Logger;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
 import uniandes.isis2304.epsAndes.negocio.Afiliado;
 import uniandes.isis2304.epsAndes.negocio.Campania;
 import uniandes.isis2304.epsAndes.negocio.Cita;
@@ -24,12 +20,10 @@ import uniandes.isis2304.epsAndes.negocio.Orden;
 import uniandes.isis2304.epsAndes.negocio.OrganizadorCampania;
 import uniandes.isis2304.epsAndes.negocio.Prestan;
 import uniandes.isis2304.epsAndes.negocio.RecepcionistaIPS;
-import uniandes.isis2304.epsAndes.negocio.ReservaCampania;
 import uniandes.isis2304.epsAndes.negocio.Rol;
 import uniandes.isis2304.epsAndes.negocio.Servicio;
 import uniandes.isis2304.epsAndes.negocio.Trabajan;
 import uniandes.isis2304.epsAndes.negocio.Usuario;
-import uniandes.isis2304.epsAndes.negocio.VOIPS;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -1355,9 +1349,4 @@ public class PersistenciaEPSAndes
 		}
 		return mensaje;
 	}
-
-
-
-
-
 }

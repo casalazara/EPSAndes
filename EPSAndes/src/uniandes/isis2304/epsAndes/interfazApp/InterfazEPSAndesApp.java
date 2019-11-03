@@ -953,7 +953,7 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 						JComboBox<String> nombreSer=new JComboBox<String>();
 						nombreSer.addItem("Consultas medicas con medico general");
 						nombreSer.addItem("Consultas medicas con especialistas");
-						nombreSer.addItem("Exa1menes de sangre");
+						nombreSer.addItem("Examenes de sangre");
 						nombreSer.addItem("Radiografias");
 						nombreSer.addItem("Consultas odontologicas");
 						nombreSer.addItem("Jornadas de vacunacion");
@@ -999,21 +999,21 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 										if(capacidadS>capacidadP){
 											for(int j=0;j<capacidadP-3;j++) 
 											{
-												epsAndes.registrarReserva(serv, id, fechaI, -10, (String)object[1], (String) object[4]);
+												epsAndes.registrarReserva(serv, id, (String)object[2], -10, (String)object[1], (String) object[4]);
 											}
 										}
 										else if(capacidadS==capacidadP)
 										{
 											for(int j=0;j<capacidadS-3;j++)
 											{
-												epsAndes.registrarReserva(serv, id, fechaI, -10, (String)object[1], (String) object[4]);
+												epsAndes.registrarReserva(serv, id, (String)object[2], -10, (String)object[1], (String) object[4]);
 											}
 										}
 										else 
 										{
 											for(int j=0;j<capacidadS;j++)
 											{
-												epsAndes.registrarReserva(serv, id, fechaI, -10, (String)object[1], (String) object[4]);
+												epsAndes.registrarReserva(serv, id, (String)object[2], -10, (String)object[1], (String) object[4]);
 											}
 										}
 										capacidadS-=capacidadP-3;
