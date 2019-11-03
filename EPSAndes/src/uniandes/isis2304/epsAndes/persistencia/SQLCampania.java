@@ -103,4 +103,45 @@ class SQLCampania
 		q.setParameters(idServ,idCamp);
 		return q.executeList();
 	}
+
+	public List<String> darServiciosCampania(PersistenceManager pm, String nombre)
+	{
+		Query q = pm.newQuery(SQL, "SELECT ID_SERVICIO  FROM " + pp.darTablaServicioCampania() +" WHERE ID_CAMPANIA=?");
+		q.setParameters(nombre);
+		return (List<String>)q.executeList();
+	}
+
+	public List<Campania> darCampanias(PersistenceManager pm)
+	{
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + pp.darTablaCampania());
+		q.setResultClass(Campania.class);
+		return q.executeList();
+	}
+
+	public long eliminarCampaniaNombre(PersistenceManager pm, String nombre)
+	{
+		Query l = pm.newQuery(SQL, "DELETE FROM " + pp.darTablaAfiliado()+" WHERE IDENTIFICACION=?");
+		l.setParameters(nombre);
+		l.executeUnique();
+
+		Query m = pm.newQuery(SQL, "DELETE FROM " + pp.darTablaUsuario()+" WHERE NUMERO_DOCUMENTO=?");
+		m.setParameters(nombre);
+		m.executeUnique();
+
+		Query k = pm.newQuery(SQL, "DELETE FROM " + pp.darTablaServicioCampania()+" WHERE ID_CAMPANIA=?");
+		k.setParameters(nombre);
+		k.executeUnique();
+
+		Query q = pm.newQuery(SQL, "DELETE FROM " + pp.darTablaCampania()+" WHERE NOMBRE=?");
+		q.setParameters(nombre);
+		return (long) q.executeUnique();
+	}
+
+	public Campania darCampaniaNombre(PersistenceManager pm, String nombre)
+	{
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + pp.darTablaCampania() + " WHERE ID_CAMPANIA=?");
+		q.setResultClass(Campania.class);
+		q.setParameters(nombre);
+		return (Campania) q.executeUnique();
+	}
 }

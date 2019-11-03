@@ -116,6 +116,16 @@ public class EPSAndes
 		return voTipos;
 	}
 	
+	public List<VOCampania> darCampanias()
+	{
+		List<VOCampania>voCampanias=new LinkedList<VOCampania>();
+		for(Campania tb: pp.darCampanias())
+		{
+			voCampanias.add(tb);
+		}
+		return voCampanias;
+	}
+	
 	public long eliminarIPSNombre(String nombre) {
 		return pp.eliminarIPSNombre(nombre);
 	}
@@ -130,6 +140,11 @@ public class EPSAndes
 	public IPS darIPSPorNombre(String nombre)
 	{
 		return pp.darIPSNombre(nombre);
+	}
+	
+	public Campania darCampaniaPorNombre(String nombre)
+	{
+		return pp.darCampaniaNombre(nombre);
 	}
 	public String darExigentes()
 	{
@@ -375,6 +390,11 @@ public class EPSAndes
 	{
 		log.info ("Dando los indices de uso respecto a los demás servicios");
 		return pp.darIndiceDeUso();
+	}
+	
+	public long eliminarCampaniaPorNombre(String nombre)
+	{
+		return pp.eliminarCampaniaPorNombre(nombre);
 	}
 
 	/* ****************************************************************

@@ -9,15 +9,16 @@ public class Campania implements VOCampania{
 	private String fechaInicio;
 	private String fechaFin;
 	private String nombre;
+	private String id_Organizador;
 
 
-
-	public Campania( String fechaInicio,String fechaFin, String nombre) {
+	public Campania(  String nombre,String fechaFin,String fechaInicio, String id_Organizador) {
 		super();
 		this.servicios = new LinkedList<Object[]>();
 		this.fechaInicio = fechaInicio;
 		this.fechaFin = fechaFin;
 		this.nombre = nombre;
+		this.setId_Organizador(id_Organizador);
 	}
 
 	public String getFechaInicio() {
@@ -44,6 +45,20 @@ public class Campania implements VOCampania{
 	}
 	public void setServicios(List<Object []> servicios) {
 		this.servicios = servicios;
+	}
+
+	public String getId_Organizador() {
+		return id_Organizador;
+	}
+
+	@Override
+	public String toString() {
+		return "Campania [servicios=" + servicios + ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin
+				+ ", nombre=" + nombre + ", id_Organizador=" + id_Organizador + "]";
+	}
+
+	public void setId_Organizador(String id_Organizador) {
+		this.id_Organizador = id_Organizador;
 	}
 
 }

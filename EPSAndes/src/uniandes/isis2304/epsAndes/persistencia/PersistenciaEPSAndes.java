@@ -139,6 +139,17 @@ public class PersistenciaEPSAndes
 		tablas.add("RESERVACAMPANIA");
 	}
 
+	public long eliminarCampaniaPorNombre(String nombre)
+	{
+		for (String string : sqlCampania.darServiciosCampania(pmf.getPersistenceManager(),nombre)) {
+			cancelarServicioCampania(nombre, string);
+		}
+		return sqlCampania.eliminarCampaniaNombre(pmf.getPersistenceManager(), nombre);
+	}
+
+	public List<Campania> darCampanias(){
+		return sqlCampania.darCampanias(pmf.getPersistenceManager());
+	}
 	/**
 	 * Constructor privado, que recibe los nombres de las tablas en un objeto Json - Patrón SINGLETON.
 	 *
@@ -778,6 +789,11 @@ public class PersistenciaEPSAndes
 		return sqlIPS.darIPSNombre(pmf.getPersistenceManager(),nombre);
 	}
 
+	public Campania darCampaniaNombre(String nombre)
+	{
+		return sqlCampania.darCampaniaNombre(pmf.getPersistenceManager(),nombre);
+	}
+
 	public List<IPS>darIPS()
 	{
 		return sqlIPS.darIPS(pmf.getPersistenceManager());
@@ -1104,7 +1120,11 @@ public class PersistenciaEPSAndes
 
 
 	public void cancelarServicioCampania(String campania, String servicio){
-		Usuario x=sqlUsuario.darUsuarioPorNombre(pmf.getPersistenceManager(), "Campa"+campania);
+
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx=pm.currentTransaction();
+		try
+		{Usuario x=sqlUsuario.darUsuarioPorNombre(pmf.getPersistenceManager(), "Campa"+campania);
 		List<Object[]> y=sqlCampania.darCampania(pmf.getPersistenceManager(), servicio, campania);
 		List<Object[]> lista=sqlPrestan.darInfoServicioEnRango(pmf.getPersistenceManager(), servicio, (String)y.get(0)[3], (String)y.get(0)[4]);
 		int capacidad=((BigDecimal)y.get(0)[5]).intValue();
@@ -1113,21 +1133,47 @@ public class PersistenciaEPSAndes
 			int insertadas=0;
 			int capacidadP=((BigDecimal)objects[5]).intValue();
 			int capacidadM=((BigDecimal)objects[7]).intValue();
-			System.out.println(capacidadP);
+			System.out.println(capacidad);
+			System.out.println(lista.size());
 			System.out.println(capacidadM);
+			System.out.println(capacidadP);
 
 			if(capacidad+capacidadP<=capacidadM){
 				insertadas=capacidad+capacidadP;
+				tx.begin();
 				sqlPrestan.actualizarCapacidad(pmf.getPersistenceManager(), capacidad+capacidadP,(String)objects[2],servicio);
+				tx.commit();
 			}
 			else{
+				System.out.println("CASO2");
+
 				insertadas=capacidadM-capacidadP;
+				tx.begin();
 				sqlPrestan.actualizarCapacidad(pmf.getPersistenceManager(),capacidadP+insertadas,(String)objects[2],servicio);
+				tx.commit();
+				System.out.println(insertadas+"<<<<<<<<<<<<<<<<<<");
 			}
 			capacidad-=insertadas;
-		}
+			System.out.println(capacidad+">>>>>>>>>>>>>>>>>>>>");
+		}				
+		tx.begin();
 		sqlCita.eliminarCita(pmf.getPersistenceManager(), servicio, x.getNumero_Documento());
 		sqlCampania.eliminarServicioCampania(pmf.getPersistenceManager(), servicio, campania);
+		tx.commit();
+		}
+		catch (Exception e)
+		{
+			//        	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}
 	}
 
 	/**
@@ -1241,7 +1287,7 @@ public class PersistenciaEPSAndes
 			tx.commit();
 
 			log.trace ("Inserción campa�a: " +id + ": " + tuplasInsertadas + " tuplas insertadas");
-			return new Campania(fechaInicio, fechaFin, nombre);
+			return new Campania(nombre, fechaFin, fechaInicio, idOrganizador);
 		}	
 		catch (Exception e)
 		{

@@ -285,7 +285,7 @@ public class InterfazEPSAndesAppDemo extends JFrame implements ActionListener
 			String fechaFin="08-12-18 11:00:00";
 			String fechaIni="06-11-18 06:30:00";
 			String idOrganizador="93345171";
-
+			epsAndes.registrarOrganizadorCampania(idOrganizador, "Smits", "OrganizadorCampania", "je.hernandezr@uniandes.edu.co", "C.C");
 			String nombreIPS= "IPSAndes";
 			String localizacion = "-18,7679039";
 			String id_eps = "EPSAndes";
@@ -337,7 +337,7 @@ public class InterfazEPSAndesAppDemo extends JFrame implements ActionListener
 			boolean errorcampania=false;
 			if( campania == null)
 			{
-				campania = epsAndes.darIPSPorNombre(nombre);
+				campania = epsAndes.darCampaniaPorNombre(nombre);
 				errorcampania = true; 
 			}
 
@@ -362,10 +362,21 @@ public class InterfazEPSAndesAppDemo extends JFrame implements ActionListener
 		} 
 		catch (Exception e) 
 		{
-			//			e.printStackTrace();
+			e.printStackTrace();
 			String resultado = generarMensajeError(e);
 			panelDatos.actualizarInterfaz(resultado);
 		}
+	}
+
+	private String listarCampania (List<VOCampania> lista) 
+	{
+		String resp = "Las Campanias existentes son:\n";
+		int i = 1;
+		for (VOCampania bar : lista)
+		{
+			resp += i++ + ". " + bar.toString() + "\n";
+		}
+		return resp;
 	}
 
 
