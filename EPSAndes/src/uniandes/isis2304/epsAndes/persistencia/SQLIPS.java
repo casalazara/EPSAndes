@@ -1,8 +1,13 @@
 package uniandes.isis2304.epsAndes.persistencia;
 
 
+import java.util.List;
+
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
+
+import uniandes.isis2304.epsAndes.negocio.IPS;
+import uniandes.isis2304.epsAndes.negocio.VOIPS;
 
 /**
  * Clase SQLIPS.
@@ -34,6 +39,23 @@ class SQLIPS
 		this.pp = pp;
 	}
 
+	public List<IPS> darIPS(PersistenceManager pm)
+	{
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + pp.darTablaIps());
+		q.setResultClass(IPS.class);
+		return (List<IPS>) q.executeList();
+	}
+
+	public long eliminarIPSNombre(PersistenceManager pm, String nombre)
+	{
+		Query q = pm.newQuery(SQL, "DELETE FROM " + pp.darTablaRecepcionista_Ips() + " WHERE ID_IPS=?");
+		q.setParameters(nombre);
+		q.executeUnique();
+		Query k = pm.newQuery(SQL, "DELETE FROM " + pp.darTablaIps() + " WHERE NOMBRE=?");
+		k.setParameters(nombre);
+		return (long) k.executeUnique();
+	}
+
 	/**
 	 * Crea y ejecuta la sentencia SQL para adicionar una IPS a la base de datos de EPSAndes.
 	 *
@@ -49,5 +71,11 @@ class SQLIPS
 		q.setParameters(id_IPS,localizacion,nombreEPS);
 		return (long) q.executeUnique();
 	}
-
+	public IPS darIPSNombre(PersistenceManager pm, String nombre) 
+	{
+		Query q = pm.newQuery(SQL, "SELECT * FROM " + pp.darTablaIps() + " WHERE NOMBRE=?");
+		q.setResultClass(IPS.class);
+		q.setParameters(nombre);
+		return ((IPS) q.executeUnique());
+	}
 }

@@ -29,6 +29,7 @@ import uniandes.isis2304.epsAndes.negocio.Rol;
 import uniandes.isis2304.epsAndes.negocio.Servicio;
 import uniandes.isis2304.epsAndes.negocio.Trabajan;
 import uniandes.isis2304.epsAndes.negocio.Usuario;
+import uniandes.isis2304.epsAndes.negocio.VOIPS;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -715,7 +716,7 @@ public class PersistenciaEPSAndes
 				log.trace("El recepcionista es null");
 			}
 			log.trace ("Inserción ips: " + nombreIPS + ": " + tuplasInsertadas + " tuplas insertadas");
-			return new IPS (localizacion, nombreIPS);
+			return new IPS (nombreIPS,localizacion,nombreEPS);
 		}
 		catch (Exception e)
 		{
@@ -776,6 +777,21 @@ public class PersistenciaEPSAndes
 	public List<Object[]> darIndiceDeUso()
 	{
 		return sqlCita.darindiceDeUso(pmf.getPersistenceManager());
+	}
+
+	public IPS darIPSNombre(String nombre)
+	{
+		return sqlIPS.darIPSNombre(pmf.getPersistenceManager(),nombre);
+	}
+
+	public List<IPS>darIPS()
+	{
+		return sqlIPS.darIPS(pmf.getPersistenceManager());
+	}
+
+	public long eliminarIPSNombre(String nombre)
+	{
+		return sqlIPS.eliminarIPSNombre(pmf.getPersistenceManager(),nombre);
 	}
 
 	/**

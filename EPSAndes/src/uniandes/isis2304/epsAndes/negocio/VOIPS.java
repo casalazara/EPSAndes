@@ -42,7 +42,7 @@ public interface VOIPS {
 	 * @return los servicios ofrecidos
 	 */
 	public List<Object[]> getServiciosOfrecidos();
-	
+	public String getId_EPS();
 	/**
 	 * To string.
 	 *

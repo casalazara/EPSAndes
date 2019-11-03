@@ -3,7 +3,7 @@ package uniandes.isis2304.epsAndes.negocio;
 import java.util.LinkedList;
 import java.util.List;
 
- /**
+/**
  * La Class IPS.
  */
 public class IPS implements VOIPS {
@@ -14,6 +14,7 @@ public class IPS implements VOIPS {
 	/** El nombre. */
 	private String nombre;
 
+	private String id_EPS;
 	/** Los recepcionistas. */
 	private List<Object []> recepcionistas;
 
@@ -30,12 +31,13 @@ public class IPS implements VOIPS {
 	 * @param localizacion la localizacion
 	 * @param nombre el nombre
 	 */
-	public IPS(String localizacion, String nombre) {
+	public IPS( String nombre, String localizacion,String id_Eps) {
 		this.localizacion = localizacion;
 		this.nombre = nombre;
 		this.recepcionistas = new LinkedList<Object []> ();
 		this.medicos = new LinkedList<Object []> ();
 		this.serviciosPrestados = new LinkedList<Object []> ();
+		this.id_EPS=id_Eps;
 	}
 
 	/**
@@ -135,7 +137,7 @@ public class IPS implements VOIPS {
 	 */
 	@Override
 	public String toString() {
-		return "IPS [" + ", localizacion=" + localizacion + ", nombre=" + nombre + "]";
+		return "IPS [" + ", localizacion=" + localizacion + ", nombre=" + nombre +", id_Eps="+id_EPS+ "]";
 	}
 
 	/**
@@ -164,6 +166,14 @@ public class IPS implements VOIPS {
 		}
 		resp += "\n\n --- Medicos \n";
 		return resp;
+	}
+
+	public String getId_EPS() {
+		return id_EPS;
+	}
+
+	public void setId_EPS(String id_EPS) {
+		this.id_EPS = id_EPS;
 	}
 
 }

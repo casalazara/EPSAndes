@@ -1,5 +1,6 @@
 package uniandes.isis2304.epsAndes.negocio;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -104,6 +105,20 @@ public class EPSAndes
 	 * @param nombreEPS the nombre EPS
 	 * @return the ips
 	 */
+
+	public List<VOIPS>darIPS()
+	{
+        List<VOIPS> voTipos = new LinkedList<VOIPS> ();
+        for (IPS tb : pp.darIPS())
+        {
+        	voTipos.add (tb);
+        }
+		return voTipos;
+	}
+	
+	public long eliminarIPSNombre(String nombre) {
+		return pp.eliminarIPSNombre(nombre);
+	}
 	public IPS registrarIPS(String localizacion, String nombre,RecepcionistaIPS recepcionistas,String nombreEPS )
 	{
 		log.info ("Adicionando ips " + nombre);
@@ -112,11 +127,15 @@ public class EPSAndes
 		return ips;
 	}
 
+	public IPS darIPSPorNombre(String nombre)
+	{
+		return pp.darIPSNombre(nombre);
+	}
 	public String darExigentes()
 	{
 		return pp.darExigentes();
 	}
-	
+
 	public String darNoMuyDemandados()
 	{
 		return pp.darNoMuyDemandados();
