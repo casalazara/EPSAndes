@@ -948,6 +948,7 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 					String fechaInicio="";
 					String fechaFin="";
 					List<String[]> anadirFin= new LinkedList<String[]>();
+					Afiliado x=null;
 					for(int i=0;i<Integer.parseInt(servicios);i++)
 					{
 						JComboBox<String> nombreSer=new JComboBox<String>();
@@ -983,12 +984,13 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 								tupla[3]=fechaF;
 								anadirFin.add(tupla);
 
-								if (i==0)
+								if (i==0) {
 									fechaInicio=fechaI;
+									 x=epsAndes.registrarAfiliado("Campa"+nombre, "Campa"+nombre, "Afiliado", "Campa"+nombre+"@gmail.com", "C.C",fechaI , "EPSAndes");			
+								}
 								if(i==Integer.parseInt(servicios)-1)
 									fechaFin=fechaF;
 								if(capacidadS<epsAndes.darCantidadServicioEnRango(serv, fechaI, fechaF)){
-									Afiliado x=epsAndes.registrarAfiliado("0", "Campa"+nombre, "Afiliado", "Campa"+nombre+"@gmail.com", "C.C",fechaI , "EPSAndes");			
 									String id=x.getNumero_Documento();
 									List<Object[]>lista=epsAndes.darInfoServicioEnRango(serv, fechaI, fechaF);
 									for (int m=0;m<capacidadS;m++) {

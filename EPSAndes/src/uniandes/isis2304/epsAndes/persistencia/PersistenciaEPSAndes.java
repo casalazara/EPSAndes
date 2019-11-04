@@ -141,10 +141,34 @@ public class PersistenciaEPSAndes
 
 	public long eliminarCampaniaPorNombre(String nombre)
 	{
-		for (String string : sqlCampania.darServiciosCampania(pmf.getPersistenceManager(),nombre)) {
-			cancelarServicioCampania(nombre, string);
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx=pm.currentTransaction();
+		try {
+			for (String string : sqlCampania.darServiciosCampania(pmf.getPersistenceManager(),nombre)) {
+				tx.begin();
+				cancelarServicioCampania(nombre, string);
+				tx.commit();
+			}
+			tx.begin();
+			long rta=sqlCampania.eliminarCampaniaNombre(pmf.getPersistenceManager(), nombre);
+			tx.commit();
+			return rta;
 		}
-		return sqlCampania.eliminarCampaniaNombre(pmf.getPersistenceManager(), nombre);
+		catch (Exception e)
+		{
+			//        	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			return 0;
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}
+
 	}
 
 	public List<Campania> darCampanias(){
@@ -909,22 +933,15 @@ public class PersistenciaEPSAndes
 		Transaction tx=pm.currentTransaction();
 		try
 		{
-			if(nombre.startsWith("Camp") && sqlUsuario.darUsuarioPorNombre(pm, nombre)==null) 
+			if(sqlUsuario.darUsuarioPorId(pm, numero_Documento)==null)
 			{
-				if(numero_Documento.equals("0"))
-					numero_Documento=nextval()+"";
-				if(sqlUsuario.darUsuarioPorId(pm, numero_Documento)==null)
-				{
-					registrarUsuario(numero_Documento, nombre, email, rol, tipo_Documento);
-				}
-				tx.begin();            
-				long tuplasInsertadas = sqlAfiliado.adicionarAfiliado(pm, eps, numero_Documento, fechaNacimiento);
-				tx.commit();
-				log.trace ("Inserción afiliado: " + nombre + ": " + tuplasInsertadas + " tuplas insertadas");
-				return new Afiliado ( eps, numero_Documento, nombre, email, rol, tipo_Documento, fechaNacimiento);
+				registrarUsuario(numero_Documento, nombre, email, rol, tipo_Documento);
 			}
-			else
-				return null;
+			tx.begin();            
+			long tuplasInsertadas = sqlAfiliado.adicionarAfiliado(pm, eps, numero_Documento, fechaNacimiento);
+			tx.commit();
+			log.trace ("Inserción afiliado: " + nombre + ": " + tuplasInsertadas + " tuplas insertadas");
+			return new Afiliado ( eps, numero_Documento, nombre, email, rol, tipo_Documento, fechaNacimiento);
 		}
 		catch (Exception e)
 		{
@@ -1133,10 +1150,6 @@ public class PersistenciaEPSAndes
 			int insertadas=0;
 			int capacidadP=((BigDecimal)objects[5]).intValue();
 			int capacidadM=((BigDecimal)objects[7]).intValue();
-			System.out.println(capacidad);
-			System.out.println(lista.size());
-			System.out.println(capacidadM);
-			System.out.println(capacidadP);
 
 			if(capacidad+capacidadP<=capacidadM){
 				insertadas=capacidad+capacidadP;
@@ -1145,16 +1158,12 @@ public class PersistenciaEPSAndes
 				tx.commit();
 			}
 			else{
-				System.out.println("CASO2");
-
 				insertadas=capacidadM-capacidadP;
 				tx.begin();
 				sqlPrestan.actualizarCapacidad(pmf.getPersistenceManager(),capacidadP+insertadas,(String)objects[2],servicio);
 				tx.commit();
-				System.out.println(insertadas+"<<<<<<<<<<<<<<<<<<");
 			}
 			capacidad-=insertadas;
-			System.out.println(capacidad+">>>>>>>>>>>>>>>>>>>>");
 		}				
 		tx.begin();
 		sqlCita.eliminarCita(pmf.getPersistenceManager(), servicio, x.getNumero_Documento());

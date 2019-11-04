@@ -290,7 +290,7 @@ public class InterfazEPSAndesAppDemo extends JFrame implements ActionListener
 			String localizacion = "-18,7679039";
 			String id_eps = "EPSAndes";
 			RecepcionistaIPS recepcionistas=new RecepcionistaIPS(nombreIPS, "1005755560", "Carlos Salazar", "ca.salazara@uniandes.edu.co", "RecepcionistaIPS", "C.C");
-			VOIPS ips = epsAndes.registrarIPS(localizacion, nombreIPS, recepcionistas, id_eps);
+			epsAndes.registrarIPS(localizacion, nombreIPS, recepcionistas, id_eps);
 
 			epsAndes.registrarServicioDeSaludAPrestar("30", "08:00:00", "06-12-18 08:00:00", "Consultas medicas con medico general", nombreIPS, 12, "Consulta con medico");
 			epsAndes.registrarServicioDeSaludAPrestar("30", "07:00:00", "07-12-18 07:00:00", "Consultas medicas con especialistas", nombreIPS, 15, "Remision con un especialista");
@@ -299,7 +299,7 @@ public class InterfazEPSAndesAppDemo extends JFrame implements ActionListener
 			epsAndes.registrarServicioDeSaludAPrestar("60", "06:30:00", "06-11-18 06:30:00", "Consultas odontologicas", nombreIPS, 13, "Consulta de control");
 			epsAndes.registrarServicioDeSaludAPrestar("15", "06:00:00", "09-11-18 06:00:00","Jornadas de vacunacion", nombreIPS, 14, "Procedimiento medico especializado");
 
-			Afiliado x=epsAndes.registrarAfiliado("0", "Campa"+nombre, "Afiliado", "Campa"+nombre+"@gmail.com", "C.C",fechaIni , "EPSAndes");			
+			Afiliado x=epsAndes.registrarAfiliado("Campa"+nombre, "Campa"+nombre, "Afiliado", "Campa"+nombre+"@gmail.com", "C.C",fechaIni , "EPSAndes");			
 			String id=x.getNumero_Documento();
 
 			for(int i=0;i<7;i++)
