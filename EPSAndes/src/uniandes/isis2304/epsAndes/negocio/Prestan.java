@@ -23,7 +23,10 @@ public class Prestan implements VOPrestan{
 	/** La capacidad. */
 	private int capacidad;
 
+	/** The capacidad max. */
 	private int capacidadMax;
+	
+	/** The cancelada. */
 	private int cancelada;
 
 	/**
@@ -35,6 +38,8 @@ public class Prestan implements VOPrestan{
 	 * @param horaInicio la hora de inicio
 	 * @param dia el dia
 	 * @param capacidad la capacidad
+	 * @param capacidadMax the capacidad max
+	 * @param cancelada the cancelada
 	 */
 	public Prestan(String idIPS, String idServicio,String duracion,String horaInicio, String dia, int capacidad, int capacidadMax, int cancelada) {
 		this.dia = dia;
@@ -172,18 +177,38 @@ public class Prestan implements VOPrestan{
 		this.capacidad = capacidad;
 	}
 
+	/**
+	 * Gets the capacidad max.
+	 *
+	 * @return the capacidad max
+	 */
 	public int getCapacidadMax() {
 		return capacidadMax;
 	}
 
+	/**
+	 * Sets the capacidad max.
+	 *
+	 * @param capacidadMax the new capacidad max
+	 */
 	public void setCapacidadMax(int capacidadMax) {
 		this.capacidadMax = capacidadMax;
 	}
 
+	/**
+	 * Gets the cancelada.
+	 *
+	 * @return the cancelada
+	 */
 	public int getCancelada() {
 		return cancelada;
 	}
 
+	/**
+	 * Sets the cancelada.
+	 *
+	 * @param cancelada the new cancelada
+	 */
 	public void setCancelada(int cancelada) {
 		this.cancelada = cancelada;
 	}

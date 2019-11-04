@@ -76,6 +76,15 @@ class SQLPrestan
 		return (long) q.executeUnique();   
 	}
 
+	/**
+	 * Actualizar capacidad.
+	 *
+	 * @param pm the pm
+	 * @param capacidad the capacidad
+	 * @param fecha the fecha
+	 * @param idServicio the id servicio
+	 * @return the long
+	 */
 	public long actualizarCapacidad(PersistenceManager pm,int capacidad,String fecha,String idServicio)
 	{
 		Query q = pm.newQuery(SQL, "UPDATE " + pp.darTablaPrestan() + " SET CAPACIDAD=? WHERE DIA=? AND ID_SERVICIO=?");
@@ -83,6 +92,17 @@ class SQLPrestan
 		return (long) q.executeUnique();   
 	}
 
+	/**
+	 * Actualizar habilitacion.
+	 *
+	 * @param pm the pm
+	 * @param fechaIni the fecha ini
+	 * @param fechaFin the fecha fin
+	 * @param ips the ips
+	 * @param idServicio the id servicio
+	 * @param habilitacion the habilitacion
+	 * @return the long
+	 */
 	public long actualizarHabilitacion(PersistenceManager pm,String fechaIni,String fechaFin,String ips,String idServicio,int habilitacion)
 	{
 		Query q = pm.newQuery(SQL, "UPDATE " + pp.darTablaPrestan() + " SET CANCELADA=? WHERE (TO_DATE(DIA,'DD-MM-YY HH24:MI:SS') BETWEEN TO_DATE(?,'DD-MM-YY HH24:MI:SS') AND TO_DATE(?,'DD-MM-YY HH24:MI:SS')) AND ID_SERVICIO=? AND ID_IPS=?");
@@ -180,6 +200,15 @@ class SQLPrestan
 		return q.executeList();
 	}
 
+	/**
+	 * Dar capacidad servicio en rango.
+	 *
+	 * @param pm the pm
+	 * @param idSer the id ser
+	 * @param fechaInic the fecha inic
+	 * @param fechaFin the fecha fin
+	 * @return the long
+	 */
 	public long darCapacidadServicioEnRango(PersistenceManager pm, String idSer, String fechaInic, String fechaFin)
 	{
 		String sql="SELECT SUM(CAPACIDAD) FROM "+pp.darTablaPrestan()+" tp  WHERE ID_SERVICIO=? AND TO_DATE(tp.DIA,'DD-MM-YY HH24:MI:SS') BETWEEN TO_DATE(?,'DD-MM-YY HH24:MI:SS') AND TO_DATE(?,'DD-MM-YY HH24:MI:SS') AND CANCELADA=0";
@@ -189,6 +218,15 @@ class SQLPrestan
 		return rta==null?0:rta.longValue();
 	}
 
+	/**
+	 * Dar info servicio en rango.
+	 *
+	 * @param pm the pm
+	 * @param idSer the id ser
+	 * @param fechaInic the fecha inic
+	 * @param fechaFin the fecha fin
+	 * @return the list
+	 */
 	public List<Object[]> darInfoServicioEnRango(PersistenceManager pm, String idSer, String fechaInic, String fechaFin)
 	{
 		String sql="SELECT * FROM "+pp.darTablaPrestan()+" tp  WHERE ID_SERVICIO=? AND TO_DATE(tp.DIA,'DD-MM-YY HH24:MI:SS') BETWEEN TO_DATE(?,'DD-MM-YY HH24:MI:SS') AND TO_DATE(?,'DD-MM-YY HH24:MI:SS') AND CANCELADA=0";
@@ -197,6 +235,15 @@ class SQLPrestan
 		return q.executeList();
 	}
 
+	/**
+	 * Analizar op semana demanda.
+	 *
+	 * @param pm the pm
+	 * @param servicio the servicio
+	 * @param unidad the unidad
+	 * @param orden the orden
+	 * @return the list
+	 */
 	public List<Object[]> analizarOpSemanaDemanda(PersistenceManager pm, String servicio,String unidad,String orden)
 	{
 		String sql="SELECT SUM(CAPACIDADMAX-CAPACIDAD) AS DIFERENCIA, to_number(to_char(TO_DATE(tp.DIA,'DD-MM-YY HH24:MI:SS'), '"+unidad+"')) SEMANA FROM "+ pp.darTablaPrestan();
@@ -208,6 +255,12 @@ class SQLPrestan
 		return q.executeList();	
 	}
 
+	/**
+	 * Dar no muy demandados.
+	 *
+	 * @param pm the pm
+	 * @return the list
+	 */
 	public List<String> darNoMuyDemandados(PersistenceManager pm)
 	{
 		String sql="SELECT DISTINCT ID_SERVICIO FROM "+
@@ -220,6 +273,15 @@ class SQLPrestan
 		return(List<String>) q.executeList();	
 	}
 
+	/**
+	 * Analizar op semana actividad.
+	 *
+	 * @param pm the pm
+	 * @param servicio the servicio
+	 * @param unidad the unidad
+	 * @param orden the orden
+	 * @return the list
+	 */
 	public List<Object[]> analizarOpSemanaActividad(PersistenceManager pm, String servicio,String unidad,String orden)
 	{
 		String sql="SELECT COUNT (*) CUMPLIDAS,to_number(to_char(TO_DATE(tc.FECHA,'DD-MM-YY HH24:MI:SS'), '"+unidad+"')) FECHA "+

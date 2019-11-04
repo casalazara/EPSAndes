@@ -42,6 +42,12 @@ public interface VOIPS {
 	 * @return los servicios ofrecidos
 	 */
 	public List<Object[]> getServiciosOfrecidos();
+	
+	/**
+	 * Gets the id EPS.
+	 *
+	 * @return the id EPS
+	 */
 	public String getId_EPS();
 	/**
 	 * To string.

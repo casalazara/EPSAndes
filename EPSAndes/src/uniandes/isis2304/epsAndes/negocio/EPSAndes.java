@@ -89,6 +89,16 @@ public class EPSAndes
 	}
 
 
+	/**
+	 * Registrar organizador campania.
+	 *
+	 * @param numero_Documento the numero documento
+	 * @param nombre the nombre
+	 * @param rol the rol
+	 * @param email the email
+	 * @param tipo_Documento the tipo documento
+	 * @return the organizador campania
+	 */
 	public OrganizadorCampania registrarOrganizadorCampania(String numero_Documento,String nombre, String rol, String email, String tipo_Documento)
 	{
 		log.info ("Adicionando afiliado " + nombre);
@@ -96,13 +106,10 @@ public class EPSAndes
 		log.info ("adicionado el organizador de campania: " + organizadorCampania);
 		return organizadorCampania;
 	}
+	
 	/**
 	 * Registrar IPS.
 	 *
-	 * @param localizacion the localizacion
-	 * @param nombre the nombre
-	 * @param recepcionistas the recepcionistas
-	 * @param nombreEPS the nombre EPS
 	 * @return the ips
 	 */
 
@@ -116,6 +123,11 @@ public class EPSAndes
 		return voTipos;
 	}
 	
+	/**
+	 * Dar campanias.
+	 *
+	 * @return the list
+	 */
 	public List<VOCampania> darCampanias()
 	{
 		List<VOCampania>voCampanias=new LinkedList<VOCampania>();
@@ -126,9 +138,25 @@ public class EPSAndes
 		return voCampanias;
 	}
 	
+	/**
+	 * Eliminar IPS nombre.
+	 *
+	 * @param nombre the nombre
+	 * @return the long
+	 */
 	public long eliminarIPSNombre(String nombre) {
 		return pp.eliminarIPSNombre(nombre);
 	}
+	
+	/**
+	 * Registrar IPS.
+	 *
+	 * @param localizacion the localizacion
+	 * @param nombre the nombre
+	 * @param recepcionistas the recepcionistas
+	 * @param nombreEPS the nombre EPS
+	 * @return the ips
+	 */
 	public IPS registrarIPS(String localizacion, String nombre,RecepcionistaIPS recepcionistas,String nombreEPS )
 	{
 		log.info ("Adicionando ips " + nombre);
@@ -137,20 +165,43 @@ public class EPSAndes
 		return ips;
 	}
 
+	/**
+	 * Dar IPS por nombre.
+	 *
+	 * @param nombre the nombre
+	 * @return the ips
+	 */
 	public IPS darIPSPorNombre(String nombre)
 	{
 		return pp.darIPSNombre(nombre);
 	}
 	
+	/**
+	 * Dar campania por nombre.
+	 *
+	 * @param nombre the nombre
+	 * @return the campania
+	 */
 	public Campania darCampaniaPorNombre(String nombre)
 	{
 		return pp.darCampaniaNombre(nombre);
 	}
+	
+	/**
+	 * Dar exigentes.
+	 *
+	 * @return the string
+	 */
 	public String darExigentes()
 	{
 		return pp.darExigentes();
 	}
 
+	/**
+	 * Dar no muy demandados.
+	 *
+	 * @return the string
+	 */
 	public String darNoMuyDemandados()
 	{
 		return pp.darNoMuyDemandados();
@@ -194,17 +245,41 @@ public class EPSAndes
 		return usuario;
 	}
 
+	/**
+	 * Req C 6.
+	 *
+	 * @param servicio the servicio
+	 * @param unidad the unidad
+	 * @return the string
+	 */
 	public String reqC6(String servicio, String unidad)
 	{
 		return pp.reqC6(servicio, unidad);
 	}
 
 
+	/**
+	 * Des habilitar.
+	 *
+	 * @param fechaIni the fecha ini
+	 * @param fechaFin the fecha fin
+	 * @param ips the ips
+	 * @param idServicio the id servicio
+	 * @return the string
+	 */
 	public String desHabilitar(String fechaIni,String fechaFin,String ips,String idServicio)
 	{
 		return pp.deshabilitarServicios(fechaIni, fechaFin, ips, idServicio);
 	}
 
+	/**
+	 * Habilitar.
+	 *
+	 * @param fechaIni the fecha ini
+	 * @param fechaFin the fecha fin
+	 * @param ips the ips
+	 * @param idServicio the id servicio
+	 */
 	public void habilitar(String fechaIni,String fechaFin,String ips,String idServicio)
 	{
 		pp.habilitarServicios(fechaIni, fechaFin, ips, idServicio);
@@ -265,11 +340,20 @@ public class EPSAndes
 		return cita;
 	}
 
+	/**
+	 * Registrar serv camp.
+	 *
+	 * @param idServ the id serv
+	 * @param idCamp the id camp
+	 * @param capacidadF the capacidad F
+	 * @param fechaIni the fecha ini
+	 * @param fechaFin the fecha fin
+	 */
 	public void registrarServCamp(String idServ, String idCamp, int capacidadF,String fechaIni, String fechaFin)
 	{
-		log.info ("Adicionando el servicio de campaña: " + idServ);
+		log.info ("Adicionando el servicio de campana: " + idServ);
 		pp.registrarServCamp(capacidadF, idServ, idCamp,fechaIni,fechaFin);
-		log.info ("adicionado el servicio de campaña: " + idServ);
+		log.info ("adicionado el servicio de campana: " + idServ);
 	}
 
 	/**
@@ -277,6 +361,8 @@ public class EPSAndes
 	 *
 	 * @param idCita the id cita
 	 * @param id_Recepcionista the id recepcionista
+	 * @param id_servicio the id servicio
+	 * @param id_paciente the id paciente
 	 */
 	public void registrarPrestacion(long idCita, String id_Recepcionista,String id_servicio, String id_paciente)
 	{
@@ -297,6 +383,11 @@ public class EPSAndes
 		return pp.darPrestanDisponibles(idServicio);
 	}
 
+	/**
+	 * Dar tabla cita.
+	 *
+	 * @return the string
+	 */
 	public String darTablaCita()
 	{
 		return pp.darTablaCita();
@@ -361,21 +452,52 @@ public class EPSAndes
 		return pp.mostrarServiciosPorCaracteristicas(idRecepcionista, tipo, veces, fechaInic, fechaFin);
 	}
 
+	/**
+	 * Dar info servicio en rango.
+	 *
+	 * @param servicio the servicio
+	 * @param fechaInicio the fecha inicio
+	 * @param fechaFin the fecha fin
+	 * @return the list
+	 */
 	public List<Object[]> darInfoServicioEnRango(String servicio, String fechaInicio,String fechaFin)
 	{
 		return pp.darInfoServicioEnRango(servicio, fechaInicio, fechaFin);
 	}
 
+	/**
+	 * Dar cantidad servicio en rango.
+	 *
+	 * @param servicio the servicio
+	 * @param fechaInicio the fecha inicio
+	 * @param fechaFin the fecha fin
+	 * @return the long
+	 */
 	public Long darCantidadServicioEnRango(String servicio, String fechaInicio,String fechaFin)
 	{
 		return pp.darCantidadServicioEnRango(servicio, fechaInicio, fechaFin);
 	}
 
+	/**
+	 * Cancelar servicio campania.
+	 *
+	 * @param campania the campania
+	 * @param servicio the servicio
+	 */
 	public void cancelarServicioCampania(String campania,String servicio)
 	{
 		pp.cancelarServicioCampania(campania, servicio);
 	}
 
+	/**
+	 * Registrar campania.
+	 *
+	 * @param nombre the nombre
+	 * @param fechaFin the fecha fin
+	 * @param fechaInicio the fecha inicio
+	 * @param idOrganizador the id organizador
+	 * @return the campania
+	 */
 	public Campania registrarCampania(String nombre, String fechaFin, String fechaInicio,String idOrganizador)
 	{
 		return pp.registrarCampania(nombre, fechaFin, fechaInicio, idOrganizador);
@@ -392,6 +514,12 @@ public class EPSAndes
 		return pp.darIndiceDeUso();
 	}
 	
+	/**
+	 * Eliminar campania por nombre.
+	 *
+	 * @param nombre the nombre
+	 * @return the long
+	 */
 	public long eliminarCampaniaPorNombre(String nombre)
 	{
 		return pp.eliminarCampaniaPorNombre(nombre);

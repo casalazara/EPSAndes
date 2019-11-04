@@ -233,6 +233,9 @@ public class InterfazEPSAndesAppDemo extends JFrame implements ActionListener
 		return this.epsAndes;
 	}
 
+	/**
+	 * Demo IPS.
+	 */
 	public void demoIPS( )
 	{
 		try 
@@ -251,13 +254,13 @@ public class InterfazEPSAndesAppDemo extends JFrame implements ActionListener
 
 			List<VOIPS> lista = epsAndes.darIPS();
 			long eliminados = epsAndes.eliminarIPSNombre(ips.getNombre());
-			String resultado = "Demo de creación y listado de IPS\n\n";
+			String resultado = "Demo de creacin y listado de IPS\n\n";
 			resultado += "\n\n************ Generando datos de prueba ************ \n";
 			if (errorTipoIPS)
 			{
 				resultado += "*** Exception creando IPS !!\n";
-				resultado += "*** Es probable que la IPS ya existiera y hay restricción de UNICIDAD sobre el nombre de IPS\n";
-				resultado += "*** Revise el log de EPSAndes para más detalles\n";
+				resultado += "*** Es probable que la IPS ya existiera y hay restriccion de UNICIDAD sobre el nombre de IPS\n";
+				resultado += "*** Revise el log de EPSAndes para mas detalles\n";
 			}
 			resultado += "Adicionado la IPS con nombre: " + nombre + "\n";
 			resultado += "\n\n************ Ejecutando la demo ************ \n";
@@ -277,6 +280,9 @@ public class InterfazEPSAndesAppDemo extends JFrame implements ActionListener
 	}
 
 
+	/**
+	 * Demo campana.
+	 */
 	public void demoCampana( )
 	{
 		try 
@@ -343,13 +349,13 @@ public class InterfazEPSAndesAppDemo extends JFrame implements ActionListener
 
 			List<VOCampania> lista = epsAndes.darCampanias();
 			long eliminados = epsAndes.eliminarCampaniaPorNombre(campania.getNombre());
-			String resultado = "Demo de creación y listado de Campanias\n\n";
+			String resultado = "Demo de creacion y listado de Campanias\n\n";
 			resultado += "\n\n************ Generando datos de prueba ************ \n";
 			if (errorcampania)
 			{
 				resultado += "*** Exception creando campania !!\n";
-				resultado += "*** Es probable que la campania ya existiera y hay restricción de UNICIDAD sobre el nombre de campania\n";
-				resultado += "*** Revise el log de EPSAndes para más detalles\n";
+				resultado += "*** Es probable que la campania ya existiera y hay restriccion de UNICIDAD sobre el nombre de campania\n";
+				resultado += "*** Revise el log de EPSAndes para mas detalles\n";
 			}
 			resultado += "Adicionado la Campania con nombre: " + nombre + "\n";
 			resultado += "\n\n************ Ejecutando la demo ************ \n";
@@ -368,6 +374,12 @@ public class InterfazEPSAndesAppDemo extends JFrame implements ActionListener
 		}
 	}
 
+	/**
+	 * Listar campania.
+	 *
+	 * @param lista the lista
+	 * @return the string
+	 */
 	private String listarCampania (List<VOCampania> lista) 
 	{
 		String resp = "Las Campanias existentes son:\n";
@@ -380,6 +392,12 @@ public class InterfazEPSAndesAppDemo extends JFrame implements ActionListener
 	}
 
 
+	/**
+	 * Listar IPS.
+	 *
+	 * @param lista the lista
+	 * @return the string
+	 */
 	private String listarIPS (List<VOIPS> lista) 
 	{
 		String resp = "Las IPS existentes son:\n";

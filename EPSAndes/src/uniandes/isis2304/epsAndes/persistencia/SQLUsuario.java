@@ -72,6 +72,13 @@ class SQLUsuario
 		return (Usuario) q.executeUnique();
 	}
 	
+	/**
+	 * Dar usuario por nombre.
+	 *
+	 * @param pm the pm
+	 * @param nombre the nombre
+	 * @return the usuario
+	 */
 	public Usuario darUsuarioPorNombre (PersistenceManager pm, String nombre) 
 	{
 		Query q = pm.newQuery(SQL, "SELECT * FROM " + pp.darTablaUsuario() + " WHERE NOMBRE = ?");

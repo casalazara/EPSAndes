@@ -14,6 +14,7 @@ public class IPS implements VOIPS {
 	/** El nombre. */
 	private String nombre;
 
+	/** The id EPS. */
 	private String id_EPS;
 	/** Los recepcionistas. */
 	private List<Object []> recepcionistas;
@@ -28,8 +29,9 @@ public class IPS implements VOIPS {
 	/**
 	 * Instancia una nueva ips.
 	 *
-	 * @param localizacion la localizacion
 	 * @param nombre el nombre
+	 * @param localizacion la localizacion
+	 * @param id_Eps the id eps
 	 */
 	public IPS( String nombre, String localizacion,String id_Eps) {
 		this.localizacion = localizacion;
@@ -168,10 +170,20 @@ public class IPS implements VOIPS {
 		return resp;
 	}
 
+	/**
+	 * Gets the id EPS.
+	 *
+	 * @return the id EPS
+	 */
 	public String getId_EPS() {
 		return id_EPS;
 	}
 
+	/**
+	 * Sets the id EPS.
+	 *
+	 * @param id_EPS the new id EPS
+	 */
 	public void setId_EPS(String id_EPS) {
 		this.id_EPS = id_EPS;
 	}

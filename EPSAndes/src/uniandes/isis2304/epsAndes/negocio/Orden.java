@@ -14,8 +14,12 @@ public class Orden implements VOOrden{
 	/** El medico. */
 	private String id_Medico;
 
+	/** The nom servicio. */
 	private String nom_Servicio;
 
+	/**
+	 * Instantiates a new orden.
+	 */
 	public Orden()
 	{
 		this.id = 0;
@@ -27,9 +31,10 @@ public class Orden implements VOOrden{
 	/**
 	 * Instancia una nueva orden.
 	 *
-	 * @param id el id
 	 * @param afiliado el afiliado
 	 * @param medico el medico
+	 * @param id el id
+	 * @param nombreSer the nombre ser
 	 */
 	public Orden(String afiliado, String medico,long id, String nombreSer) {
 		this.id =id;
@@ -102,10 +107,20 @@ public class Orden implements VOOrden{
 		return "Orden [afiliado=" + id_Afiliado + ", medico=" + id_Medico +", id="+id+"]";
 	}
 
+	/**
+	 * Gets the nom servicio.
+	 *
+	 * @return the nom servicio
+	 */
 	public String getNom_Servicio() {
 		return nom_Servicio;
 	}
 
+	/**
+	 * Sets the nom servicio.
+	 *
+	 * @param nombreServicio the new nom servicio
+	 */
 	public void setNom_Servicio(String nombreServicio) {
 		this.nom_Servicio = nombreServicio;
 	}

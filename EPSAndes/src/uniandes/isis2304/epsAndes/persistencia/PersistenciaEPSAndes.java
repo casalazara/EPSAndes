@@ -100,8 +100,10 @@ public class PersistenciaEPSAndes
 	/** Atributo para el acceso a la tabla VISITAN de la base de datos. */
 	private SQLRol sqlRol;
 
+	/** The sql campania. */
 	private SQLCampania sqlCampania;
 
+	/** The sql organizador campania. */
 	private SQLOrganizadorCampania sqlOrganizadorCampania;
 
 	/* ****************************************************************
@@ -139,6 +141,12 @@ public class PersistenciaEPSAndes
 		tablas.add("RESERVACAMPANIA");
 	}
 
+	/**
+	 * Eliminar campania por nombre.
+	 *
+	 * @param nombre the nombre
+	 * @return the long
+	 */
 	public long eliminarCampaniaPorNombre(String nombre)
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
@@ -171,6 +179,11 @@ public class PersistenciaEPSAndes
 
 	}
 
+	/**
+	 * Dar campanias.
+	 *
+	 * @return the list
+	 */
 	public List<Campania> darCampanias(){
 		return sqlCampania.darCampanias(pmf.getPersistenceManager());
 	}
@@ -436,16 +449,31 @@ public class PersistenciaEPSAndes
 		return tablas.get (15);
 	}
 
+	/**
+	 * Dar tabla organizador campania.
+	 *
+	 * @return the string
+	 */
 	public String darTablaOrganizadorCampania()
 	{
 		return tablas.get(16);
 	}
 
+	/**
+	 * Dar tabla campania.
+	 *
+	 * @return the string
+	 */
 	public String darTablaCampania()
 	{
 		return tablas.get(17);
 	}
 
+	/**
+	 * Dar tabla servicio campania.
+	 *
+	 * @return the string
+	 */
 	public String darTablaServicioCampania()
 	{
 		return tablas.get(18);
@@ -527,6 +555,15 @@ public class PersistenciaEPSAndes
 	 *****************************************************************/
 
 
+	/**
+	 * Registrar serv camp.
+	 *
+	 * @param capacidadF the capacidad F
+	 * @param idServ the id serv
+	 * @param idCamp the id camp
+	 * @param fechaIni the fecha ini
+	 * @param fechaFin the fecha fin
+	 */
 	public void registrarServCamp(int capacidadF, String idServ, String idCamp,String fechaIni,String fechaFin)
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
@@ -554,20 +591,27 @@ public class PersistenciaEPSAndes
 		}
 	}
 
+	/**
+	 * Req C 6.
+	 *
+	 * @param servicio the servicio
+	 * @param unidad the unidad
+	 * @return the string
+	 */
 	public String reqC6(String servicio, String unidad)
 	{
 		String u="";
 		if(unidad.equals("WW"))
 			u="Semana";
 		else if(unidad.equals("YY"))
-			u="Año";
+			u="Anio";
 		else
 			u="Mes";
 
 		List<Object[]>listaDesc=sqlPrestan.analizarOpSemanaDemanda(pmf.getPersistenceManager(), servicio, unidad, "DESC");
 		List<Object[]>listaAsc=sqlPrestan.analizarOpSemanaDemanda(pmf.getPersistenceManager(), servicio, unidad, "ASC");
 		List<Object[]>listaDescAct=sqlPrestan.analizarOpSemanaActividad(pmf.getPersistenceManager(), servicio, unidad, "DESC");
-		String mensaje="--- Temporadas más demandadas ---\n";
+		String mensaje="--- Temporadas mas demandadas ---\n";
 		for (Object[] objects : listaDesc) {
 			mensaje+="Demanda: "+((BigDecimal)objects[0]).intValue()+" "+u+": "+((BigDecimal)objects[1]).intValue()+"\n";
 		}
@@ -575,12 +619,22 @@ public class PersistenciaEPSAndes
 		for (Object[] objects : listaAsc) {
 			mensaje+="Demanda: "+((BigDecimal)objects[0]).intValue()+" "+u+": "+((BigDecimal)objects[1]).intValue()+"\n";
 		}
-		mensaje+="--- Temporadas más activas ---\n";
+		mensaje+="--- Temporadas mas activas ---\n";
 		for (Object[] objects : listaDescAct) {
 			mensaje+="Actividad: "+((BigDecimal)objects[0]).intValue()+" "+u+": "+((BigDecimal)objects[1]).intValue()+"\n";
 		}
 		return mensaje;
 	}
+	
+	/**
+	 * Deshabilitar servicios.
+	 *
+	 * @param fechaIni the fecha ini
+	 * @param fechaFin the fecha fin
+	 * @param ips the ips
+	 * @param idServicio the id servicio
+	 * @return the string
+	 */
 	public String deshabilitarServicios(String fechaIni,String fechaFin,String ips,String idServicio)
 	{
 		String mensaje="";
@@ -619,6 +673,14 @@ public class PersistenciaEPSAndes
 		return mensaje;
 	}
 
+	/**
+	 * Habilitar servicios.
+	 *
+	 * @param fechaIni the fecha ini
+	 * @param fechaFin the fecha fin
+	 * @param ips the ips
+	 * @param idServicio the id servicio
+	 */
 	public void habilitarServicios(String fechaIni,String fechaFin,String ips,String idServicio)
 	{
 		sqlPrestan.actualizarHabilitacion(pmf.getPersistenceManager(), fechaIni, fechaFin, ips, idServicio, 0);
@@ -808,21 +870,44 @@ public class PersistenciaEPSAndes
 		return sqlCita.darindiceDeUso(pmf.getPersistenceManager());
 	}
 
+	/**
+	 * Dar IPS nombre.
+	 *
+	 * @param nombre the nombre
+	 * @return the ips
+	 */
 	public IPS darIPSNombre(String nombre)
 	{
 		return sqlIPS.darIPSNombre(pmf.getPersistenceManager(),nombre);
 	}
 
+	/**
+	 * Dar campania nombre.
+	 *
+	 * @param nombre the nombre
+	 * @return the campania
+	 */
 	public Campania darCampaniaNombre(String nombre)
 	{
 		return sqlCampania.darCampaniaNombre(pmf.getPersistenceManager(),nombre);
 	}
 
+	/**
+	 * Dar IPS.
+	 *
+	 * @return the list
+	 */
 	public List<IPS>darIPS()
 	{
 		return sqlIPS.darIPS(pmf.getPersistenceManager());
 	}
 
+	/**
+	 * Eliminar IPS nombre.
+	 *
+	 * @param nombre the nombre
+	 * @return the long
+	 */
 	public long eliminarIPSNombre(String nombre)
 	{
 		return sqlIPS.eliminarIPSNombre(pmf.getPersistenceManager(),nombre);
@@ -879,6 +964,16 @@ public class PersistenciaEPSAndes
 	}
 
 
+	/**
+	 * Registrar organizador campania.
+	 *
+	 * @param numero_Documento the numero documento
+	 * @param nombre the nombre
+	 * @param email the email
+	 * @param rol the rol
+	 * @param tipo_Documento the tipo documento
+	 * @return the organizador campania
+	 */
 	public OrganizadorCampania registrarOrganizadorCampania(String numero_Documento, String nombre, String email,String rol, String tipo_Documento)
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
@@ -1136,6 +1231,12 @@ public class PersistenciaEPSAndes
 	}
 
 
+	/**
+	 * Cancelar servicio campania.
+	 *
+	 * @param campania the campania
+	 * @param servicio the servicio
+	 */
 	public void cancelarServicioCampania(String campania, String servicio){
 
 		PersistenceManager pm = pmf.getPersistenceManager();
@@ -1250,6 +1351,14 @@ public class PersistenciaEPSAndes
 		}
 	}
 
+	/**
+	 * Dar cantidad servicio en rango.
+	 *
+	 * @param servicio the servicio
+	 * @param fechaInic the fecha inic
+	 * @param fechaFin the fecha fin
+	 * @return the long
+	 */
 	public long darCantidadServicioEnRango(String servicio, String fechaInic, String fechaFin)
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
@@ -1278,12 +1387,29 @@ public class PersistenciaEPSAndes
 		}
 	}
 
+	/**
+	 * Dar info servicio en rango.
+	 *
+	 * @param servicio the servicio
+	 * @param fechaInic the fecha inic
+	 * @param fechaFin the fecha fin
+	 * @return the list
+	 */
 	public List<Object[]> darInfoServicioEnRango(String servicio, String fechaInic, String fechaFin)
 	{
 		return sqlPrestan.darInfoServicioEnRango(pmf.getPersistenceManager(), servicio, fechaInic, fechaFin);
 	}
 
 
+	/**
+	 * Registrar campania.
+	 *
+	 * @param nombre the nombre
+	 * @param fechaFin the fecha fin
+	 * @param fechaInicio the fecha inicio
+	 * @param idOrganizador the id organizador
+	 * @return the campania
+	 */
 	public Campania registrarCampania( String nombre, String fechaFin, String fechaInicio,String idOrganizador)
 	{
 		PersistenceManager pm = pmf.getPersistenceManager();
@@ -1295,7 +1421,7 @@ public class PersistenciaEPSAndes
 			long tuplasInsertadas = sqlCampania.registrarCampania(pm, nombre, fechaFin, fechaInicio, idOrganizador);
 			tx.commit();
 
-			log.trace ("InserciÃ³n campaña: " +id + ": " + tuplasInsertadas + " tuplas insertadas");
+			log.trace ("Insercion campania: " +id + ": " + tuplasInsertadas + " tuplas insertadas");
 			return new Campania(nombre, fechaFin, fechaInicio, idOrganizador);
 		}	
 		catch (Exception e)
@@ -1320,6 +1446,8 @@ public class PersistenciaEPSAndes
 	 *
 	 * @param idCita el id cita
 	 * @param id_Recepcionista el id recepcionistan
+	 * @param id_servicio the id servicio
+	 * @param id_paciente the id paciente
 	 */
 	public void registrarPrestacion(long idCita,String id_Recepcionista,String id_servicio,String id_paciente)
 	{
@@ -1349,16 +1477,37 @@ public class PersistenciaEPSAndes
 		}
 	}
 
+	/**
+	 * Analizar op semana actividad asc.
+	 *
+	 * @param servicio the servicio
+	 * @param unidad the unidad
+	 * @return the list
+	 */
 	public List<Object[]> analizarOpSemanaActividadAsc( String servicio,String unidad)
 	{
 		return sqlPrestan.analizarOpSemanaActividad(pmf.getPersistenceManager(), servicio, unidad, "ASC");
 	}
 
+	/**
+	 * Analizar op semana actividad desc.
+	 *
+	 * @param servicio the servicio
+	 * @param unidad the unidad
+	 * @return the list
+	 */
 	public List<Object[]> analizarOpSemanaActividadDesc( String servicio,String unidad)
 	{
 		return sqlPrestan.analizarOpSemanaActividad(pmf.getPersistenceManager(), servicio, unidad, "DESC");
 	}
 
+	/**
+	 * Analizar op semana demana desc.
+	 *
+	 * @param servicio the servicio
+	 * @param unidad the unidad
+	 * @return the list
+	 */
 	public List<Object[]> analizarOpSemanaDemanaDesc( String servicio,String unidad)
 	{
 		return sqlPrestan.analizarOpSemanaDemanda(pmf.getPersistenceManager(), servicio, unidad, "DESC");
@@ -1373,6 +1522,11 @@ public class PersistenciaEPSAndes
 		return sqlUtil.limpiarEPSAndes(pmf.getPersistenceManager());
 	}
 
+	/**
+	 * Dar exigentes.
+	 *
+	 * @return the string
+	 */
 	public String darExigentes()
 	{
 		List<Object[]> exigentes=sqlCita.darExigentes(pmf.getPersistenceManager());
@@ -1382,12 +1536,17 @@ public class PersistenciaEPSAndes
 		else {
 			mensaje="Se encontraron exigentes:\n";
 			for (Object[] objects : exigentes) {
-				mensaje+="Cédula: "+(String)objects[0]+" tipos diferentes: "+((BigDecimal)objects[1]).intValue()+" servicios: "+((BigDecimal)objects[2]).intValue()+"\n";
+				mensaje+="Cedula: "+(String)objects[0]+" tipos diferentes: "+((BigDecimal)objects[1]).intValue()+" servicios: "+((BigDecimal)objects[2]).intValue()+"\n";
 			}
 		}
 		return mensaje;
 	}
 
+	/**
+	 * Dar no muy demandados.
+	 *
+	 * @return the string
+	 */
 	public String darNoMuyDemandados()
 	{
 		String mensaje="";

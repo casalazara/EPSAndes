@@ -84,7 +84,11 @@ class SQLServicio
 	 * Mostrar servicios por caracteristicas.
 	 *
 	 * @param pm the pm
-	 * @param caracteristicas the caracteristicas
+	 * @param idRecepcionista the id recepcionista
+	 * @param tipo the tipo
+	 * @param veces the veces
+	 * @param fechaInic the fecha inic
+	 * @param fechaFin the fecha fin
 	 * @return the list
 	 */
 	public List<Object[]> mostrarServiciosPorCaracteristicas(PersistenceManager pm,String idRecepcionista,String tipo, int veces,String fechaInic, String fechaFin)

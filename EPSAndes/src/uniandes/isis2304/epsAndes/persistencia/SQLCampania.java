@@ -45,13 +45,10 @@ class SQLCampania
 	 * Crea y ejecuta la sentencia SQL para adicionar una CITA a la base de datos de EPSAndes.
 	 *
 	 * @param pm - El manejador de persistencia
-	 * @param cumplida el estado cumplida
-	 * @param id el id
-	 * @param fecha la fecha
-	 * @param id_Servicio el id servicio
-	 * @param id_Afiliado el id afiliado
-	 * @param id_Recepcionista el id recepcionista
-	 * @param hora la hora
+	 * @param nombre the nombre
+	 * @param fechaFin the fecha fin
+	 * @param fechaInicio the fecha inicio
+	 * @param idOrganizador the id organizador
 	 * @return EL número de tuplas insertadas
 	 */
 	//	public long crearCampania(PersistenceManager pm, String nada) 
@@ -76,6 +73,17 @@ class SQLCampania
 		return (long) q.executeUnique();   
 	}
 
+	/**
+	 * Registrar serv camp.
+	 *
+	 * @param pm the pm
+	 * @param capacidadF the capacidad F
+	 * @param idServ the id serv
+	 * @param idCamp the id camp
+	 * @param fechaIni the fecha ini
+	 * @param fechaFin the fecha fin
+	 * @return the long
+	 */
 	public long registrarServCamp(PersistenceManager pm, int capacidadF, String idServ, String idCamp,String fechaIni,String fechaFin)
 	{
 		Query q = pm.newQuery(SQL, "INSERT INTO " + pp.darTablaServicioCampania()+ " (CAPACIDADF,ID_SERVICIO,ID_CAMPANIA,CAPACIDADINI,FECHAINI,FECHAFIN) VALUES (?,?,?,?,?,?)");
@@ -83,6 +91,14 @@ class SQLCampania
 		return (long) q.executeUnique();   
 	}
 
+	/**
+	 * Eliminar servicio campania.
+	 *
+	 * @param pm the pm
+	 * @param idServ the id serv
+	 * @param idCamp the id camp
+	 * @return the long
+	 */
 	public long eliminarServicioCampania(PersistenceManager pm,String idServ, String idCamp)
 	{
 		Query q = pm.newQuery(SQL, "DELETE FROM " + pp.darTablaServicioCampania()+ " WHERE ID_SERVICIO=? AND ID_CAMPANIA=?");
@@ -90,6 +106,14 @@ class SQLCampania
 		return (long) q.executeUnique();   
 	}
 
+	/**
+	 * Dar capacidad.
+	 *
+	 * @param pm the pm
+	 * @param idServ the id serv
+	 * @param idCamp the id camp
+	 * @return the big decimal
+	 */
 	public BigDecimal darCapacidad(PersistenceManager pm,String idServ, String idCamp)
 	{
 		Query q = pm.newQuery(SQL, "SELECT CAPACIDADINI FROM " + pp.darTablaServicioCampania() + " WHERE ID_SERVICIO=? AND ID_CAMPANIA=?");
@@ -97,6 +121,14 @@ class SQLCampania
 		return (BigDecimal) q.executeUnique();
 	}
 
+	/**
+	 * Dar campania.
+	 *
+	 * @param pm the pm
+	 * @param idServ the id serv
+	 * @param idCamp the id camp
+	 * @return the list
+	 */
 	public List<Object[]> darCampania(PersistenceManager pm,String idServ, String idCamp)
 	{
 		Query q = pm.newQuery(SQL, "SELECT * FROM " + pp.darTablaServicioCampania() + " WHERE ID_SERVICIO=? AND ID_CAMPANIA=?");
@@ -104,6 +136,13 @@ class SQLCampania
 		return q.executeList();
 	}
 
+	/**
+	 * Dar servicios campania.
+	 *
+	 * @param pm the pm
+	 * @param nombre the nombre
+	 * @return the list
+	 */
 	public List<String> darServiciosCampania(PersistenceManager pm, String nombre)
 	{
 		Query q = pm.newQuery(SQL, "SELECT ID_SERVICIO  FROM " + pp.darTablaServicioCampania() +" WHERE ID_CAMPANIA=?");
@@ -111,6 +150,12 @@ class SQLCampania
 		return (List<String>)q.executeList();
 	}
 
+	/**
+	 * Dar campanias.
+	 *
+	 * @param pm the pm
+	 * @return the list
+	 */
 	public List<Campania> darCampanias(PersistenceManager pm)
 	{
 		Query q = pm.newQuery(SQL, "SELECT * FROM " + pp.darTablaCampania());
@@ -118,6 +163,13 @@ class SQLCampania
 		return q.executeList();
 	}
 
+	/**
+	 * Eliminar campania nombre.
+	 *
+	 * @param pm the pm
+	 * @param nombre the nombre
+	 * @return the long
+	 */
 	public long eliminarCampaniaNombre(PersistenceManager pm, String nombre)
 	{
 		Query l = pm.newQuery(SQL, "DELETE FROM " + pp.darTablaAfiliado()+" WHERE IDENTIFICACION=?");
@@ -137,6 +189,13 @@ class SQLCampania
 		return (long) q.executeUnique();
 	}
 
+	/**
+	 * Dar campania nombre.
+	 *
+	 * @param pm the pm
+	 * @param nombre the nombre
+	 * @return the campania
+	 */
 	public Campania darCampaniaNombre(PersistenceManager pm, String nombre)
 	{
 		Query q = pm.newQuery(SQL, "SELECT * FROM " + pp.darTablaCampania() + " WHERE ID_CAMPANIA=?");

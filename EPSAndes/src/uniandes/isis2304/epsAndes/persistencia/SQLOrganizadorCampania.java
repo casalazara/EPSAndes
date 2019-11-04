@@ -3,6 +3,9 @@ package uniandes.isis2304.epsAndes.persistencia;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
+/**
+ * The Class SQLOrganizadorCampania.
+ */
 public class SQLOrganizadorCampania {
 	/* ****************************************************************
 	 * 			Constantes
@@ -33,7 +36,6 @@ public class SQLOrganizadorCampania {
 	 * Crea y ejecuta la sentencia SQL para adicionar un GERENTE a la base de datos de EPSAndes.
 	 *
 	 * @param pm - El manejador de persistencia
-	 * @param id_EPS el id de la EPS
 	 * @param identificacion la identificacion
 	 * @return EL número de tuplas insertadas
 	 */

@@ -48,8 +48,18 @@ public interface VOPrestan {
 	 */
 	public int getCapacidad();
 
+	/**
+	 * Gets the capacidad max.
+	 *
+	 * @return the capacidad max
+	 */
 	public int getCapacidadMax();
 
+	/**
+	 * Gets the cancelada.
+	 *
+	 * @return the cancelada
+	 */
 	public int getCancelada();
 
 

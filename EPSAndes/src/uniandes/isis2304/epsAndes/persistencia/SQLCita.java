@@ -64,6 +64,8 @@ class SQLCita
 	 * @param pm the pm
 	 * @param idCita el id cita
 	 * @param id_Recepcionista el id recepcionista
+	 * @param id_servicio the id servicio
+	 * @param id_paciente the id paciente
 	 * @return the long
 	 */
 	public long registrarPrestacion(PersistenceManager pm, long idCita, String id_Recepcionista,String id_servicio,String id_paciente)
@@ -73,6 +75,13 @@ class SQLCita
 		return (long) q.executeUnique();   
 	}
 
+	/**
+	 * Eliminar cita.
+	 *
+	 * @param pm the pm
+	 * @param id_Servicio the id servicio
+	 * @param id_Afiliado the id afiliado
+	 */
 	public void eliminarCita(PersistenceManager pm,String id_Servicio,String id_Afiliado )
 	{
 		Query q = pm.newQuery(SQL, "DELETE FROM " + pp.darTablaCita() + " WHERE ID_SERVICIO=? AND ID_AFILIADO =? ");
@@ -80,6 +89,14 @@ class SQLCita
 		q.executeUnique();  
 	}
 
+	/**
+	 * Eliminar cita IPS.
+	 *
+	 * @param pm the pm
+	 * @param id_Servicio the id servicio
+	 * @param id_Afiliado the id afiliado
+	 * @param ips the ips
+	 */
 	public void eliminarCitaIPS(PersistenceManager pm,String id_Servicio,String id_Afiliado,String ips )
 	{
 		Query q = pm.newQuery(SQL, "DELETE FROM " + pp.darTablaCita() + " WHERE ID_SERVICIO=? AND ID_AFILIADO =? AND ID_RECEPCIONISTA=? ");
@@ -147,6 +164,16 @@ class SQLCita
 		return q.executeList();
 	}
 
+	/**
+	 * Sacar citas por IPS servicio.
+	 *
+	 * @param pm the pm
+	 * @param ips the ips
+	 * @param servicio the servicio
+	 * @param fechaI the fecha I
+	 * @param fechaF the fecha F
+	 * @return the list
+	 */
 	public List<Object[]> sacarCitasPorIPSServicio(PersistenceManager pm,String ips,String servicio,String fechaI,String fechaF)
 	{
 		String sql="SELECT tc.ID_ORDEN, tc.FECHA, tc.HORA, tc.ID_AFILIADO";
@@ -177,6 +204,12 @@ class SQLCita
 		return q.executeList();
 	}
 
+	/**
+	 * Dar exigentes.
+	 *
+	 * @param pm the pm
+	 * @return the list
+	 */
 	public List<Object[]> darExigentes (PersistenceManager pm){
 		String sql="SELECT aux.AFILIADO,aux.TIPOS,aux.SERVICIOS" + 
 				"	FROM(SELECT tc.ID_AFILIADO AFILIADO, COUNT (DISTINCT ts.TIPO) TIPOS, COUNT (tc.ID_SERVICIO) SERVICIOS" + 

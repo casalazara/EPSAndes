@@ -39,6 +39,12 @@ class SQLIPS
 		this.pp = pp;
 	}
 
+	/**
+	 * Dar IPS.
+	 *
+	 * @param pm the pm
+	 * @return the list
+	 */
 	public List<IPS> darIPS(PersistenceManager pm)
 	{
 		Query q = pm.newQuery(SQL, "SELECT * FROM " + pp.darTablaIps());
@@ -46,6 +52,13 @@ class SQLIPS
 		return (List<IPS>) q.executeList();
 	}
 
+	/**
+	 * Eliminar IPS nombre.
+	 *
+	 * @param pm the pm
+	 * @param nombre the nombre
+	 * @return the long
+	 */
 	public long eliminarIPSNombre(PersistenceManager pm, String nombre)
 	{
 		Query q = pm.newQuery(SQL, "DELETE FROM " + pp.darTablaRecepcionista_Ips() + " WHERE ID_IPS=?");
@@ -71,6 +84,14 @@ class SQLIPS
 		q.setParameters(id_IPS,localizacion,nombreEPS);
 		return (long) q.executeUnique();
 	}
+	
+	/**
+	 * Dar IPS nombre.
+	 *
+	 * @param pm the pm
+	 * @param nombre the nombre
+	 * @return the ips
+	 */
 	public IPS darIPSNombre(PersistenceManager pm, String nombre) 
 	{
 		Query q = pm.newQuery(SQL, "SELECT * FROM " + pp.darTablaIps() + " WHERE NOMBRE=?");

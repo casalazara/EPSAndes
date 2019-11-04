@@ -34,9 +34,9 @@ public class Usuario implements VOUsuario{
 	/**
 	 * Instancia un nuevo usuario.
 	 *
-	 * @param numero_Documento el numero de documento
-	 * @param nombre el nombre
 	 * @param email el email
+	 * @param nombre el nombre
+	 * @param numero_Documento el numero de documento
 	 * @param rol el rol
 	 * @param tipo_Documento el tipo de documento
 	 */

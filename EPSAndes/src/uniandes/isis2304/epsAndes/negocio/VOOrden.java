@@ -34,5 +34,10 @@ public interface VOOrden {
 	 */
 	public String toString();
 
+	/**
+	 * Gets the nom servicio.
+	 *
+	 * @return the nom servicio
+	 */
 	public String getNom_Servicio();
 }

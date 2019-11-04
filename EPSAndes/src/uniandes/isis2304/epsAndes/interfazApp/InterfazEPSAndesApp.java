@@ -522,6 +522,9 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 	}
 
 
+	/**
+	 * Registrar prestacion afiliado.
+	 */
 	public void registrarPrestacionAfiliado()
 	{
 
@@ -773,6 +776,9 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 	}
 
 
+	/**
+	 * Cancelar servicios campania.
+	 */
 	public void cancelarServiciosCampania() 
 	{
 		try {
@@ -925,6 +931,9 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 	}
 
 
+	/**
+	 * Registrar campania.
+	 */
 	public void registrarCampania()
 	{
 		try {
@@ -933,7 +942,7 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 			JTextField cantidadServicios = new JTextField();
 			JTextField idOrganizador = new JTextField();
 			Object message[] = {
-					"Ingrese el nombre de la campaña: ", Nombre,
+					"Ingrese el nombre de la campana: ", Nombre,
 					"Ingrese la cantidad de servicios: ", cantidadServicios,
 					"Ingrese el documento del organizador: ", idOrganizador,
 			};
@@ -1023,7 +1032,7 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 									}
 								}
 								else 
-									throw new Exception("No se puede crear la campaña");
+									throw new Exception("No se puede crear la campana");
 							}
 						}
 					}
@@ -1124,6 +1133,9 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 		}
 	}
 
+	/**
+	 * Registrar organizador.
+	 */
 	public void registrarOrganizador()
 	{
 		try {
@@ -1255,6 +1267,9 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 		}
 	}
 
+	/**
+	 * Habilitar.
+	 */
 	public void habilitar()
 	{
 		try {
@@ -1296,6 +1311,9 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 	}
 
 
+	/**
+	 * Des habilitar.
+	 */
 	public void desHabilitar()
 	{
 		try {
@@ -1341,6 +1359,9 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 	}
 
 
+	/**
+	 * Dar exigentes.
+	 */
 	public void darExigentes()
 	{
 		String resultado = "Se consultaron los exigentes \n\n";
@@ -1350,6 +1371,9 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 		panelDatos.actualizarInterfaz(resultado);
 	}
 
+	/**
+	 * Dar no muy demandados.
+	 */
 	public void darNoMuyDemandados()
 	{
 		String resultado = "Se consultaron los no muy demandados \n\n";
@@ -1359,6 +1383,9 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 		panelDatos.actualizarInterfaz(resultado);
 	}
 
+	/**
+	 * Req C 6.
+	 */
 	public void reqC6()
 	{
 		try {
@@ -1368,7 +1395,7 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 			JComboBox<String>combo=new JComboBox<String>();
 			combo.addItem("WW: Semana");
 			combo.addItem("MM: Mes");
-			combo.addItem("YY: Año");
+			combo.addItem("YY: Anio");
 			;
 
 			Object message[] = {
@@ -1382,8 +1409,8 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 				{
 					String unidad = combo.getSelectedItem().toString().split(":")[0];
 					String servicio=Servicio.getText().toString();
-					JOptionPane.showMessageDialog(this, "Se consultó la operación con exito!", "Consulta de operacion exitosa", JOptionPane.INFORMATION_MESSAGE);
-					String resultado = "Se consultó la operación \n\n";
+					JOptionPane.showMessageDialog(this, "Se consulto la operacion con exito!", "Consulta de operacion exitosa", JOptionPane.INFORMATION_MESSAGE);
+					String resultado = "Se consulto la operacion \n\n";
 					resultado+=epsAndes.reqC6(servicio, unidad)+"\n";
 					resultado += "Consulta realizada exitosamente: ";
 					resultado += "\n OperaciÃƒÂ³n terminada";
