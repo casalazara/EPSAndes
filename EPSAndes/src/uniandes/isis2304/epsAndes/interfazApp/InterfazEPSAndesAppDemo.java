@@ -237,7 +237,7 @@ public class InterfazEPSAndesAppDemo extends JFrame implements ActionListener
 	{
 		try 
 		{
-			String nombre = "IPSAndes";
+			String nombre = "IPSAlpes";
 			String localizacion = "-18,7679039";
 			String id_eps = "EPSAndes";
 			boolean errorTipoIPS = false;
