@@ -625,7 +625,7 @@ public class PersistenciaEPSAndes
 		}
 		return mensaje;
 	}
-	
+
 	/**
 	 * Deshabilitar servicios.
 	 *
@@ -637,40 +637,61 @@ public class PersistenciaEPSAndes
 	 */
 	public String deshabilitarServicios(String fechaIni,String fechaFin,String ips,String idServicio)
 	{
-		String mensaje="";
-		sqlPrestan.actualizarHabilitacion(pmf.getPersistenceManager(), fechaIni, fechaFin, ips, idServicio, 1);
-		List<Object[]> lista1=sqlCita.sacarCitasPorIPSServicio(pmf.getPersistenceManager(), ips, idServicio, fechaIni, fechaFin);
-		List<Object[]>lista2=sqlPrestan.darInfoServicioEnRango(pmf.getPersistenceManager(), idServicio, fechaIni, fechaFin);
-		long capacidadServicios=sqlPrestan.darCapacidadServicioEnRango(pmf.getPersistenceManager(), idServicio, fechaIni, fechaFin);
-
-		int citasR=lista1.size()-1;
-		for (int j=0;j<lista2.size() && citasR>=0;j++) {
-			Object[] objects2=lista2.get(j);
-			int capacidadR=((BigDecimal)objects2[5]).intValue();
-			for(int i=0;i<capacidadR;i++)
-			{
-				Object[] objects=lista1.get(citasR);
-				//RegistrarCita
-				registrarCita(idServicio,(String) objects[3], (String) objects2[2], ((BigDecimal)objects[0]).longValue(), (String) objects2[1], (String) objects2[4]);
-				//BorrarCita
-				sqlCita.eliminarCitaIPS(pmf.getPersistenceManager(), idServicio, (String)objects[3], ips);
-				--citasR;
-			}
-		}
-
-		if(lista1.size()>capacidadServicios )
+		PersistenceManager pm = pmf.getPersistenceManager();
+		Transaction tx=pm.currentTransaction();
+		try
 		{
-			mensaje="No se pudieron reubicar las siguientes citas \n";
-			for(int i=citasR;i>=0;i--)
-			{
-				Object[] objects=lista1.get(citasR);
-				mensaje+="Orden: "+((BigDecimal)objects[0]).intValue()+" Fecha: "+(String)objects[1]+" Afiliado: "+(String)objects[3]+"\n";
-			}
-		}
-		else
-			mensaje="Se pudieron reubicar todas las citas";
+			String mensaje="";
+			sqlPrestan.actualizarHabilitacion(pmf.getPersistenceManager(), fechaIni, fechaFin, ips, idServicio, 1);
+			List<Object[]> lista1=sqlCita.sacarCitasPorIPSServicio(pmf.getPersistenceManager(), ips, idServicio, fechaIni, fechaFin);
+			List<Object[]>lista2=sqlPrestan.darInfoServicioEnRango(pmf.getPersistenceManager(), idServicio, fechaIni, fechaFin);
+			long capacidadServicios=sqlPrestan.darCapacidadServicioEnRango(pmf.getPersistenceManager(), idServicio, fechaIni, fechaFin);
 
-		return mensaje;
+			int citasR=lista1.size()-1;
+			for (int j=0;j<lista2.size() && citasR>=0;j++) {
+				Object[] objects2=lista2.get(j);
+				int capacidadR=((BigDecimal)objects2[5]).intValue();
+				for(int i=0;i<capacidadR;i++)
+				{
+					Object[] objects=lista1.get(citasR);
+					//RegistrarCita
+					registrarCita(idServicio,(String) objects[3], (String) objects2[2], ((BigDecimal)objects[0]).longValue(), (String) objects2[1], (String) objects2[4]);
+					//BorrarCita
+					tx.begin();
+					sqlCita.eliminarCitaIPS(pmf.getPersistenceManager(), idServicio, (String)objects[3], ips);
+					tx.commit();
+					citasR--;
+				}
+			}
+
+			if(lista1.size()>capacidadServicios )
+			{
+				mensaje="No se pudieron reubicar las siguientes citas \n";
+				for(int i=citasR;i>=0;i--)
+				{
+					Object[] objects=lista1.get(citasR);
+					mensaje+="Orden: "+((BigDecimal)objects[0]).intValue()+" Fecha: "+(String)objects[1]+" Afiliado: "+(String)objects[3]+"\n";
+				}
+			}
+			else
+				mensaje="Se pudieron reubicar todas las citas";
+
+			return mensaje;
+		}
+		catch (Exception e)
+		{
+			//        	e.printStackTrace();
+			log.error ("Exception : " + e.getMessage() + "\n" + darDetalleException(e));
+			return "";
+		}
+		finally
+		{
+			if (tx.isActive())
+			{
+				tx.rollback();
+			}
+			pm.close();
+		}
 	}
 
 	/**
