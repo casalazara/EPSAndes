@@ -95,7 +95,7 @@ class SQLServicio
 	{
 		String caracteristicas = "";
 		if((!fechaInic.equalsIgnoreCase(null)&& !fechaInic.equalsIgnoreCase("") && fechaInic!=null) && (!fechaFin.equalsIgnoreCase(null) && !fechaFin.equalsIgnoreCase("") && fechaFin!=null) && veces!= -1) {
-			caracteristicas = "TO_DATE(c.FECHA, 'DD-MM-YY HH24:MI:SS') "
+			caracteristicas = "TO_DATE(c.FECHA, 'DD/MM/YYYY HH24:MI:SS') "
 					+ "BETWEEN '" + fechaInic + "' AND '" + fechaFin + "' "
 					+ "AND Count(s.NOMBRE) = " + veces;
 		}

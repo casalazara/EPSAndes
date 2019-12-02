@@ -134,7 +134,7 @@ class SQLCita
 	{
 		String sql = "SELECT DISTINCT ID_SERVICIO, count (*) as numServicios";
 		sql += " FROM " + pp.darTablaCita();
-		sql += " WHERE TO_DATE(FECHA,'DD-MM-YY HH24:MI:SS') BETWEEN TO_DATE(?,'DD-MM-YY HH24:MI:SS') AND TO_DATE(?,'DD-MM-YY HH24:MI:SS')";
+		sql += " WHERE TO_DATE(FECHA,'DD/MM/YYYY HH24:MI:SS') BETWEEN TO_DATE(?,'DD/MM/YYYY HH24:MI:SS') AND TO_DATE(?,'DD/MM/YYYY HH24:MI:SS')";
 		sql	+= " GROUP BY ID_SERVICIO ORDER BY COUNT(*) DESC FETCH NEXT 20 ROWS ONLY";
 		Query q = pm.newQuery(SQL, sql);
 		q.setParameters(fechaInicio,fechaFin);
@@ -177,7 +177,7 @@ class SQLCita
 	public List<Object[]> sacarCitasPorIPSServicio(PersistenceManager pm,String ips,String servicio,String fechaI,String fechaF)
 	{
 		String sql="SELECT tc.ID_ORDEN, tc.FECHA, tc.HORA, tc.ID_AFILIADO";
-		sql+= " FROM "+pp.darTablaCita() +" tc, "+ pp.darTablaPrestan()+" tp, "+ pp.darTablaRecepcionista_Ips() +" tr WHERE tp.ID_SERVICIO=tc.ID_SERVICIO AND tp.ID_SERVICIO=? AND tp.ID_IPS=? AND tp.ID_IPS=tc.ID_RECEPCIONISTA AND TO_DATE(tc.FECHA,'DD-MM-YY HH24:MI:SS') BETWEEN TO_DATE(?,'DD-MM-YY HH24:MI:SS') AND TO_DATE(?,'DD-MM-YY HH24:MI:SS')";
+		sql+= " FROM "+pp.darTablaCita() +" tc, "+ pp.darTablaPrestan()+" tp, "+ pp.darTablaRecepcionista_Ips() +" tr WHERE tp.ID_SERVICIO=tc.ID_SERVICIO AND tp.ID_SERVICIO=? AND tp.ID_IPS=? AND tp.ID_IPS=tc.ID_RECEPCIONISTA AND TO_DATE(tc.FECHA,'DD/MM/YYYY HH24:MI:SS') BETWEEN TO_DATE(?,'DD/MM/YYYY HH24:MI:SS') AND TO_DATE(?,'DD/MM/YYYY HH24:MI:SS')";
 		Query q = pm.newQuery(SQL, sql);
 		q.setParameters(servicio,ips,fechaI,fechaF);
 		return q.executeList();
@@ -196,8 +196,8 @@ class SQLCita
 		String sql="SELECT COUNT(*) uso, o.NOM_SERVICIO servicio "
 				+ "FROM CITA c, Orden o"
 				+ " WHERE c.ID_ORDEN = o.ID AND o.ID_AFILIADO = ? "
-				+ "AND TO_DATE(c.FECHA, 'DD-MM-YY HH24:MI:SS') " 
-				+ "BETWEEN TO_DATE(?, 'DD-MM-YY HH24:MI:SS') AND TO_DATE(?, 'DD-MM-YY HH24:MI:SS') "
+				+ "AND TO_DATE(c.FECHA, 'DD/MM/YYYY HH24:MI:SS') " 
+				+ "BETWEEN TO_DATE(?, 'DD/MM/YYYY HH24:MI:SS') AND TO_DATE(?, 'DD/MM/YYYY HH24:MI:SS') "
 				+ "GROUP BY o.NOM_SERVICIO" ;
 		Query q = pm.newQuery(SQL,sql);
 		q.setParameters(idAfiliado,fechaInic,fechaFin);
@@ -214,7 +214,7 @@ class SQLCita
 		String sql="SELECT aux.AFILIADO,aux.TIPOS,aux.SERVICIOS" + 
 				"	FROM(SELECT tc.ID_AFILIADO AFILIADO, COUNT (DISTINCT ts.TIPO) TIPOS, COUNT (tc.ID_SERVICIO) SERVICIOS" + 
 				"	FROM "+pp.darTablaCita()+" tc, "+pp.darTablaServicio()+" ts " + 
-				"	WHERE ts.NOMBRE=tc.ID_SERVICIO AND to_number(to_char(TO_DATE(tc.FECHA,'DD-MM-YY HH24:MI:SS'), 'YY'))=to_number(to_char(CURRENT_DATE, 'YY'))-1" + 
+				"	WHERE ts.NOMBRE=tc.ID_SERVICIO AND to_number(to_char(TO_DATE(tc.FECHA,'DD/MM/YYYY HH24:MI:SS'), 'YY'))=to_number(to_char(CURRENT_DATE, 'YY'))-1" + 
 				"	GROUP BY tc.ID_AFILIADO,ts.TIPO, tc.ID_SERVICIO)aux" + 
 				"	WHERE aux.TIPOS>2 AND aux.SERVICIOS>12";
 		Query q = pm.newQuery(SQL,sql);

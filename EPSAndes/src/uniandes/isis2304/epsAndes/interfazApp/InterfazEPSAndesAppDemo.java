@@ -288,8 +288,8 @@ public class InterfazEPSAndesAppDemo extends JFrame implements ActionListener
 		try 
 		{
 			String nombre="Campania uniAlpes";
-			String fechaFin="08-12-18 11:00:00";
-			String fechaIni="06-11-18 06:30:00";
+			String fechaFin="08/12/2018 11:00:00";
+			String fechaIni="06/11/2018 06:30:00";
 			String idOrganizador="93345171";
 			epsAndes.registrarOrganizadorCampania(idOrganizador, "Smits", "OrganizadorCampania", "je.hernandezr@uniandes.edu.co", "C.C");
 			String nombreIPS= "IPSAndes";
@@ -310,27 +310,27 @@ public class InterfazEPSAndesAppDemo extends JFrame implements ActionListener
 
 			for(int i=0;i<7;i++)
 			{
-				epsAndes.registrarReserva("Consultas medicas con medico general", id, "06-12-18 08:00:00", -10, "08:00:00", nombreIPS);
+				epsAndes.registrarReserva("Consultas medicas con medico general", id, "06/12/2018 08:00:00", -10, "08:00:00", nombreIPS);
 			}
 			for(int i=0;i<6;i++)
 			{
-				epsAndes.registrarReserva("Consultas medicas con especialistas", id, "07-12-18 07:00:00", -10, "07:00:00", nombreIPS);
+				epsAndes.registrarReserva("Consultas medicas con especialistas", id, "07/12/2018 07:00:00", -10, "07:00:00", nombreIPS);
 			}
 			for(int i=0;i<3;i++)
 			{
-				epsAndes.registrarReserva("Examenes de sangre", id,"08-12-18 11:00:00", -10, "11:00:00", nombreIPS);
+				epsAndes.registrarReserva("Examenes de sangre", id,"08/12/2018 11:00:00", -10, "11:00:00", nombreIPS);
 			}
 			for(int i=0;i<12;i++)
 			{
-				epsAndes.registrarReserva("Radiografias", id, "08-11-18 10:00:30", -10, "10:00:30", nombreIPS);
+				epsAndes.registrarReserva("Radiografias", id, "08/11/2018 10:00:30", -10, "10:00:30", nombreIPS);
 			}
 			for(int i=0;i<9;i++)
 			{
-				epsAndes.registrarReserva("Consultas odontologicas", id, "06-11-18 06:30:00", -10, "06:30:00", nombreIPS);
+				epsAndes.registrarReserva("Consultas odontologicas", id, "06/11/2018 06:30:00", -10, "06:30:00", nombreIPS);
 			}
 			for(int i=0;i<10;i++)
 			{
-				epsAndes.registrarReserva("Jornadas de vacunacion", id,  "09-11-18 06:00:00", -10, "06:00:00", nombreIPS);
+				epsAndes.registrarReserva("Jornadas de vacunacion", id,  "09/11/2018 06:00:00", -10, "06:00:00", nombreIPS);
 			}
 			VOCampania campania=epsAndes.registrarCampania(nombre, fechaFin, fechaIni, idOrganizador);
 			epsAndes.registrarServCamp("Consultas medicas con medico general", nombre, 7, fechaIni, fechaFin);

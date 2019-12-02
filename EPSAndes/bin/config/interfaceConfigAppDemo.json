@@ -1,0 +1,43 @@
+{
+	"title": "Aplicación transaccional de menuEPSAndes",
+	"frameH": 600,
+	"frameW": 800,
+	"bannerPath": "./resources/config/logo.png",
+	"menuEPSAndes":
+	[
+	
+		{ "menuTitle": "IPS",
+		  "options":
+			[
+				{
+					"label": "CRUD IPS",
+					"event": "demoIPS"
+				}
+			]
+		},
+		
+		
+		{ "menuTitle": "USUARIO",
+		  "options":
+			[
+				{
+					"label": "CRUD USUARIO",
+					"event": "demoUsuario"
+				}
+			]
+		},
+		
+		
+		{ "menuTitle": "CAMPANA",
+		  "options":
+			[
+				{
+					"label": "CRUD Campana",
+					"event": "demoCampana"
+				}
+			]
+		}	
+		
+	]
+}
+	
