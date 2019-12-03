@@ -448,7 +448,14 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 				List<Object[]> lista=epsAndes.reqC11();
 				
 				for (int i=0;i<lista.size();i++) {
-					resultado+="Servicio: " +(String)lista.get(i)[1]+" Indice de uso: "+((BigDecimal)lista.get(i)[0]).intValue()+"\n";
+					
+					resultado+= "Semana : " + (String)lista.get(i)[0] + " Tipos más usados :" + (String)lista.get(i)[1] + "Cantidad tipo más usado :" + (BigDecimal)lista.get(i)[2] + " Tipos menos usados :" + (String)lista.get(i)[3] +
+												"Cantidad tipo menos usado: " + (BigDecimal)lista.get(i)[4] + " Servicios más usados : " + (String)lista.get(i)[5] + "Cantidad servicio más usado" + (BigDecimal)lista.get(i)[6] + 
+												"Servicio menos usado: " + (String)lista.get(i)[7] + "Cantidad servicio menos usado  : " + (BigDecimal)lista.get(i)[8] + "Ips más usadas : " + (String)lista.get(i)[9] + "Cantidad IPS más usada : " + (BigDecimal)lista.get(i)[10] +
+												"Ips menos usada : " + (String)lista.get(i)[11] + "Cantidad Ips menos usada : " + (BigDecimal)lista.get(i)[12] + "Afiliado más usador : " + (String)lista.get(i)[13] + "Cantidad usos : " + (BigDecimal)lista.get(i)[14] + "Afiliados que no usaron servicios edsa semana" + (BigDecimal)lista.get(i)[15] 
+														; 
+							
+					
 				}
 				resultado += "\n OperaciÃƒÂ³n terminada";
 				panelDatos.actualizarInterfaz(resultado);

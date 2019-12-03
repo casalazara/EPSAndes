@@ -212,8 +212,29 @@ class SQLCita
 	 */
 
 	public List<Object[]> reqC9 (PersistenceManager pm , String pServicios, String pTipos , String pFechaInicial , String  PFechaFinal , String pIPS , String   pOrdenamiento , String pAgrupamiento){
-		String sql="";
-		Query q = pm.newQuery(SQL,sql);
+		String sql="with cantidadS as( " + 
+				"SELECT sum(count(distinct id_servicio)) c2 FROM CITA WHERE ID_SERVICIO IN( ? ) group by id_servicio " + 
+				"), " + 
+				"cantidadXUS as " + 
+				"select count(distinct c.id_servicio) c1,c.id_afiliado FROM CITA c WHERE c.ID_SERVICIO IN( ? ) and c.cumplida = 1 and to_date(c.fecha,'dd/mm/yyyy hh24:mi:ss') between to_date( ? ,'dd/mm/yyyy hh24:mi:ss') and to_date( ? ,'dd/mm/yyyy hh24:mi:ss') group by c.id_afiliado order by c.id_afiliado desc " + 
+				"), " + 
+				"selecxS as( " + 
+				"SELECT * FROM USUARIO u, AFILIADO a, cantidadXUS c,cantidadS cs where a.IDENTIFICACION=u.NUMERO_DOCUMENTO AND c.id_afiliado=a.IDENTIFICACION and c.c1=cs.c2 " + 
+				"), " + 
+				"cantidadT as( " + 
+				"SELECT sum(count(distinct s.tipo)) c2 FROM CITA c,SERVICIO s WHERE c.ID_SERVICIO=s.nombre and s.tipo IN( ? ) group by s.tipo " + 
+				"), " + 
+				"cantidadXUT as( " + 
+				"select count(distinct s.tipo) c1,id_afiliado FROM CITA c, SERVICIO s WHERE c.ID_SERVICIO=s.nombre and s.tipo IN( ? ) and c.cumplida=1 group by id_afiliado order by count(distinct s.tipo) desc " + 
+				"), " + 
+				"selecxT as( " + 
+				"SELECT * FROM USUARIO u, AFILIADO a, cantidadXUT c,cantidadT cs where a.IDENTIFICACION=u.NUMERO_DOCUMENTO AND c.id_afiliado=a.IDENTIFICACION and c.c1=cs.c2 " + 
+				"), " + 
+				"selectI as( select distinct c.id_afiliado from CITA c, PRESTAN p where c.fecha=p.dia And c.id_servicio=p.id_servicio and p.id_ips in(select ID_IPS from PRESTAN) " + 
+				") " + 
+				"select  s1.email,s1.nombre,s1.numero_documento,s1.rol,s1.tipo_documento,s1.fecha_nacimiento from selecxS s1 where s1.identificacion in(select id_afiliado from selecxT) and s1.identificacion in(select id_afiliado from selectI);";
+		Query q = pm.newQuery(SQL, sql);
+		q.setParameters(pServicios , pServicios , pFechaInicial , PFechaFinal , pTipos , pTipos  );
 		return q.executeList();
 	}
 	
@@ -225,7 +246,7 @@ class SQLCita
 	
 	public List<Object[]> reqC11 (PersistenceManager pm){
 		String sql="with tb_mayor as ( " + 
-				"    SELECT t1.SEMANA as SEMANA, listagg(t1.tipo,', ')within group(order by t1.tipo) as TiposMasUsados, t2.c1 as CantidadTipoMasUsado " + 
+				"    SELECT t1.SEMANA as SEMANA, listagg(t1.tipo,',')within group(order by t1.tipo) as TiposMasUsados, t2.c1 as CantidadTipoMasUsado " + 
 				"    FROM (SELECT (COUNT(s.TIPO))                         ca, " + 
 				"                  s.TIPO as tipo, " + 
 				"                 to_char(to_date(c.FECHA, 'dd/mm/yyyy hh24:mi:ss'), 'WW/YYYY') AS SEMANA " + 
@@ -402,7 +423,8 @@ class SQLCita
 				"tb_cantidadAf as(select count(*) as cuenta from AFILIADO), " + 
 				"tb_total as(select cuenta-c1,semana as SEMANA from tb_cantiCita, tb_cantidadAf) " + 
 				"select * " + 
-				"from tb_mayor t1 natural inner join tb_menor t2 natural inner join tb_mayorS natural inner join tb_menorS natural inner join tb_mayorI natural inner join tb_menorI natural inner join tb_mayorU NATURAL inner join tb_total;";
+				"from tb_mayor t1 natural inner join tb_menor t2 natural inner join tb_mayorS natural inner join tb_menorS natural inner join tb_mayorI natural inner join tb_menorI natural inner join tb_mayorU NATURAL inner join tb_total";
+				
 		Query q = pm.newQuery(SQL,sql);
 		return q.executeList();
 	}
@@ -420,7 +442,7 @@ class SQLCita
 				"and sds.TIPO = 'Procedimiento medico especializado' " + 
 				"where cita.id_afiliado not in (select id_afiliado from oth_no_esp) " + 
 				"group by id_afiliado " + 
-				"), " + 
+				" ), " + 
 				" " + 
 				"cit_mes as( -- Cuenta el número de meses distintos en los que ha hecho una cita " + 
 				" select id_afiliado, count(distinct to_char(TO_DATE(fecha,'dd/mm/yyyy hh24:mi:ss'),'mm/yy')) as count_citas " + 
@@ -465,7 +487,7 @@ class SQLCita
 				"on final_freq.id_afiliado = afiliado.identificacion " + 
 				"left outer join espec " + 
 				"on espec.id_afiliado = afiliado.identificacion left outer join c2 on c2.id_afiliado=espec.id_afiliado " + 
-				"where siempre_espec = 1 or count_citas is not null or siempreHosp=1;";
+				"where siempre_espec = 1 or count_citas is not null or siempreHosp=1";
 		Query q = pm.newQuery(SQL,sql);
 		return q.executeList();
 	}
