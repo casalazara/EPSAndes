@@ -95,7 +95,9 @@
 				{
 					"label": "Consultar servicios no muy demandados",
 					"event": "darNoMuyDemandados"
-				}				
+				}
+
+				
 			]
 		},
 		{ "menuTitle": "Mantenimiento",
@@ -116,6 +118,22 @@
 				{
 					"label": "Limpiar log de datanucleus",
 					"event": "limpiarLogDatanucleus"
+				},
+				{
+					"label": "Limpiar Base de Datos",
+					"event": "limpiarBD"
+				},
+				{
+					"label": "Limpiar Base de Datos",
+					"event": "limpiarBD"
+				},
+				{
+					"label": "Limpiar Base de Datos",
+					"event": "limpiarBD"
+				},
+				{
+					"label": "Limpiar Base de Datos",
+					"event": "limpiarBD"
 				},
 				{
 					"label": "Limpiar Base de Datos",
@@ -145,6 +163,27 @@
 				{
 					"label": "Javadoc EPSAndes",
 					"event": "mostrarJavadoc"
+				}
+			]
+		},
+		{ "menuTitle": "Requerimentos de consulta IT3",
+		  "options":
+			[
+				{
+					"label": "Consultar la prestación de servicios en EPSANDES",
+					"event": "reqC9"
+				},
+				{
+					"label": "Consultar la prestación de servicios en EPSANDES 'NO'",
+					"event": "reqC10"
+				},
+				{
+					"label": "Consultar funcionamiento",
+					"event": "reqC11"
+				},
+				{
+					"label": "Consultar los afiliados más costosos",
+					"event": "reqC12"
 				}
 			]
 		},		

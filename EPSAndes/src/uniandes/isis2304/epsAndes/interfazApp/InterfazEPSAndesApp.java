@@ -292,6 +292,205 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 	/**
 	 * Muestra en la interfaz RFC2.
 	 */
+	
+	public void reqC9()
+	{
+		try {
+
+			JTextField servicios = new JTextField();
+			JTextField tipos = new JTextField();
+			JTextField fechaInicial = new JTextField();
+			JTextField fechaFinal = new JTextField();
+			JTextField IPS = new JTextField();
+			JComboBox<String>comboOrdenamiento =new JComboBox<String>();
+			comboOrdenamiento.addItem("Nombre");
+			comboOrdenamiento.addItem("Email");
+			comboOrdenamiento.addItem("Fecha Nacimiento");
+			comboOrdenamiento.addItem("N�mero de documento");
+			JComboBox<String> comboAgrupamiento = new JComboBox<String>();
+			comboAgrupamiento.addItem("Tipo de documento");
+			comboAgrupamiento.addItem("Fecha Nacimiento");
+			
+			
+			Object message[] = {
+					"Ingrese los servicios de la forma ('A','B','C')  : ", servicios ,
+					"Ingrese los tipos de la forma ('A','B','C'): ", tipos,
+					"Ingrese la fecha incial (dd/mm/yyyy hh:mi:ss): ", fechaInicial,
+					"Ingrese la fecha final (dd/mm/yyyy hh:mi:ss): ", fechaFinal,
+					"Ingrese los nombres de la IPS de la forma ('A','B','C'): ", IPS , 
+					"Seleccione 1 ordenamiento" , comboOrdenamiento , 
+					"O Seleccione 1 agrupamiento" , comboAgrupamiento 
+			};
+
+			int option = JOptionPane.showConfirmDialog (this, message, "Registrar cita", JOptionPane.OK_CANCEL_OPTION);
+			if(option == JOptionPane.OK_OPTION) {
+				if(!servicios.getText().toString().equals("") &&!tipos.getText().toString().equals("") &&!fechaInicial.getText().toString().equals("") &&!IPS.getText().toString().equals("") && !fechaFinal.getText().toString().equals("") )
+				{
+					String pServicios = servicios.getText().toString();
+					String pTipos =tipos.getText().toString();
+					String pFechaInicial =fechaInicial.getText().toString();
+					String PFechaFinal = fechaFinal.getText().toString();
+					String pIPS =IPS.getText().toString();
+					String pOrdenamiento = comboOrdenamiento.getSelectedItem().toString();
+					String pAgrupamiento = comboAgrupamiento.getSelectedItem().toString();
+					
+					JOptionPane.showMessageDialog(this, "Se realiza la consulta con exito!", "Consulta", JOptionPane.INFORMATION_MESSAGE);
+					String resultado = "";
+					
+					List<Object[]> lista =epsAndes.reqC9(pServicios, pTipos , pFechaInicial , PFechaFinal , pIPS ,  pOrdenamiento , pAgrupamiento);
+					for (int i=0;i<lista.size();i++) {
+						resultado+="Servicio: " +(String)lista.get(i)[0]+" Cantidad solicitudes: "+((BigDecimal)lista.get(i)[1]).intValue()+"\n";
+					}
+					resultado += "\n OperaciÃ³n terminada";
+					panelDatos.actualizarInterfaz(resultado);
+
+					
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(this, "Se deben llenar todos los campos.", "Error registrando afiliado", JOptionPane.ERROR_MESSAGE);
+
+				}
+
+
+			}
+		}
+		catch(Exception e) {
+			JOptionPane.showMessageDialog(this, e.getMessage(), "Error en Req c 9", JOptionPane.ERROR_MESSAGE);
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+
+	}
+	
+	public void reqC10()
+	{
+		try {
+
+			JTextField servicios = new JTextField();
+			JTextField tipos = new JTextField();
+			JTextField fechaInicial = new JTextField();
+			JTextField fechaFinal = new JTextField();
+			JTextField IPS = new JTextField();
+			JComboBox<String>comboOrdenamiento =new JComboBox<String>();
+			comboOrdenamiento.addItem("Nombre");
+			comboOrdenamiento.addItem("Email");
+			comboOrdenamiento.addItem("Fecha Nacimiento");
+			comboOrdenamiento.addItem("N�mero de documento");
+			JComboBox<String> comboAgrupamiento = new JComboBox<String>();
+			comboAgrupamiento.addItem("Tipo de documento");
+			comboAgrupamiento.addItem("Fecha Nacimiento");
+			
+			
+			Object message[] = {
+					"Ingrese los servicios de la forma ('A','B','C')  : ", servicios ,
+					"Ingrese los tipos de la forma ('A','B','C'): ", tipos,
+					"Ingrese la fecha incial (dd/mm/yyyy hh:mi:ss): ", fechaInicial,
+					"Ingrese la fecha final (dd/mm/yyyy hh:mi:ss): ", fechaFinal,
+					"Ingrese los nombres de la IPS de la forma ('A','B','C'): ", IPS , 
+					"Seleccione 1 ordenamiento" , comboOrdenamiento , 
+					"O Seleccione 1 agrupamiento" , comboAgrupamiento 
+			};
+
+			int option = JOptionPane.showConfirmDialog (this, message, "Registrar cita", JOptionPane.OK_CANCEL_OPTION);
+			if(option == JOptionPane.OK_OPTION) {
+				if(!servicios.getText().toString().equals("") &&!tipos.getText().toString().equals("") &&!fechaInicial.getText().toString().equals("") &&!IPS.getText().toString().equals("") && !fechaFinal.getText().toString().equals("") )
+				{
+					String pServicios = servicios.getText().toString();
+					String pTipos =tipos.getText().toString();
+					String pFechaInicial =fechaInicial.getText().toString();
+					String PFechaFinal = fechaFinal.getText().toString();
+					String pIPS =IPS.getText().toString();
+					String pOrdenamiento = comboOrdenamiento.getSelectedItem().toString();
+					String pAgrupamiento = comboAgrupamiento.getSelectedItem().toString();
+					
+					JOptionPane.showMessageDialog(this, "Se realiza la consulta con exito!", "Consulta", JOptionPane.INFORMATION_MESSAGE);
+					String resultado = "";
+					
+					List<Object[]> lista =epsAndes.reqC10(pServicios, pTipos , pFechaInicial , PFechaFinal , pIPS ,  pOrdenamiento , pAgrupamiento);
+					for (int i=0;i<lista.size();i++) {
+						resultado+="Servicio: " +(String)lista.get(i)[0]+" Cantidad solicitudes: "+((BigDecimal)lista.get(i)[1]).intValue()+"\n";
+					}
+					resultado += "\n OperaciÃ³n terminada";
+					panelDatos.actualizarInterfaz(resultado);
+
+					
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(this, "Se deben llenar todos los campos.", "Error registrando afiliado", JOptionPane.ERROR_MESSAGE);
+
+				}
+
+
+			}
+		}
+		catch(Exception e) {
+			JOptionPane.showMessageDialog(this, e.getMessage(), "Error en Req C 10", JOptionPane.ERROR_MESSAGE);
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+
+	}
+	
+	public void reqC11()
+	{
+		try {
+
+			Object message[] = {
+					"Requerimiento C 11"
+			};
+
+			int option = JOptionPane.showConfirmDialog (this, message, "Consultar funcionamiento", JOptionPane.OK_CANCEL_OPTION);
+			if(option == JOptionPane.OK_OPTION) {
+				JOptionPane.showMessageDialog(this, "Se realiza la consulta con exito!", "Consulta", JOptionPane.INFORMATION_MESSAGE);
+				String resultado = "";
+				List<Object[]> lista=epsAndes.reqC11();
+				
+				for (int i=0;i<lista.size();i++) {
+					resultado+="Servicio: " +(String)lista.get(i)[1]+" Indice de uso: "+((BigDecimal)lista.get(i)[0]).intValue()+"\n";
+				}
+				resultado += "\n OperaciÃ³n terminada";
+				panelDatos.actualizarInterfaz(resultado);
+			}
+		}
+		catch(Exception e) {
+			JOptionPane.showMessageDialog(this, e.getMessage(), "Error consultando", JOptionPane.ERROR_MESSAGE);
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+
+	}
+	
+	public void reqC12()
+	{
+		try {
+
+			Object message[] = {
+					"Requerimiento C 12 "
+			};
+
+			int option = JOptionPane.showConfirmDialog (this, message, "Consultar afiliados costosos", JOptionPane.OK_CANCEL_OPTION);
+			if(option == JOptionPane.OK_OPTION) {
+				JOptionPane.showMessageDialog(this, "Se realiza la consulta con exito!", "Consulta", JOptionPane.INFORMATION_MESSAGE);
+				String resultado = "";
+				List<Object[]> lista=epsAndes.reqC12();
+				
+				for (int i=0;i<lista.size();i++) {
+					resultado+="Servicio: " +(String)lista.get(i)[1]+" Indice de uso: "+((BigDecimal)lista.get(i)[0]).intValue()+"\n";
+				}
+				resultado += "\n OperaciÃ³n terminada";
+				panelDatos.actualizarInterfaz(resultado);
+			}
+		}
+		catch(Exception e) {
+			JOptionPane.showMessageDialog(this, e.getMessage(), "Error consultando", JOptionPane.ERROR_MESSAGE);
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+
+
+	}
 	public void mostrarTop20() 
 	{
 		try {

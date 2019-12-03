@@ -210,6 +210,267 @@ class SQLCita
 	 * @param pm the pm
 	 * @return the list
 	 */
+
+	public List<Object[]> reqC9 (PersistenceManager pm , String pServicios, String pTipos , String pFechaInicial , String  PFechaFinal , String pIPS , String   pOrdenamiento , String pAgrupamiento){
+		String sql="";
+		Query q = pm.newQuery(SQL,sql);
+		return q.executeList();
+	}
+	
+	public List<Object[]> reqC10 (PersistenceManager pm , String pServicios, String pTipos , String pFechaInicial , String  PFechaFinal , String pIPS , String   pOrdenamiento , String pAgrupamiento){
+		String sql="";
+		Query q = pm.newQuery(SQL,sql);
+		return q.executeList();
+	}
+	
+	public List<Object[]> reqC11 (PersistenceManager pm){
+		String sql="with tb_mayor as ( " + 
+				"    SELECT t1.SEMANA as SEMANA, listagg(t1.tipo,', ')within group(order by t1.tipo) as TiposMasUsados, t2.c1 as CantidadTipoMasUsado " + 
+				"    FROM (SELECT (COUNT(s.TIPO))                         ca, " + 
+				"                  s.TIPO as tipo, " + 
+				"                 to_char(to_date(c.FECHA, 'dd/mm/yyyy hh24:mi:ss'), 'WW/YYYY') AS SEMANA " + 
+				"          FROM CITA c, " + 
+				"               SERVICIO s " + 
+				"          WHERE c.ID_SERVICIO = s.NOMBRE " + 
+				"            AND c.CUMPLIDA = 1 " + 
+				"          GROUP BY to_char(to_date(c.FECHA, 'dd/mm/yyyy hh24:mi:ss'), 'WW/YYYY'), s.TIPO " + 
+				"          order by semana desc) t1, " + 
+				"         (SELECT MAX(ca) C1, SEMANA " + 
+				"          FROM (SELECT (COUNT(s.TIPO))                         ca, " + 
+				"                       s.TIPO, " + 
+				"                       to_char(to_date(c.FECHA, 'dd/mm/yyyy hh24:mi:ss'), 'WW/YYYY') AS SEMANA " + 
+				"                FROM CITA c, " + 
+				"                     SERVICIO s " + 
+				"                WHERE c.ID_SERVICIO = s.NOMBRE " + 
+				"                  AND c.CUMPLIDA = 1 " + 
+				"                GROUP BY to_char(to_date(c.FECHA, 'dd/mm/yyyy hh24:mi:ss'), 'WW/YYYY'), s.TIPO) " + 
+				"          GROUP BY SEMANA) t2 " + 
+				"    WHERE t1.SEMANA = t2.SEMANA " + 
+				"      AND t1.ca = t2.c1 group by t1.SEMANA, t2.c1 " + 
+				"    order by SEMANA DESC " + 
+				"), " + 
+				"tb_menor as ( " + 
+				"    SELECT t1.SEMANA as SEMANA, listagg(t1.tipo,', ')within group(order by t1.tipo) as TiposMenosUsados, t2.c1 as CantidadTipoMenosUsado " + 
+				"    FROM (SELECT (COUNT(s.TIPO))                         ca, " + 
+				"                  s.TIPO as tipo, " + 
+				"                 to_char(to_date(c.FECHA, 'dd/mm/yyyy hh24:mi:ss'), 'WW/YYYY') AS SEMANA " + 
+				"          FROM CITA c, " + 
+				"               SERVICIO s " + 
+				"          WHERE c.ID_SERVICIO = s.NOMBRE " + 
+				"            AND c.CUMPLIDA = 1 " + 
+				"          GROUP BY to_char(to_date(c.FECHA, 'dd/mm/yyyy hh24:mi:ss'), 'WW/YYYY'), s.TIPO " + 
+				"          order by semana desc) t1, " + 
+				"         (SELECT MIN(ca) C1, SEMANA " + 
+				"          FROM (SELECT (COUNT(s.TIPO))                         ca, " + 
+				"                       s.TIPO, " + 
+				"                       to_char(to_date(c.FECHA, 'dd/mm/yyyy hh24:mi:ss'), 'WW/YYYY') AS SEMANA " + 
+				"                FROM CITA c, " + 
+				"                     SERVICIO s " + 
+				"                WHERE c.ID_SERVICIO = s.NOMBRE " + 
+				"                  AND c.CUMPLIDA = 1 " + 
+				"                GROUP BY to_char(to_date(c.FECHA, 'dd/mm/yyyy hh24:mi:ss'), 'WW/YYYY'), s.TIPO) " + 
+				"          GROUP BY SEMANA) t2 " + 
+				"    WHERE t1.SEMANA = t2.SEMANA " + 
+				"      AND t1.ca = t2.c1 " + 
+				"      group by t1.SEMANA, t2.c1 " + 
+				"    order by SEMANA DESC " + 
+				"), " + 
+				"tb_mayorS as ( " + 
+				"    SELECT t1.SEMANA as SEMANA, listagg(t1.NOMBRE,', ')within group(order by t1.NOMBRE) as ServiciosMasUsados, t2.c1 as CantidadServicioMasUsado " + 
+				"    FROM (SELECT (COUNT(s.TIPO))                         ca, " + 
+				"                  s.NOMBRE as NOMBRE, " + 
+				"                 to_char(to_date(c.FECHA, 'dd/mm/yyyy hh24:mi:ss'), 'WW/YYYY') AS SEMANA " + 
+				"          FROM CITA c, " + 
+				"               SERVICIO s " + 
+				"          WHERE c.ID_SERVICIO = s.NOMBRE " + 
+				"            AND c.CUMPLIDA = 1 " + 
+				"          GROUP BY to_char(to_date(c.FECHA, 'dd/mm/yyyy hh24:mi:ss'), 'WW/YYYY'), s.NOMBRE " + 
+				"          order by semana desc) t1, " + 
+				"         (SELECT MAX(ca) C1, SEMANA " + 
+				"          FROM (SELECT (COUNT(s.NOMBRE))                         ca, " + 
+				"                       s.NOMBRE, " + 
+				"                       to_char(to_date(c.FECHA, 'dd/mm/yyyy hh24:mi:ss'), 'WW/YYYY') AS SEMANA " + 
+				"                FROM CITA c, " + 
+				"                     SERVICIO s " + 
+				"                WHERE c.ID_SERVICIO = s.NOMBRE " + 
+				"                  AND c.CUMPLIDA = 1 " + 
+				"                GROUP BY to_char(to_date(c.FECHA, 'dd/mm/yyyy hh24:mi:ss'), 'WW/YYYY'), s.NOMBRE) " + 
+				"          GROUP BY SEMANA) t2 " + 
+				"    WHERE t1.SEMANA = t2.SEMANA " + 
+				"      AND t1.ca = t2.c1 group by t1.SEMANA, t2.c1 " + 
+				"    order by SEMANA DESC " + 
+				"), " + 
+				"tb_menorS as ( " + 
+				"    SELECT t1.SEMANA as SEMANA, listagg(t1.NOMBRE,', ')within group(order by t1.NOMBRE) as ServiciosMenosUsados, t2.c1 as CantidadServicioMenosUsado " + 
+				"    FROM (SELECT (COUNT(s.NOMBRE))                         ca, " + 
+				"                  s.NOMBRE as NOMBRE, " + 
+				"                 to_char(to_date(c.FECHA, 'dd/mm/yyyy hh24:mi:ss'), 'WW/YYYY') AS SEMANA " + 
+				"          FROM CITA c, " + 
+				"               SERVICIO s " + 
+				"          WHERE c.ID_SERVICIO = s.NOMBRE " + 
+				"            AND c.CUMPLIDA = 1 " + 
+				"          GROUP BY to_char(to_date(c.FECHA, 'dd/mm/yyyy hh24:mi:ss'), 'WW/YYYY'), s.NOMBRE " + 
+				"          order by semana desc) t1, " + 
+				"         (SELECT MIN(ca) C1, SEMANA " + 
+				"          FROM (SELECT (COUNT(s.NOMBRE))                         ca, " + 
+				"                       s.NOMBRE, " + 
+				"                       to_char(to_date(c.FECHA, 'dd/mm/yyyy hh24:mi:ss'), 'WW/YYYY') AS SEMANA " + 
+				"                FROM CITA c, " + 
+				"                     SERVICIO s " + 
+				"                WHERE c.ID_SERVICIO = s.NOMBRE " + 
+				"                  AND c.CUMPLIDA = 1 " + 
+				"                GROUP BY to_char(to_date(c.FECHA, 'dd/mm/yyyy hh24:mi:ss'), 'WW/YYYY'), s.NOMBRE) " + 
+				"          GROUP BY SEMANA) t2 " + 
+				"    WHERE t1.SEMANA = t2.SEMANA " + 
+				"      AND t1.ca = t2.c1 " + 
+				"      group by t1.SEMANA, t2.c1 " + 
+				"    order by SEMANA DESC " + 
+				"), " + 
+				"tb_mayorI as( SELECT t1.SEMANA as SEMANA, listagg(t1.ID_IPS,', ')within group(order by t1.ID_IPS) as IPSMasSolicitadas, t2.c1 as CantidadIPSMasUsado " + 
+				"    FROM (SELECT (COUNT(s.ID_IPS))                         ca, " + 
+				"                  s.ID_IPS as ID_IPS, " +  
+				"                 to_char(to_date(c.FECHA, 'dd/mm/yyyy hh24:mi:ss'), 'WW/YYYY') AS SEMANA " + 
+				"          FROM CITA c, " + 
+				"               Prestan s " + 
+				"          WHERE c.ID_SERVICIO = s.ID_SERVICIO " + 
+				"            AND c.CUMPLIDA = 1 and c.fecha=s.dia " + 
+				"          GROUP BY to_char(to_date(c.FECHA, 'dd/mm/yyyy hh24:mi:ss'), 'WW/YYYY'), s.ID_IPS " + 
+				"          order by semana desc) t1, " + 
+				"         (SELECT MAX(ca) C1, SEMANA " + 
+				"          FROM (SELECT (COUNT(s.ID_IPS))                         ca, " + 
+				"                       s.ID_IPS, " + 
+				"                       to_char(to_date(c.FECHA, 'dd/mm/yyyy hh24:mi:ss'), 'WW/YYYY') AS SEMANA " + 
+				"                FROM CITA c, " + 
+				"                     PRESTAN s " + 
+				"                WHERE c.ID_SERVICIO = s.ID_SERVICIO and c.fecha=s.dia " + 
+				"                  AND c.CUMPLIDA = 1 " + 
+				"                GROUP BY to_char(to_date(c.FECHA, 'dd/mm/yyyy hh24:mi:ss'), 'WW/YYYY'), s.ID_IPS) " + 
+				"          GROUP BY SEMANA) t2 " + 
+				"    WHERE t1.SEMANA = t2.SEMANA " + 
+				"      AND t1.ca = t2.c1 group by t1.SEMANA, t2.c1 " + 
+				"    order by SEMANA DESC " + 
+				"), " + 
+				"tb_menorI as( SELECT t1.SEMANA as SEMANA, listagg(t1.ID_IPS,', ')within group(order by t1.ID_IPS) as IPSMenosSolicitadas, t2.c1 as CantidadIPSMenosUsado " + 
+				"    FROM (SELECT (COUNT(s.ID_IPS))                         ca, " + 
+				"                  s.ID_IPS as ID_IPS, " + 
+				"                 to_char(to_date(c.FECHA, 'dd/mm/yyyy hh24:mi:ss'), 'WW/YYYY') AS SEMANA " + 
+				"          FROM CITA c, " + 
+				"               Prestan s " + 
+				"          WHERE c.ID_SERVICIO = s.ID_SERVICIO " + 
+				"            AND c.CUMPLIDA = 1 and c.fecha=s.dia " + 
+				"          GROUP BY to_char(to_date(c.FECHA, 'dd/mm/yyyy hh24:mi:ss'), 'WW/YYYY'), s.ID_IPS " + 
+				"          order by semana desc) t1, " + 
+				"         (SELECT MIN(ca) C1, SEMANA " + 
+				"          FROM (SELECT (COUNT(s.ID_IPS))                         ca, " + 
+				"                       s.ID_IPS, " + 
+				"                       to_char(to_date(c.FECHA, 'dd/mm/yyyy hh24:mi:ss'), 'WW/YYYY') AS SEMANA " + 
+				"                FROM CITA c, " + 
+				"                     PRESTAN s " + 
+				"                WHERE c.ID_SERVICIO = s.ID_SERVICIO and c.fecha=s.dia " + 
+				"                  AND c.CUMPLIDA = 1 " + 
+				"                GROUP BY to_char(to_date(c.FECHA, 'dd/mm/yyyy hh24:mi:ss'), 'WW/YYYY'), s.ID_IPS) " + 
+				"          GROUP BY SEMANA) t2 " + 
+				"    WHERE t1.SEMANA = t2.SEMANA " + 
+				"      AND t1.ca = t2.c1 group by t1.SEMANA, t2.c1 " + 
+				"    order by SEMANA DESC " + 
+				"), " + 
+				"tb_mayorU as(SELECT t1.SEMANA as SEMANA, listagg(t1.id_afiliado,', ')within group(order by t1.id_afiliado) as AfiliadoMasSolicitador, t2.c1 as AfiliadoMasUsador " + 
+				"    FROM (SELECT (COUNT(c.id_afiliado))                         ca, " + 
+				"                  c.id_afiliado as id_afiliado, " + 
+				"                 to_char(to_date(c.FECHA, 'dd/mm/yyyy hh24:mi:ss'), 'WW/YYYY') AS SEMANA " + 
+				"          FROM CITA c " + 
+				"            WHERE c.CUMPLIDA = 1 " + 
+				"          GROUP BY to_char(to_date(c.FECHA, 'dd/mm/yyyy hh24:mi:ss'), 'WW/YYYY'), c.id_afiliado " + 
+				"          order by semana desc) t1, " + 
+				"         (SELECT MAX(ca) C1, SEMANA " + 
+				"          FROM (SELECT (COUNT(c.id_afiliado))                         ca, " + 
+				"                       c.id_afiliado, " + 
+				"                       to_char(to_date(c.FECHA, 'dd/mm/yyyy hh24:mi:ss'), 'WW/YYYY') AS SEMANA " + 
+				"                FROM CITA c " + 
+				"                  WHERE c.CUMPLIDA = 1 " + 
+				"                GROUP BY to_char(to_date(c.FECHA, 'dd/mm/yyyy hh24:mi:ss'), 'WW/YYYY'), c.id_afiliado) " + 
+				"          GROUP BY SEMANA) t2 " + 
+				"    WHERE t1.SEMANA = t2.SEMANA " + 
+				"      AND t1.ca = t2.c1 group by t1.SEMANA, t2.c1 " + 
+				"    order by SEMANA DESC), " + 
+				"    tb_cantiCita as(SELECT COUNT(DISTINCT c.id_afiliado) c1, " + 
+				"                 to_char(to_date(c.FECHA, 'dd/mm/yyyy hh24:mi:ss'), 'WW/YYYY') AS SEMANA " + 
+				"          FROM CITA c " + 
+				"            WHERE c.CUMPLIDA = 1 " + 
+				"          GROUP BY to_char(to_date(c.FECHA, 'dd/mm/yyyy hh24:mi:ss'), 'WW/YYYY') " + 
+				"          order by semana desc), " + 
+				"tb_cantidadAf as(select count(*) as cuenta from AFILIADO), " + 
+				"tb_total as(select cuenta-c1,semana as SEMANA from tb_cantiCita, tb_cantidadAf) " + 
+				"select * " + 
+				"from tb_mayor t1 natural inner join tb_menor t2 natural inner join tb_mayorS natural inner join tb_menorS natural inner join tb_mayorI natural inner join tb_menorI natural inner join tb_mayorU NATURAL inner join tb_total;";
+		Query q = pm.newQuery(SQL,sql);
+		return q.executeList();
+	}
+	
+	public List<Object[]> reqC12 (PersistenceManager pm){
+		String sql="WITH oth_no_esp as (select * " + 
+				"from cita " + 
+				"inner join SERVICIO sds on CITA.ID_SERVICIO = SDS.NOMBRE " + 
+				"and sds.TIPO != 'Procedimiento medico especializado'), " + 
+				" " + 
+				"ESPEC AS ( " + 
+				"select id_afiliado, 1 siempre_espec,count(distinct sds.TIPO)cuenta " + 
+				"from cita " + 
+				"inner join SERVICIO sds on CITA.ID_SERVICIO = SDS.NOMBRE " + 
+				"and sds.TIPO = 'Procedimiento medico especializado' " + 
+				"where cita.id_afiliado not in (select id_afiliado from oth_no_esp) " + 
+				"group by id_afiliado " + 
+				"), " + 
+				" " + 
+				"cit_mes as( -- Cuenta el número de meses distintos en los que ha hecho una cita " + 
+				" select id_afiliado, count(distinct to_char(TO_DATE(fecha,'dd/mm/yyyy hh24:mi:ss'),'mm/yy')) as count_citas " + 
+				" from cita " + 
+				" group by id_afiliado " + 
+				" order by count_citas desc), " + 
+				" " + 
+				"min_fe as( -- Cuenta el número de meses distintos en los que ha hecho una cita " + 
+				" select id_afiliado, min(TO_DATE(fecha,'dd/mm/yyyy hh24:mi:ss')) as first_cita " + 
+				" from cita " + 
+				" group by id_afiliado " + 
+				" ), " + 
+				" " + 
+				"month_fd  as (  -- Cuenta cuántos meses han transcurrido desde su primera cita " + 
+				"SELECT id_afiliado, MONTHS_BETWEEN " + 
+				"   (TO_DATE('12-2019','MM-YYYY'), " + 
+				"   TO_DATE(to_char(first_cita,'mm/yyyy') ,'MM-YYYY') " + 
+				"     ) meses_primera_cita, first_cita " + 
+				"    FROM min_fe  ), " + 
+				" " + 
+				"final_freq as " + 
+				"select cit_mes.id_afiliado, first_cita, count_citas, meses_primera_cita " + 
+				" from month_fd " + 
+				"    inner join cit_mes " + 
+				"    on cit_mes.id_afiliado = month_fd.id_afiliado " + 
+				"    where count_citas = meses_primera_cita), " + 
+				"   " + 
+				"citas as(SELECT COUNT(*) as citasUsuario, id_afiliado FROM CITA " + 
+				"GROUP BY id_afiliado order by count(*) desc), " + 
+				" " + 
+				"hospital as (SELECT COUNT(*) as cuentaHospitalizaciones, r.id_afiliado FROM " + 
+				"ORDEN r, SERVICIO s WHERE r.NOM_SERVICIO=s.NOMBRE AND s.TIPO='Hospitalizacion' " + 
+				"GROUP BY r.id_afiliado), " + 
+				"c2 as(SELECT c.id_afiliado, 1 siempreHosp, c.citasUsuario as citas, h.cuentaHospitalizaciones as hospitalizaciones FROM citas c,hospital h WHERE c.id_afiliado=h.id_afiliado AND c.citasUSUARIO/2=h.cuentaHospitalizaciones) " + 
+				" " + 
+				"select usuario.nombre, usuario.email, afiliado.identificacion, case when siempre_espec = 1 then  'Siempre especializado' " + 
+				"when count_citas is not null then 'Pide cita todos los meses' when siempreHosp=1 then 'Siempre hospitalizado' " + 
+				"end razon " + 
+				", case when count_citas is not null then count_citas else 0 end CitasSolicitadas ,case when cuenta is not null then cuenta else 0 end ServiciosDistintosSolicitados, case when hospitalizaciones is not null then hospitalizaciones else 0 end hospitalizaciones " + 
+				"from usuario left outer join afiliado on usuario.numero_documento=afiliado.identificacion " + 
+				"left outer join final_freq " + 
+				"on final_freq.id_afiliado = afiliado.identificacion " + 
+				"left outer join espec " + 
+				"on espec.id_afiliado = afiliado.identificacion left outer join c2 on c2.id_afiliado=espec.id_afiliado " + 
+				"where siempre_espec = 1 or count_citas is not null or siempreHosp=1;";
+		Query q = pm.newQuery(SQL,sql);
+		return q.executeList();
+	}
+	
+	
 	public List<Object[]> darExigentes (PersistenceManager pm){
 		String sql="SELECT aux.AFILIADO,aux.TIPOS,aux.SERVICIOS" + 
 				"	FROM(SELECT tc.ID_AFILIADO AFILIADO, COUNT (DISTINCT ts.TIPO) TIPOS, COUNT (tc.ID_SERVICIO) SERVICIOS" + 

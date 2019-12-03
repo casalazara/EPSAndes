@@ -1232,6 +1232,27 @@ public class PersistenciaEPSAndes
 	 * @param fechaFin la fecha fin
 	 * @return la lista con los 20 servicios más solciitados.
 	 */
+	
+	public List<Object []> reqC9 (String pServicios, String pTipos , String pFechaInicial , String  PFechaFinal , String pIPS , String   pOrdenamiento , String pAgrupamiento)
+	{
+		return sqlCita.reqC9(pmf.getPersistenceManager(), pServicios, pTipos , pFechaInicial , PFechaFinal , pIPS ,  pOrdenamiento , pAgrupamiento);
+	}
+	
+	public List<Object []> reqC10 (String pServicios, String pTipos , String pFechaInicial , String  PFechaFinal , String pIPS , String   pOrdenamiento , String pAgrupamiento)
+	{
+		return sqlCita.reqC10(pmf.getPersistenceManager(), pServicios, pTipos , pFechaInicial , PFechaFinal , pIPS ,  pOrdenamiento , pAgrupamiento);
+	}
+	
+	public List<Object []> reqC11 ()
+	{
+		return sqlCita.reqC11(pmf.getPersistenceManager());
+	}
+	
+	public List<Object []> reqC12 ()
+	{
+		return sqlCita.reqC12(pmf.getPersistenceManager());
+	}
+	
 	public List<Object []> dar20ServiciosMasSolicitados (String fechaInicio, String fechaFin)
 	{
 		return sqlCita.dar20ServiciosMasSolicitados(pmf.getPersistenceManager(), fechaInicio, fechaFin);

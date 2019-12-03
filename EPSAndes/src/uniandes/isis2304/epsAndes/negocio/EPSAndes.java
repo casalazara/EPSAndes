@@ -508,6 +508,34 @@ public class EPSAndes
 	 *
 	 * @return the list
 	 */
+	
+	public List<Object[]> reqC9(String pServicios,String pTipos ,String pFechaInicial , String PFechaFinal ,String pIPS , String pOrdenamiento ,String pAgrupamiento)
+	{
+
+		log.info ("Realizando req 9");
+		return pp.reqC9(pServicios, pTipos , pFechaInicial , PFechaFinal , pIPS ,  pOrdenamiento , pAgrupamiento);
+	}
+	
+	public List<Object[]> reqC10(String pServicios, String pTipos , String pFechaInicial , String  PFechaFinal , String pIPS , String   pOrdenamiento , String pAgrupamiento)
+	{
+
+		log.info ("Realizando req 10");
+		return pp.reqC10(pServicios, pTipos , pFechaInicial , PFechaFinal , pIPS ,  pOrdenamiento , pAgrupamiento);
+	}
+	
+	public List<Object[]> reqC11()
+	{
+
+		log.info ("Realizando req 11");
+		return pp.reqC11();
+	}
+	
+	public List<Object[]> reqC12()
+	{
+
+		log.info ("Realizando req 12 ");
+		return pp.reqC12();
+	}
 	public List<Object[]> darIndiceDeUso()
 	{
 		log.info ("Dando los indices de uso respecto a los demás servicios");
