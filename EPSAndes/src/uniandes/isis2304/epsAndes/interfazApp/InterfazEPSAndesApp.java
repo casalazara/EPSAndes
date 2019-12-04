@@ -339,9 +339,15 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 					
 					List<Object[]> lista =epsAndes.reqC9(pServicios, pTipos , pFechaInicial , PFechaFinal , pIPS ,  pOrdenamiento , pAgrupamiento);
 					for (int i=0;i<lista.size();i++) {
-						resultado+="Servicio: " +(String)lista.get(i)[0]+" Cantidad solicitudes: "+((BigDecimal)lista.get(i)[1]).intValue()+"\n";
+						
+						resultado += "Email: " + (String)lista.get(i)[0] +
+									"Nombre: " + (String)lista.get(i)[1] +
+									"Numero de documento: " + (String)lista.get(i)[2] +
+									"Rol: " + (String)lista.get(i)[3] + 
+									"Tipo documento: " + (String)lista.get(i)[4] + 
+									"Fecha nacimiento: " + (String)lista.get(i)[5] +"\n";
 					}
-					resultado += "\n OperaciÃ³n terminada";
+					resultado += "\n Operacion terminada";
 					panelDatos.actualizarInterfaz(resultado);
 
 					
@@ -409,9 +415,15 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 					
 					List<Object[]> lista =epsAndes.reqC10(pServicios, pTipos , pFechaInicial , PFechaFinal , pIPS ,  pOrdenamiento , pAgrupamiento);
 					for (int i=0;i<lista.size();i++) {
-						resultado+="Servicio: " +(String)lista.get(i)[0]+" Cantidad solicitudes: "+((BigDecimal)lista.get(i)[1]).intValue()+"\n";
+						
+						resultado += "Identificacion: " + (String)lista.get(i)[0] +
+								"Nombre: " + (String)lista.get(i)[1] +
+								"Email: " + (String)lista.get(i)[2] +
+								"Tipo de coumento: " + (String)lista.get(i)[3] + 
+								"Fecha nacimiento: " + (String)lista.get(i)[4] +"\n";
+						
 					}
-					resultado += "\n OperaciÃ³n terminada";
+					resultado += "\n Operacion terminada";
 					panelDatos.actualizarInterfaz(resultado);
 
 					
@@ -484,7 +496,16 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 				List<Object[]> lista=epsAndes.reqC12();
 				
 				for (int i=0;i<lista.size();i++) {
-					resultado+="Servicio: " +(String)lista.get(i)[1]+" Indice de uso: "+((BigDecimal)lista.get(i)[0]).intValue()+"\n";
+				
+
+					resultado += "Nombre: " + (String)lista.get(i)[0] +
+							"Email: " + (String)lista.get(i)[1] +
+							"Identificaci�n: " + (String)lista.get(i)[2] +
+							"Raz�n: " + (String)lista.get(i)[3] + 
+							"Citas solicitadas: " + (String)lista.get(i)[4] +
+							"Servicios distintos solicitados: " + (String)lista.get(i)[5] +
+							"Hospitalizaciones: " + (String)lista.get(i)[6] 	+"\n";
+				
 				}
 				resultado += "\n OperaciÃ³n terminada";
 				panelDatos.actualizarInterfaz(resultado);
