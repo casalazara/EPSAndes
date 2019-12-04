@@ -281,20 +281,20 @@ class SQLCita
 				"    on cit_mes.id_afiliado = month_fd.id_afiliado " + 
 				"    where count_citas = meses_primera_cita) final_freq " + 
 				"on final_freq.id_afiliado = afiliado.identificacion " + 
-				"left outer join  ( " + 
+				"left outer join ( " + 
 				"select id_afiliado, 1 siempre_espec,count(distinct sds.TIPO)cuenta " + 
 				"from cita " + 
 				"inner join SERVICIO sds on CITA.ID_SERVICIO = SDS.NOMBRE " + 
-				"and sds.TIPO = 'PROCEDIMIENTO ESPECIALIZADO' " + 
-				"where cita.id_afiliado not in (select id_afiliado from  (select id_afiliado " + 
+				"and sds.TIPO = 'Procedimiento medico especializado' " + 
+				"where cita.id_afiliado not in (select id_afiliado from (select id_afiliado " + 
 				"from cita " + 
 				"inner join SERVICIO sds on CITA.ID_SERVICIO = SDS.NOMBRE " + 
-				"and sds.TIPO != 'PROCEDIMIENTO ESPECIALIZADO') oth_no_esp) " + 
+				"and sds.TIPO != 'Procedimiento medico especializado')) " + 
 				"group by id_afiliado " + 
 				") espec  " + 
 				"on espec.id_afiliado = afiliado.identificacion left outer join (SELECT c.id_afiliado, 1 siempreHosp, c.citasUsuario as citas, h.cuentaHospitalizaciones as hospitalizaciones FROM (SELECT COUNT(*) as citasUsuario, id_afiliado FROM CITA " + 
-				"GROUP BY id_afiliado order by count() desc)  c,(SELECT COUNT() as cuentaHospitalizaciones, r.id_afiliado FROM  " + 
-				"ORDEN r, SERVICIO s WHERE r.NOM_SERVICIO=s.NOMBRE AND s.TIPO='HOSPITALIZACION' " + 
+				"GROUP BY id_afiliado order by count() desc) c,(SELECT COUNT() as cuentaHospitalizaciones, r.id_afiliado FROM  " + 
+				"ORDEN r, SERVICIO s WHERE r.NOM_SERVICIO=s.NOMBRE AND s.TIPO='Hospitalizacion' " + 
 				"GROUP BY r.id_afiliado) h WHERE c.id_afiliado=h.id_afiliado AND c.citasUSUARIO/2=h.cuentaHospitalizaciones) c2 on c2.id_afiliado=espec.id_afiliado " + 
 				"where siempre_espec = 1 or count_citas is not null or siempreHosp=1";
 		Query q = pm.newQuery(SQL,sql);
