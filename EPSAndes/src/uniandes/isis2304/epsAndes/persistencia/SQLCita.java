@@ -230,7 +230,7 @@ class SQLCita
 		q.setParameters(pServicios  , pFechaInicial , PFechaFinal , pServicios , pTipos , pTipos  );
 		return q.executeList();
 	}
-	
+
 	public List<Object[]> reqC10 (PersistenceManager pm , String pServicios, String pTipos , String pFechaInicial , String  PFechaFinal , String pIPS , String   pOrdenamiento , String pAgrupamiento){
 		String sql="select s1.identificacion,u.nombre,u.email,u.tipo_documento,s1.fecha_nacimiento from AFILIADO s1, USUARIO u  " + 
 				"where s1.identificacion=u.numero_documento  " + 
@@ -254,53 +254,55 @@ class SQLCita
 		q.setParameters(pServicios  , pFechaInicial , PFechaFinal , pServicios , pTipos , pTipos  );
 		return q.executeList();
 	}
-	
+
 	public List<Object[]> reqC12 (PersistenceManager pm){
-		String sql= "select usuario.nombre, usuario.email, afiliado.identificacion, case when siempre_espec = 1 then  'Siempre especializado' " + 
-				"when count_citas is not null then 'Pide cita todos los meses' when siempreHosp=1 then 'Siempre hospitalizado' " + 
-				"end razon  " + 
-				", case when count_citas is not null then count_citas else 0 end CitasSolicitadas ,case when cuenta is not null then cuenta else 0 end ServiciosDistintosSolicitados, case when hospitalizaciones is not null then hospitalizaciones else 0 end hospitalizaciones " + 
-				"from usuario left outer join afiliado on usuario.numero_documento=afiliado.identificacion " + 
-				"left outer join ( " + 
-				"select cit_mes.id_afiliado, first_cita, count_citas, meses_primera_cita " + 
-				" from (  -- Cuenta cuántos meses han transcurrido desde su primera cita " + 
-				"SELECT id_afiliado, MONTHS_BETWEEN  " + 
-				"   (TO_DATE('12-2019','MM-YYYY'), " + 
-				"   TO_DATE(to_char(first_cita,'mm/yyyy') ,'MM-YYYY') " + 
-				"     ) meses_primera_cita, first_cita " + 
-				"    FROM ( -- Cuenta el número de meses distintos en los que ha hecho una cita " + 
-				" select id_afiliado, min(TO_DATE(fecha,'dd/mm/yyyy hh24:mi:ss')) as first_cita " + 
-				" from cita " + 
-				" group by id_afiliado " + 
-				" ) min_fe  ) month_fd " + 
-				"    inner join ( -- Cuenta el número de meses distintos en los que ha hecho una cita " + 
-				" select id_afiliado, count(distinct to_char(TO_DATE(fecha,'dd/mm/yyyy hh24:mi:ss'),'mm/yy')) as count_citas " + 
-				" from cita " + 
-				" group by id_afiliado " + 
-				" order by count_citas desc) cit_mes  " + 
-				"    on cit_mes.id_afiliado = month_fd.id_afiliado " + 
-				"    where count_citas = meses_primera_cita) final_freq " + 
-				"on final_freq.id_afiliado = afiliado.identificacion " + 
-				"left outer join ( " + 
-				"select id_afiliado, 1 siempre_espec,count(distinct sds.TIPO)cuenta " + 
-				"from cita " + 
-				"inner join SERVICIO sds on CITA.ID_SERVICIO = SDS.NOMBRE " + 
-				"and sds.TIPO = 'Procedimiento medico especializado' " + 
-				"where cita.id_afiliado not in (select id_afiliado from (select id_afiliado " + 
-				"from cita " + 
-				"inner join SERVICIO sds on CITA.ID_SERVICIO = SDS.NOMBRE " + 
-				"and sds.TIPO != 'Procedimiento medico especializado')) " + 
-				"group by id_afiliado " + 
-				") espec  " + 
-				"on espec.id_afiliado = afiliado.identificacion left outer join (SELECT c.id_afiliado, 1 siempreHosp, c.citasUsuario as citas, h.cuentaHospitalizaciones as hospitalizaciones FROM (SELECT COUNT(*) as citasUsuario, id_afiliado FROM CITA " + 
-				"GROUP BY id_afiliado order by count() desc) c,(SELECT COUNT() as cuentaHospitalizaciones, r.id_afiliado FROM  " + 
-				"ORDEN r, SERVICIO s WHERE r.NOM_SERVICIO=s.NOMBRE AND s.TIPO='Hospitalizacion' " + 
-				"GROUP BY r.id_afiliado) h WHERE c.id_afiliado=h.id_afiliado AND c.citasUSUARIO/2=h.cuentaHospitalizaciones) c2 on c2.id_afiliado=espec.id_afiliado " + 
+		String sql= "select usuario.nombre, usuario.email, afiliado.identificacion, case when siempre_espec = 1 then  'Siempre especializado' "+
+				"when count_citas is not null then 'Pide cita todos los meses' when siempreHosp=1 then 'Siempre hospitalizado' "+
+				"end razon  "+
+				", case when count_citas is not null then count_citas else 0 end CitasSolicitadas ,case when cuenta is not null then cuenta else 0 end ServiciosDistintosSolicitados, case when hospitalizaciones is not null then hospitalizaciones else 0 end hospitalizaciones "+
+				"from usuario left outer join afiliado on usuario.numero_documento=afiliado.identificacion "+
+				"left outer join ( "+
+				"select cit_mes.id_afiliado, first_cita, count_citas, meses_primera_cita "+
+				"from ( "+
+				"SELECT id_afiliado, MONTHS_BETWEEN  "+
+				   "(TO_DATE('12-2019','MM-YYYY'), "+
+				   "TO_DATE(to_char(first_cita,'mm/yyyy') ,'MM-YYYY') "+
+				     ") meses_primera_cita, first_cita "+
+				    "FROM "+
+				 "(select id_afiliado, min(TO_DATE(fecha,'dd/mm/yyyy hh24:mi:ss')) as first_cita "+
+				 "from cita "+
+				 "group by id_afiliado "+
+				 ") min_fe  ) month_fd "+
+				  "inner join ( "+
+				 "select id_afiliado, count(distinct to_char(TO_DATE(fecha,'dd/mm/yyyy hh24:mi:ss'),'mm/yy')) as count_citas "+
+				 "from cita "+
+				 "group by id_afiliado "+
+				 "order by count_citas desc) cit_mes  "+
+				    "on cit_mes.id_afiliado = month_fd.id_afiliado "+
+				    "where count_citas = meses_primera_cita) final_freq "+
+				"on final_freq.id_afiliado = afiliado.identificacion "+
+				"left outer join ( "+
+				"select id_afiliado, 1 siempre_espec,count(distinct sds.TIPO)cuenta "+
+				"from cita "+
+				"inner join SERVICIO sds on CITA.ID_SERVICIO = SDS.NOMBRE "+
+				"and sds.TIPO = 'Procedimiento medico especializado' "+
+				"where cita.id_afiliado not in (select id_afiliado from (select id_afiliado "+
+				"from cita "+
+				"inner join SERVICIO sds on CITA.ID_SERVICIO = SDS.NOMBRE "+
+				"and sds.TIPO != 'Procedimiento medico especializado') oth_no_esp) "+
+				"group by id_afiliado "+
+				") espec  "+
+				"on espec.id_afiliado = afiliado.identificacion left outer join (SELECT c.id_afiliado, 1 siempreHosp, c.citasUsuario as citas, h.cuentaHospitalizaciones as hospitalizaciones FROM (SELECT COUNT(*) as citasUsuario, id_afiliado FROM CITA "+
+				"GROUP BY id_afiliado order by count(*) desc) c,(SELECT COUNT(*) as cuentaHospitalizaciones, r.id_afiliado FROM  "+
+				"ORDEN r, SERVICIO s WHERE r.NOM_SERVICIO=s.NOMBRE AND s.TIPO='Hospitalizacion' "+
+				"GROUP BY r.id_afiliado) h WHERE c.id_afiliado=h.id_afiliado AND c.citasUSUARIO/2=h.cuentaHospitalizaciones) c2 on c2.id_afiliado=espec.id_afiliado "+
 				"where siempre_espec = 1 or count_citas is not null or siempreHosp=1";
+
+
 		Query q = pm.newQuery(SQL,sql);
 		return q.executeList();
 	}
-	
+
 	public List<Object[]> reqC11 (PersistenceManager pm){
 		String sql="select * " + 
 				"from ( " + 
@@ -476,11 +478,11 @@ class SQLCita
 				"          GROUP BY to_char(to_date(c.FECHA, 'dd/mm/yyyy hh24:mi:ss'), 'WW/YYYY') " + 
 				"          ) tb_cantiCita, (select count(*) as cuenta from AFILIADO) tb_cantidadAf) tb_total";
 		Query q = pm.newQuery(SQL,sql);
-	
+
 		return q.executeList();
 	}
-	
-	
+
+
 	public List<Object[]> darExigentes (PersistenceManager pm){
 		String sql="SELECT aux.AFILIADO,aux.TIPOS,aux.SERVICIOS" + 
 				"	FROM(SELECT tc.ID_AFILIADO AFILIADO, COUNT (DISTINCT ts.TIPO) TIPOS, COUNT (tc.ID_SERVICIO) SERVICIOS" + 

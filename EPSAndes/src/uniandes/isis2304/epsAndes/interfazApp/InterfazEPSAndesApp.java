@@ -502,9 +502,9 @@ public class InterfazEPSAndesApp extends JFrame implements ActionListener
 							"Email: " + (String)lista.get(i)[1] +
 							"Identificación: " + (String)lista.get(i)[2] +
 							"Razón: " + (String)lista.get(i)[3] + 
-							"Citas solicitadas: " + (String)lista.get(i)[4] +
-							"Servicios distintos solicitados: " + (String)lista.get(i)[5] +
-							"Hospitalizaciones: " + (String)lista.get(i)[6] 	+"\n";
+							"Citas solicitadas: " + ((BigDecimal)lista.get(i)[4]).intValue() +
+							"Servicios distintos solicitados: " + ((BigDecimal)lista.get(i)[5]).intValue() +
+							"Hospitalizaciones: " + ((BigDecimal)lista.get(i)[6]).intValue() 	+"\n";
 				
 				}
 				resultado += "\n OperaciÃƒÂ³n terminada";
